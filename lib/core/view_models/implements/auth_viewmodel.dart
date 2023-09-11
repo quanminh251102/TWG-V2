@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:twg/core/services/interfaces/iauth_service.dart';
-import 'package:twg/core/view_models/screens/interfaces/iauth_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
 import 'package:twg/global/locator.dart';
 import 'package:twg/global/router.dart';
 

@@ -1,7 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:twg/core/view_models/screens/implements/auth_viewmodel.dart';
-import 'package:twg/core/view_models/screens/interfaces/iauth_viewmodel.dart';
+import 'package:twg/core/view_models/implements/auth_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
 
 List<SingleChildWidget> viewModelProviders = [
   ChangeNotifierProvider<IAuthViewModel>(
