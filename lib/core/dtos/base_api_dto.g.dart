@@ -14,6 +14,7 @@ BaseApiDto<T> _$BaseApiDtoFromJson<T>(
       data: _$nullableGenericFromJson(json['data'], fromJsonT),
       message: json['message'] as String?,
       success: json['success'] as bool,
+      total: json['total'] as int?,
     );
 
 Map<String, dynamic> _$BaseApiDtoToJson<T>(
@@ -24,6 +25,7 @@ Map<String, dynamic> _$BaseApiDtoToJson<T>(
       'data': _$nullableGenericToJson(instance.data, toJsonT),
       'message': instance.message,
       'success': instance.success,
+      'total': instance.total,
     };
 
 T? _$nullableGenericFromJson<T>(

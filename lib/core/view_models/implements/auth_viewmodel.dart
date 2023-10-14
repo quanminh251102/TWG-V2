@@ -11,10 +11,13 @@ class AuthViewModel with ChangeNotifier implements IAuthViewModel {
 
   @override
   Future<void> login(String phone, String password) async {
-    // var account = await _iAuthService.login(phone, password);
-    // if (account != null) {
-    //   Get.offNamed(MyRouter.home);
-    // }
+    var account = await _iAuthService.login(phone, password);
+    if (account != null) {
+      await EasyLoading.showSuccess('Đăng nhập thành công!');
+      Get.offNamed(MyRouter.booking);
+    } else {
+      await EasyLoading.showError('Đăng nhập thất bại!');
+    }
   }
 
   @override

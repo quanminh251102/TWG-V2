@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:json_annotation/json_annotation.dart';
 
 part 'base_api_dto.g.dart';
@@ -9,11 +10,13 @@ class BaseApiDto<T> {
   final String? message;
   @JsonKey(name: 'success')
   final bool success;
-
+  @JsonKey(name: 'total')
+  int? total;
   BaseApiDto({
     this.data,
     this.message,
     required this.success,
+    this.total,
   });
 
   factory BaseApiDto.fromJson(

@@ -4,71 +4,20 @@ part 'enum_helper.dart';
 
 enum CustomNavigationBar {
   @JsonValue(0)
-  live,
+  home,
   @JsonValue(1)
-  news,
+  booking,
   @JsonValue(2)
-  tournament,
+  chat,
   @JsonValue(3)
-  follow,
-  @JsonValue(4)
   account,
 }
 
-enum HomeNavigationBar {
+enum BookingStatusType {
   @JsonValue(0)
-  home,
+  complete,
   @JsonValue(1)
-  football,
+  available,
   @JsonValue(2)
-  basketball,
-  @JsonValue(3)
-  result,
-}
-
-enum LiveNavigationBar {
-  @JsonValue(0)
-  chat,
-  @JsonValue(1)
-  commentator,
-  @JsonValue(2)
-  rankings,
-  @JsonValue(3)
-  liveSchedule,
-}
-
-enum ScheduleNavigationBar {
-  @JsonValue(0)
-  home,
-  @JsonValue(1)
-  football,
-  @JsonValue(2)
-  basketball,
-}
-
-enum ScheduleTabBar {
-  @JsonValue(0)
-  result,
-  @JsonValue(1)
-  live,
-  @JsonValue(2)
-  schedule,
-}
-
-enum Sport {
-  @JsonValue(0)
-  football,
-  @JsonValue(1)
-  basketball,
-}
-
-enum EventAction {
-  @JsonValue(0)
-  goal,
-  @JsonValue(1)
-  card,
-  @JsonValue(2)
-  subst,
-  @JsonValue(3)
-  check,
+  cancel,
 }

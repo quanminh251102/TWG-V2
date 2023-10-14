@@ -1,8 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:twg/core/dtos/auth/access_token_dto.dart';
+import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/dtos/auth/login_dto.dart';
 import 'package:twg/core/dtos/base_api_dto.dart';
+import 'package:twg/core/dtos/booking/booking_dto.dart';
+import 'package:twg/core/dtos/pagination/pagination_dto.dart';
 
 part 'rest_client.g.dart';
 
@@ -15,6 +18,22 @@ abstract class RestClient {
   Future<BaseApiDto<AccessTokenDto>> getToken(
     @Body() LoginDto model,
   );
+  @GET("/api/user/profile")
+  Future<BaseApiDto<AccountDto>> getProfile({
+    @Header('api_key') required String token,
+  });
+
+  //booking
+  @GET('/api/booking')
+  Future<BaseApiDto<List<BookingDto>>> getBookings({
+    @Header('api_key') String? token,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('sortCreatedAt') int? sortCreatedAt,
+    @Query('sortUpdatedAt') int? sortUpdatedAt,
+    @Query('status') String? status,
+    @Query('authorId') String? authorId,
+  });
 
   ///account
   // @GET("/api/account/profile")
@@ -30,7 +49,7 @@ abstract class RestClient {
 
   // @DELETE("/api/chat/conversations/{id}/messages/{messageTd}")
   // Future<BaseApiDto<dynamic>> deleteMessage({
-  //   @Header('Authorization') required String token,
+
   //   @Path("id") required int id,
   //   @Path("messageId") required int messageId,
   // });

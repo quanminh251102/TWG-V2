@@ -20,6 +20,7 @@ AccountDto _$AccountDtoFromJson(Map<String, dynamic> json) => AccountDto(
       locationAddress: json['locationAddress'] as String?,
       role: json['role'] as String?,
       isCalling: json['isCalling'] as bool?,
+      id: json['id'] as String?,
     );
 
 Map<String, dynamic> _$AccountDtoToJson(AccountDto instance) =>
@@ -37,4 +38,5 @@ Map<String, dynamic> _$AccountDtoToJson(AccountDto instance) =>
       'locationAddress': instance.locationAddress,
       'role': instance.role,
       'isCalling': instance.isCalling,
+      'id': instance.id,
     };

@@ -3,10 +3,10 @@ part 'access_token_dto.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class AccessTokenDto {
-  String? accsessToken;
-  String? refreshToken;
+  String? accsess_token;
+  String? refresh_token;
 
-  AccessTokenDto({this.accsessToken, this.refreshToken});
+  AccessTokenDto({this.accsess_token, this.refresh_token});
   factory AccessTokenDto.fromJson(Map<String, dynamic> json) =>
       _$AccessTokenDtoFromJson(json);
   Map<String, dynamic> toJson() => _$AccessTokenDtoToJson(this);

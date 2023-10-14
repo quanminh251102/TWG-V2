@@ -11,7 +11,6 @@ import '../core/api/rest_client.dart';
 
 import '../core/utils/token_utils.dart';
 import 'global_data.dart';
-import 'locator_dao.dart';
 import 'locator_service.dart';
 
 GetIt locator = GetIt.instance;
@@ -20,23 +19,22 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(() => GlobalData());
   setupRestClient();
   registerServiceSingletons(locator);
-  // await checkLogin();
+  await checkLogin();
 }
 
-// Future<void> checkLogin() async {
-//   String? token = await TokenUtils.getToken();
-//   if (token != null) {
-//     try {
-//       var profile = await getRestClient().getProfile(token: token);
-//       if (profile.result != null) {
-//         locator<GlobalData>().currentUser = profile.result!;
-//       }
-//     } catch (e) {
-//       print(e);
-//     } finally {
-//     }
-//   }
-// }
+Future<void> checkLogin() async {
+  String? token = await TokenUtils.getToken();
+  if (token != null) {
+    try {
+      var profile = await getRestClient().getProfile(token: token);
+      if (profile.data != null) {
+        locator<GlobalData>().currentUser = profile.data!;
+      }
+    } catch (e) {
+      print(e);
+    } finally {}
+  }
+}
 
 void setupRestClient() {
   var dio = Dio();
@@ -88,19 +86,4 @@ void setupRestClient() {
 
 RestClient getRestClient() {
   return locator.get<RestClient>(instanceName: 'RestClient');
-}
-
-Future<void> setDeviceSerial() async {
-  String serial = '2057766';
-  /*if (EnvironmentUtil.currentEnv == Environment.prod) {
-    await AndroidMultipleIdentifier.requestPermission();
-    serial = await AndroidMultipleIdentifier.serialCode;
-    if (serial == 'unknown') {
-      serial = '2057766';
-    }
-  } else {
-    serial = '2057766';
-  }*/
-
-  // locator<GlobalData>().deviceInfo.deviceSerial = serial;
 }
