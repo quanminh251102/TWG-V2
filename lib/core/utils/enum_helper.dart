@@ -43,27 +43,14 @@ class MyEnum {
 
 class EnumMap {
   static Map<CustomNavigationBar, MyEnum> navigationBarValue = {
-    CustomNavigationBar.live: MyEnum(value: 0, description: 'Live'),
-    CustomNavigationBar.news: MyEnum(value: 1, description: 'News'),
-    CustomNavigationBar.tournament: MyEnum(value: 2, description: 'Chat'),
-    CustomNavigationBar.follow: MyEnum(value: 3, description: 'Follow'),
-    CustomNavigationBar.account: MyEnum(value: 3, description: 'Account'),
+    CustomNavigationBar.home: MyEnum(value: 0, description: 'Trang chủ'),
+    CustomNavigationBar.booking: MyEnum(value: 1, description: 'Chuyến đi'),
+    CustomNavigationBar.chat: MyEnum(value: 2, description: 'Trò chuyện'),
+    CustomNavigationBar.account: MyEnum(value: 3, description: 'Cá nhân'),
   };
-  static Map<HomeNavigationBar, MyEnum> homeNavigationBarValue = {
-    HomeNavigationBar.home: MyEnum(value: 0, description: 'Home'),
-    HomeNavigationBar.football: MyEnum(value: 1, description: 'Football'),
-    HomeNavigationBar.basketball: MyEnum(value: 2, description: 'Basketball'),
-    HomeNavigationBar.result: MyEnum(value: 3, description: 'Result'),
-  };
-  static Map<ScheduleTabBar, MyEnum> scheduleTabBar = {
-    ScheduleTabBar.result: MyEnum(value: 0, description: 'Result'),
-    ScheduleTabBar.live: MyEnum(value: 1, description: 'Live'),
-    ScheduleTabBar.schedule: MyEnum(value: 2, description: 'Schedule'),
-  };
-  static Map<EventAction, MyEnum> event = {
-    EventAction.goal: MyEnum(value: 0, description: 'Goal'),
-    EventAction.card: MyEnum(value: 1, description: 'Card'),
-    EventAction.subst: MyEnum(value: 2, description: 'subst'),
-    EventAction.check: MyEnum(value: 3, description: 'Var'),
+  static Map<BookingStatusType, MyEnum> bookingStatusType = {
+    BookingStatusType.complete: MyEnum(value: 0, description: 'complete'),
+    BookingStatusType.available: MyEnum(value: 1, description: 'available'),
+    BookingStatusType.cancel: MyEnum(value: 2, description: 'cancel'),
   };
 }

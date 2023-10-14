@@ -69,7 +69,7 @@ class _MyAppState extends State<MyApp> {
         builder: (_, __) {
           return GetMaterialApp(
               builder: EasyLoading.init(),
-              title: 'Hoàng Đức',
+              title: 'TWG',
               navigatorKey: NavigationUtils.navigatorKey,
               onGenerateRoute: (settings) => MyRouter.generateRoute(settings),
               initialRoute: MyRouter.signIn,

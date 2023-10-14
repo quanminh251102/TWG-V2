@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:twg/ui/screens/booking/booking_screen.dart';
+import 'package:twg/ui/screens/home/home.dart';
 import 'package:twg/ui/screens/signin/signin.dart';
 import 'package:twg/ui/screens/signup/signup.dart';
 
@@ -6,6 +8,7 @@ class MyRouter {
   static const String signIn = '/signIn';
   static const String signUp = '/signUp';
   static const String home = '/home';
+  static const String booking = '/booking';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -35,10 +38,15 @@ class MyRouter {
           settings,
           const SignUpScreen(),
         );
-      case signUp:
+      case home:
         return _buildRouteNavigationWithoutEffect(
           settings,
-          const SignUpScreen(),
+          const HomeScreen(),
+        );
+      case booking:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const BookingScreen(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

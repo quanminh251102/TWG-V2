@@ -2,11 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
 import 'package:twg/global/router.dart';
-
-import 'widget/app_icon_button.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -21,8 +20,7 @@ class _SignInScreenState extends State<SignInScreen> {
   late TextEditingController email;
   late TextEditingController password;
   late GlobalKey<FormState> _formKey;
-  bool isLoading = false;
-
+  late IAuthViewModel _iAuthViewModel;
   @override
   void initState() {
     super.initState();
@@ -37,23 +35,8 @@ class _SignInScreenState extends State<SignInScreen> {
     _formKey = GlobalKey<FormState>();
     email = TextEditingController();
     password = TextEditingController();
-
+    _iAuthViewModel = context.read<IAuthViewModel>();
     // checkLastLogin();
-  }
-
-  void checkLastLogin() async {
-    setState(() {
-      isLoading = true;
-    });
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? email = prefs.getString('email');
-    final String? password = prefs.getString('password');
-    // if (email != null && password != null) {
-    //   BlocProvider.of<SigninCubit>(context).SignIn(email, password);
-    // }
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
@@ -211,10 +194,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       Center(
                           child: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           if (_formKey.currentState!.validate()) {
-                            // BlocProvider.of<SigninCubit>(context)
-                            //     .SignIn(email.text, password.text);
+                            await _iAuthViewModel.login(
+                                email.text, password.text);
                           }
                         },
                         child: Container(
@@ -291,7 +274,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               //     .SignInWithGoogle();
                             },
                             child: SvgPicture.asset(
-                              'assets/svg/google_box.svg',
+                              'assets/icons/google_box.svg',
                               height: 45,
                               width: 45,
                             ),
@@ -303,7 +286,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               //     .SignInWithFacebook();
                             },
                             child: SvgPicture.asset(
-                              'assets/svg/facebook.svg',
+                              'assets/icons/facebook.svg',
                               height: 50,
                               width: 50,
                             ),

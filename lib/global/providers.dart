@@ -1,15 +1,17 @@
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:twg/core/view_models/implements/auth_viewmodel.dart';
+import 'package:twg/core/view_models/implements/booking_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 
 List<SingleChildWidget> viewModelProviders = [
   ChangeNotifierProvider<IAuthViewModel>(
     create: (_) => AuthViewModel(),
   ),
-  // ChangeNotifierProvider<IHomeViewModel>(
-  //   create: (_) => HomeViewModel(),
-  // ),
+  ChangeNotifierProvider<IBookingViewModel>(
+    create: (_) => BookingViewModel(),
+  ),
   // ChangeNotifierProvider<INotificationViewModel>(
   //   create: (_) => NotificationViewModel(),
   // ),

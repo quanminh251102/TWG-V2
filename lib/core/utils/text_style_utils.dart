@@ -2,13 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextStyleUtils {
+  static TextStyle titleAppBar = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 17.sp,
+  );
   static TextStyle largeHeading = TextStyle(
     fontWeight: FontWeight.w700,
-    fontSize: 22.sp,
+    fontSize: 30.sp,
   );
-  static TextStyle dateTime = TextStyle(
+  static TextStyle title = TextStyle(
     fontWeight: FontWeight.w700,
-    fontSize: 12.sp,
+    fontSize: 16.sp,
   );
   static TextStyle menu = TextStyle(
     fontWeight: FontWeight.w600,
@@ -19,88 +23,51 @@ class TextStyleUtils {
     fontSize: 12.sp,
   );
   static TextStyle footnoteSemiBold = TextStyle(
-    fontWeight: FontWeight.w500,
-    fontSize: 12.sp,
-  );
-  static TextStyle footnoteBold = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 12.sp,
-  );
-  static TextStyle liveTitle = TextStyle(
-    fontWeight: FontWeight.w400,
-    fontSize: 14.sp,
-  );
-  static TextStyle commentator = TextStyle(
     fontWeight: FontWeight.w600,
-    fontSize: 14.sp,
-  );
-  static TextStyle commentatorLive = TextStyle(
-    fontWeight: FontWeight.w700,
-    fontSize: 17.sp,
-  );
-  static TextStyle commentatorStatus = TextStyle(
-    fontWeight: FontWeight.w400,
     fontSize: 12.sp,
   );
   static TextStyle groupTitle = TextStyle(
     fontWeight: FontWeight.w600,
     fontSize: 14.sp,
   );
-  static TextStyle result = TextStyle(
-    fontWeight: FontWeight.w700,
-    fontSize: 12.sp,
-  );
-  static TextStyle dateDropdown = TextStyle(
-    fontWeight: FontWeight.w400,
-    fontSize: 17.sp,
-  );
-  static TextStyle labelLive = TextStyle(
-    fontWeight: FontWeight.w600,
-    fontSize: 15.sp,
-  );
-  static TextStyle labelFollow = TextStyle(
-    fontWeight: FontWeight.w600,
-    fontSize: 17.sp,
-    color: Color(0xFF636363),
-  );
-  static TextStyle titleAppBar = TextStyle(
-    fontWeight: FontWeight.w600,
-    fontSize: 17.sp,
-  );
-  static TextStyle titleAccount = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 17.sp,
-  );
-  static TextStyle titleLeague = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 14.sp,
-  );
-  static TextStyle login = TextStyle(
-    fontWeight: FontWeight.w600,
-    fontSize: 27.sp,
-  );
-  static TextStyle loginLabel = TextStyle(
+  static TextStyle subHeading = TextStyle(
     fontWeight: FontWeight.w400,
     fontSize: 16.sp,
   );
-  static TextStyle loginBody = TextStyle(
-    fontWeight: FontWeight.w400,
-    fontSize: 19.sp,
-  );
-  static TextStyle messageTitle = TextStyle(
-    fontWeight: FontWeight.w400,
-    fontSize: 17.sp,
-  );
-  static TextStyle nameUser = TextStyle(
-    fontWeight: FontWeight.w600,
-    fontSize: 17.sp,
-  );
-  static TextStyle funcLabel = TextStyle(
-    fontWeight: FontWeight.w500,
-    fontSize: 14.sp,
-  );
-  static TextStyle newsDescription = TextStyle(
+  static TextStyle footNote = TextStyle(
     fontWeight: FontWeight.w400,
     fontSize: 12.sp,
+  );
+  static TextStyle heading3 = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 18.sp,
+  );
+  static TextStyle subHeadingBold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontSize: 16.sp,
+  );
+  static TextStyle subHeading2 = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 14.sp,
+  );
+  static TextStyle heading3Bold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontSize: 18.sp,
+  );
+  static TextStyle subHeading2Bold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontSize: 14.sp,
+  );
+  static TextStyle description = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 10.sp,
+  );
+  static TextStyle footnoteBold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontSize: 12.sp,
+  );
+  static TextStyle footnote2 = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 8.sp,
   );
 }
