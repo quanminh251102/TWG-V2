@@ -1,12 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_custom_cards/flutter_custom_cards.dart';
+import 'package:twg/global/router.dart';
 
 class ListChatRoomItem extends StatefulWidget {
   final ChatRoomDto ChatRoom;
@@ -78,6 +81,7 @@ class _ListChatRoomItemState extends State<ListChatRoomItem> {
         // BlocProvider.of<Message.MessageCubit>(context)
         //     .join_chat_room();
         // appRouter.push(const ChatPageRoute());
+        Get.offNamed(MyRouter.message);
       },
       borderRadius: 12,
       child: Row(
