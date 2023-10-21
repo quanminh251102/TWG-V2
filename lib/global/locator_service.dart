@@ -7,6 +7,7 @@ import 'package:twg/core/services/interfaces/ibooking_service.dart';
 void registerServiceSingletons(GetIt locator) {
   locator.registerLazySingleton<IAuthService>(() => AuthService());
   locator.registerLazySingleton<IBookingService>(() => BookingService());
+
   // locator.registerLazySingleton<ICategoryService>(() => CategoryService());
   // locator
   //     .registerLazySingleton<IManufactureService>(() => ManufactureService());

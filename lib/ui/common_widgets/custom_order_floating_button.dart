@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:twg/global/locator.dart';
 import 'package:twg/ui/common_widgets/confirm_login_dialog.dart';
+import 'package:twg/ui/screens/booking/widget/create_post_bottom_sheet.dart';
 
 import '../../core/utils/color_utils.dart';
 import '../../global/global_data.dart';
@@ -22,9 +23,10 @@ class CustomFloatingButton extends StatelessWidget {
           backgroundColor: ColorUtils.primaryColor,
           onPressed: () {
             if (locator<GlobalData>().currentUser != null) {
-              // Get.toNamed(
-              //   MyRouter.basketPlace,
-              // );
+              Get.bottomSheet(CreatePostSheet(),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ));
             } else {
               Get.dialog(
                 const ConfirmLoginDialog(),

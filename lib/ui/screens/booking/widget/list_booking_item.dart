@@ -165,7 +165,7 @@ class _ListBookingItemState extends State<ListBookingItem> {
                           Row(
                             children: [
                               SvgPicture.asset(
-                                "assets/svg/distance.svg",
+                                "assets/icons/distance.svg",
                                 height: 30,
                               ),
                               const SizedBox(
@@ -181,7 +181,7 @@ class _ListBookingItemState extends State<ListBookingItem> {
                           Row(
                             children: [
                               SvgPicture.asset(
-                                "assets/svg/clock.svg",
+                                "assets/icons/clock.svg",
                                 height: 30,
                               ),
                               const SizedBox(
@@ -197,7 +197,7 @@ class _ListBookingItemState extends State<ListBookingItem> {
                           Row(
                             children: [
                               SvgPicture.asset(
-                                "assets/svg/wallet.svg",
+                                "assets/icons/wallet.svg",
                                 height: 30,
                               ),
                               const SizedBox(
@@ -246,15 +246,15 @@ class _ListBookingItemState extends State<ListBookingItem> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SvgPicture.asset(
-                              'assets/svg/location-svgrepo-com.svg',
+                              'assets/icons/location-svgrepo-com.svg',
                               height: 40,
                             ),
                             SvgPicture.asset(
-                              'assets/svg/downarrow.svg',
+                              'assets/icons/downarrow.svg',
                               height: 40,
                             ),
                             SvgPicture.asset(
-                              'assets/svg/location.svg',
+                              'assets/icons/location.svg',
                               height: 40,
                             ),
                           ],
