@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_custom_cards/flutter_custom_cards.dart';
 
 class ListChatRoomItem extends StatefulWidget {
   final ChatRoomDto ChatRoom;
@@ -64,22 +66,83 @@ class _ListChatRoomItemState extends State<ListChatRoomItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
-      child: Card(
-        elevation: 3,
-        shadowColor: Colors.grey,
-        child: Container(
-          color: Colors.white.withOpacity(0.85),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+    return CustomCard(
+      elevation: 0,
+      height: 80,
+      childPadding: 8,
+      onTap: () {
+        // BlocProvider.of<Message.MessageCubit>(context)
+        //     .setChatRoom(chatRoom);
+        // BlocProvider.of<Message.MessageCubit>(context)
+        //     .get_message();
+        // BlocProvider.of<Message.MessageCubit>(context)
+        //     .join_chat_room();
+        // appRouter.push(const ChatPageRoute());
+      },
+      borderRadius: 12,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CachedNetworkImage(
+            imageUrl: widget.ChatRoom.user1!.avatarUrl as String,
+            imageBuilder: (context, imageProvider) => Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(
+                        60.0) //                 <--- border radius here
+                    ),
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
+          SizedBox(width: 12),
+          SizedBox(
+            width: 200,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(widget.ChatRoom.user1!.email as String),
+                SizedBox(height: 8),
+                Text(
+                  widget.ChatRoom.user1!.email as String,
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text('Tin nhắn')
               ],
             ),
           ),
-        ),
+          Expanded(child: SizedBox()),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              if (widget.ChatRoom.numUnwatched1 as int > 0)
+                CustomCard(
+                  width: 26,
+                  height: 26,
+                  child: Center(
+                    child: Text(
+                      (widget.ChatRoom.numUnwatched1 as int).toString(),
+                    ),
+                  ),
+                  color: ColorUtils.primaryColor,
+                  borderRadius: 12,
+                ),
+              if (widget.ChatRoom.numUnwatched1 == 0)
+                SizedBox(
+                  width: 26,
+                  height: 26,
+                ),
+              // Text(handeDateString_getTime(
+              //     chatRoom.lastMessage["createdAt"]))
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -89,6 +89,7 @@ dependencies:
   rxdart: ^0.27.7
   flutter_keyboard_visibility: ^5.4.1
   lottie: ^2.6.0
+  flutter_custom_cards: ^0.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
