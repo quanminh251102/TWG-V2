@@ -2,8 +2,10 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:twg/core/view_models/implements/auth_viewmodel.dart';
 import 'package:twg/core/view_models/implements/booking_viewmodel.dart';
+import 'package:twg/core/view_models/implements/chatRoom_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ichatRoom_viewmodel.dart';
 
 List<SingleChildWidget> viewModelProviders = [
   ChangeNotifierProvider<IAuthViewModel>(
@@ -11,6 +13,9 @@ List<SingleChildWidget> viewModelProviders = [
   ),
   ChangeNotifierProvider<IBookingViewModel>(
     create: (_) => BookingViewModel(),
+  ),
+  ChangeNotifierProvider<IChatRoomViewModel>(
+    create: (_) => ChatRoomViewModel(),
   ),
   // ChangeNotifierProvider<INotificationViewModel>(
   //   create: (_) => NotificationViewModel(),

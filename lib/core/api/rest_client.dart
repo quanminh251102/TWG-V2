@@ -5,6 +5,7 @@ import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/dtos/auth/login_dto.dart';
 import 'package:twg/core/dtos/base_api_dto.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
+import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/dtos/pagination/pagination_dto.dart';
 
 part 'rest_client.g.dart';
@@ -33,6 +34,18 @@ abstract class RestClient {
     @Query('sortUpdatedAt') int? sortUpdatedAt,
     @Query('status') String? status,
     @Query('authorId') String? authorId,
+  });
+
+  //booking
+  @GET('/api/chat_room')
+  Future<BaseApiDto<List<ChatRoomDto>>> getChatRooms({
+    @Header('api_key') String? token,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('sortCreatedAt') int? sortCreatedAt,
+    @Query('sortUpdatedAt') int? sortUpdatedAt,
+    @Query('userId1') String? userId1,
+    @Query('userId2') String? userId2,
   });
 
   ///account
