@@ -72,12 +72,12 @@ class _MyAppState extends State<MyApp> {
               title: 'TWG',
               navigatorKey: NavigationUtils.navigatorKey,
               onGenerateRoute: (settings) => MyRouter.generateRoute(settings),
-              initialRoute: MyRouter.signIn,
+              initialRoute: MyRouter.splash,
               theme: ThemeData(
                 appBarTheme: const AppBarTheme(
-                  backgroundColor: Colors.white,
+                  backgroundColor: ColorUtils.primaryColor,
                   iconTheme: IconThemeData(color: Colors.black),
-                  foregroundColor: Colors.black, //<-- SEE HERE
+                  foregroundColor: Colors.black,
                 ),
                 scaffoldBackgroundColor: Colors.white,
                 textTheme: const TextTheme(
