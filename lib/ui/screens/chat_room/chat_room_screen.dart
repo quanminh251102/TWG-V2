@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
-import 'package:twg/core/view_models/interfaces/ichatRoom_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
 import 'package:twg/ui/common_widgets/custom_order_floating_button.dart';
 import 'package:twg/ui/screens/chat_room/widget/list_chat_room.dart';
@@ -55,12 +55,14 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
         body: Column(
           children: [
             Text('chat_rooms'),
-            Consumer<IChatRoomViewModel>(
-              builder: (context, vm, child) {
-                return ListChatRoom(
-                  ChatRooms: vm.ChatRooms,
-                );
-              },
+            Expanded(
+              child: Consumer<IChatRoomViewModel>(
+                builder: (context, vm, child) {
+                  return ListChatRoom(
+                    ChatRooms: vm.ChatRooms,
+                  );
+                },
+              ),
             ),
           ],
         ));

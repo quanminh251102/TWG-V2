@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
-import 'package:twg/core/services/interfaces/iChatRoom_service.dart';
-import 'package:twg/core/view_models/interfaces/ichatRoom_viewmodel.dart';
+import 'package:twg/core/services/interfaces/ichat_room_service.dart';
+import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/global/locator.dart';
 
 class ChatRoomViewModel with ChangeNotifier implements IChatRoomViewModel {
