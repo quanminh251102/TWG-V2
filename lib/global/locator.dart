@@ -19,21 +19,6 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(() => GlobalData());
   setupRestClient();
   registerServiceSingletons(locator);
-  await checkLogin();
-}
-
-Future<void> checkLogin() async {
-  String? token = await TokenUtils.getToken();
-  if (token != null) {
-    try {
-      var profile = await getRestClient().getProfile(token: token);
-      if (profile.data != null) {
-        locator<GlobalData>().currentUser = profile.data!;
-      }
-    } catch (e) {
-      print(e);
-    } finally {}
-  }
 }
 
 void setupRestClient() {
