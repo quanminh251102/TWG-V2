@@ -80,6 +80,10 @@ class _ListChatRoomItemState extends State<ListChatRoomItem> {
 
   @override
   Widget build(BuildContext context) {
+    final partner = (locator<GlobalData>().currentUser?.email.toString() ==
+            widget.ChatRoom.user1?.email.toString())
+        ? widget.ChatRoom.user2
+        : widget.ChatRoom.user1;
     String customStartTime = (widget.ChatRoom.lastMessage != null)
         ? DateTime.parse(widget.ChatRoom.lastMessage!.createdAt as String)
             .toLocal()
@@ -113,7 +117,7 @@ class _ListChatRoomItemState extends State<ListChatRoomItem> {
           Row(
             children: [
               CachedNetworkImage(
-                imageUrl: widget.ChatRoom.user1!.avatarUrl as String,
+                imageUrl: partner!.avatarUrl as String,
                 imageBuilder: (context, imageProvider) => Container(
                   width: 60,
                   height: 60,
@@ -139,7 +143,7 @@ class _ListChatRoomItemState extends State<ListChatRoomItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.ChatRoom.user1!.firstName as String,
+                      partner.firstName as String,
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.w500),
                     ),

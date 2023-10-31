@@ -212,11 +212,11 @@ class _ListMessageItemState extends State<ListMessageItem> {
         .substring(11, 16);
 
     String _type = _message!.type as String;
-
+    bool isMe = locator<GlobalData>().currentUser?.email.toString() ==
+        _message.userId!.email.toString();
     return (_type == "isDate")
         ? dateWidget(_message, customStartTime)
-        : locator<GlobalData>().currentUser?.email.toString() ==
-                _message.userId!.email.toString() // mean is Me
+        : isMe // mean is Me
             ? ((_type == "text")
                 ? (textRight(_message, customStartTime))
                 : (imageRight(_message, customStartTime)))

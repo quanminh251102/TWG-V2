@@ -91,6 +91,9 @@ dependencies:
   lottie: ^2.6.0
   flutter_custom_cards: ^0.2.1
   socket_io_client: ^2.0.3+1
+  flutter_local_notifications: ^16.1.0
+  awesome_notifications: ^0.8.2
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

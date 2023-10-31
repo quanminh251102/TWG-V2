@@ -65,9 +65,9 @@ class MessageViewModel with ChangeNotifier implements IMessageViewModel {
   @override
   AccountDto? getPartner() {
     return (locator<GlobalData>().currentUser?.email.toString() ==
-            _currentChatRoom.userId1.toString())
-        ? _currentChatRoom.user1
-        : _currentChatRoom.user2;
+            _currentChatRoom.user1!.email.toString())
+        ? _currentChatRoom.user2
+        : _currentChatRoom.user1;
   }
 
   @override

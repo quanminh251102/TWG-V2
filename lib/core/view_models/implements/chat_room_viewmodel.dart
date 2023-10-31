@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/services/interfaces/ichat_room_service.dart';
 import 'package:twg/core/services/interfaces/isocket_service.dart';
 import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/global/locator.dart';
+import 'package:twg/ui/utils/notification_utils.dart';
 
 class ChatRoomViewModel with ChangeNotifier implements IChatRoomViewModel {
   List<ChatRoomDto> _ChatRooms = [];
@@ -37,6 +40,15 @@ class ChatRoomViewModel with ChangeNotifier implements IChatRoomViewModel {
       _ChatRooms = paginationProducts ?? [];
       _totalCount = _iChatRoomService.total;
       notifyListeners();
+    });
+
+    _iSocketService.socket!.on("receive_notification", (jsonData) async {
+      final jsonValue = json.encode(jsonData);
+      final data = json.decode(jsonValue) as Map<String, dynamic>;
+      NotifiationUtils().showNotification(
+        title: "Thông báo",
+        body: data["notification_body"],
+      );
     });
   }
 
