@@ -18,7 +18,9 @@ ChatRoomDto _$ChatRoomDtoFromJson(Map<String, dynamic> json) => ChatRoomDto(
       numUnwatched1: json['numUnwatched1'] as int?,
       numUnwatched2: json['numUnwatched2'] as int?,
       id: json['id'] as String?,
-    );
+    )..lastMessage = json['lastMessage'] == null
+        ? null
+        : MessageDto.fromJson(json['lastMessage'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$ChatRoomDtoToJson(ChatRoomDto instance) =>
     <String, dynamic>{
@@ -29,4 +31,5 @@ Map<String, dynamic> _$ChatRoomDtoToJson(ChatRoomDto instance) =>
       'numUnwatched1': instance.numUnwatched1,
       'numUnwatched2': instance.numUnwatched2,
       'id': instance.id,
+      'lastMessage': instance.lastMessage?.toJson(),
     };

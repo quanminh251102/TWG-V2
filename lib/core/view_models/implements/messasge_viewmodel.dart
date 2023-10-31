@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
+import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/dtos/message/message_dto.dart';
 import 'package:twg/core/dtos/message/send_message_dto.dart';
 import 'package:twg/core/services/interfaces/imessage_service.dart';
 import 'package:twg/core/services/interfaces/isocket_service.dart';
 import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
+import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
 
 class MessageViewModel with ChangeNotifier implements IMessageViewModel {
@@ -61,6 +63,14 @@ class MessageViewModel with ChangeNotifier implements IMessageViewModel {
   }
 
   @override
+  AccountDto? getPartner() {
+    return (locator<GlobalData>().currentUser?.email.toString() ==
+            _currentChatRoom.userId1.toString())
+        ? _currentChatRoom.user1
+        : _currentChatRoom.user2;
+  }
+
+  @override
   void sendMessage(String message) async {
     _iMessageService.sendMessage(
       value: SendMessageDto(
@@ -93,6 +103,7 @@ class MessageViewModel with ChangeNotifier implements IMessageViewModel {
     final paginationProducts = await _iMessageService.getMessages(
       page: 1,
       pageSize: 100,
+      chatRoomId: _currentChatRoom.id,
     );
     _Messages = paginationProducts ?? [];
     _totalCount = _iMessageService.total;
@@ -110,6 +121,7 @@ class MessageViewModel with ChangeNotifier implements IMessageViewModel {
     final paginationMessages = await _iMessageService.getMessages(
       page: page,
       pageSize: page * 10,
+      chatRoomId: _currentChatRoom.id,
     );
 
     _Messages.addAll(

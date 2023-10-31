@@ -7,6 +7,8 @@ import 'package:twg/core/dtos/message/message_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_custom_cards/flutter_custom_cards.dart';
+import 'package:twg/global/global_data.dart';
+import 'package:twg/global/locator.dart';
 
 class ListMessageItem extends StatefulWidget {
   final MessageDto Message;
@@ -63,7 +65,9 @@ class _ListMessageItemState extends State<ListMessageItem> {
             CircleAvatar(
               radius: 25,
               backgroundImage: NetworkImage(
-                  "https://res.cloudinary.com/dxoblxypq/image/upload/v1679984586/9843c460ff72ee89d791bffe667e451c_rzalqh.jpg"),
+                message.userId!.avatarUrl.toString(),
+                // "https://res.cloudinary.com/dxoblxypq/image/upload/v1679984586/9843c460ff72ee89d791bffe667e451c_rzalqh.jpg"
+              ),
             ),
             const SizedBox(width: 10),
             Container(
@@ -211,7 +215,8 @@ class _ListMessageItemState extends State<ListMessageItem> {
 
     return (_type == "isDate")
         ? dateWidget(_message, customStartTime)
-        : _message.userId == '' // mean is Me
+        : locator<GlobalData>().currentUser?.email.toString() ==
+                _message.userId!.email.toString() // mean is Me
             ? ((_type == "text")
                 ? (textRight(_message, customStartTime))
                 : (imageRight(_message, customStartTime)))

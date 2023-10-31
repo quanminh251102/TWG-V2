@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/dtos/message/message_dto.dart';
 import 'package:twg/core/dtos/message/send_message_dto.dart';
@@ -14,4 +15,5 @@ abstract class IMessageViewModel implements ChangeNotifier {
   void sendMessage(String message);
   late ScrollController scrollController;
   void jumbToLastMessage();
+  AccountDto? getPartner();
 }

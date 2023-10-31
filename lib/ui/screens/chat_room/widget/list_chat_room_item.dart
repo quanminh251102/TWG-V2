@@ -11,7 +11,10 @@ import 'package:twg/core/utils/color_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_custom_cards/flutter_custom_cards.dart';
 import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
+import 'package:twg/global/global_data.dart';
+import 'package:twg/global/locator.dart';
 import 'package:twg/global/router.dart';
+import 'package:twg/ui/utils/handling_string_utils.dart';
 
 class ListChatRoomItem extends StatefulWidget {
   final ChatRoomDto ChatRoom;
@@ -77,10 +80,27 @@ class _ListChatRoomItemState extends State<ListChatRoomItem> {
 
   @override
   Widget build(BuildContext context) {
+    String customStartTime = (widget.ChatRoom.lastMessage != null)
+        ? DateTime.parse(widget.ChatRoom.lastMessage!.createdAt as String)
+            .toLocal()
+            .toString()
+            .substring(11, 16)
+        : '';
+
+    String messageContent = (widget.ChatRoom.lastMessage != null)
+        ? widget.ChatRoom.lastMessage!.message.toString()
+        : 'Hai bạn đã được kết nối';
+    messageContent = HandlingStringUtils.handleLength(messageContent);
+
+    String unwatch = locator<GlobalData>().currentUser?.email.toString() ==
+            widget.ChatRoom.user1!.email.toString()
+        ? widget.ChatRoom.numUnwatched1.toString()
+        : widget.ChatRoom.numUnwatched2.toString();
+
     return CustomCard(
       elevation: 0,
       height: 80,
-      childPadding: 8,
+      childPadding: 10,
       onTap: () {
         _iMessageViewModel.setCurrentChatRoom(widget.ChatRoom);
         Get.offNamed(MyRouter.message);
@@ -88,66 +108,60 @@ class _ListChatRoomItemState extends State<ListChatRoomItem> {
       borderRadius: 12,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CachedNetworkImage(
-            imageUrl: widget.ChatRoom.user1!.avatarUrl as String,
-            imageBuilder: (context, imageProvider) => Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(
-                        60.0) //                 <--- border radius here
-                    ),
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-          ),
-          SizedBox(width: 12),
-          SizedBox(
-            width: 200,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(height: 8),
-                Text(
-                  widget.ChatRoom.user1!.email as String,
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text('Tin nhắn')
-              ],
-            ),
-          ),
-          Expanded(child: SizedBox()),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Row(
             children: [
-              if (widget.ChatRoom.numUnwatched1 as int > 0)
-                CustomCard(
-                  width: 26,
-                  height: 26,
-                  child: Center(
-                    child: Text(
-                      (widget.ChatRoom.numUnwatched1 as int).toString(),
+              CachedNetworkImage(
+                imageUrl: widget.ChatRoom.user1!.avatarUrl as String,
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(
+                            60.0) //                 <--- border radius here
+                        ),
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  color: ColorUtils.primaryColor,
-                  borderRadius: 12,
                 ),
-              if (widget.ChatRoom.numUnwatched1 == 0)
-                SizedBox(
-                  width: 26,
-                  height: 26,
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
+              const SizedBox(width: 24),
+              SizedBox(
+                // width: 200,
+                height: 50,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      widget.ChatRoom.user1!.firstName as String,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+                    Text('$messageContent - $customStartTime')
+                  ],
                 ),
-              // Text(handeDateString_getTime(
-              //     chatRoom.lastMessage["createdAt"]))
+              ),
             ],
           ),
+          if (unwatch != '0')
+            CustomCard(
+              width: 26,
+              height: 26,
+              child: Center(
+                child: Text(
+                  unwatch,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              color: ColorUtils.primaryColor,
+              borderRadius: 12,
+            ),
         ],
       ),
     );

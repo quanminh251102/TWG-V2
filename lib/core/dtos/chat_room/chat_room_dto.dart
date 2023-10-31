@@ -1,5 +1,6 @@
 import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:twg/core/dtos/message/message_dto.dart';
 part 'chat_room_dto.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -11,6 +12,7 @@ class ChatRoomDto {
   int? numUnwatched1;
   int? numUnwatched2;
   String? id;
+  MessageDto? lastMessage;
 
   ChatRoomDto(
       {this.userId1,

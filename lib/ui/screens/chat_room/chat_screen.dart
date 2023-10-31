@@ -4,6 +4,8 @@ import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
+import 'package:twg/global/global_data.dart';
+import 'package:twg/global/locator.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
 import 'package:twg/ui/common_widgets/custom_order_floating_button.dart';
 import 'package:twg/ui/screens/chat_room/widget/list_chat_room.dart';
@@ -81,6 +83,8 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     final isKeyBoardShow = MediaQuery.of(context).viewInsets.bottom > 0;
     final keyBoardHeight = MediaQuery.of(context).viewInsets.bottom;
     final current_user_id = '';
+
+    final partner = _iMessageViewModel.getPartner();
     final _appBar = AppBar(
       toolbarHeight: appBarHeight,
       centerTitle: false,
@@ -101,7 +105,9 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
           CircleAvatar(
             radius: 25,
             backgroundImage: NetworkImage(
-                "https://res.cloudinary.com/dxoblxypq/image/upload/v1679984586/9843c460ff72ee89d791bffe667e451c_rzalqh.jpg"),
+              partner!.avatarUrl.toString(),
+              // "https://res.cloudinary.com/dxoblxypq/image/upload/v1679984586/9843c460ff72ee89d791bffe667e451c_rzalqh.jpg",
+            ),
           ),
           const SizedBox(width: 10),
           Column(
@@ -114,17 +120,17 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                 //       : widget.chatRoom.UserName1),
                 //   10,
                 // ),
-                'partner name',
+                partner!.firstName.toString(),
                 style: const TextStyle(
                   color: Colors.black,
-                  fontSize: 18,
+                  fontSize: 14,
                 ),
               ),
               const Text(
                 'Online',
                 style: TextStyle(
                   color: Color(0xFF7C7C7C),
-                  fontSize: 15,
+                  fontSize: 14,
                 ),
               ),
             ],
@@ -234,25 +240,27 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     );
 
     return Scaffold(
-        appBar: _appBar,
-        bottomNavigationBar: _bottomNavigationBar,
-        // floatingActionButton: const CustomFloatingButton(),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        // bottomNavigationBar: const CustomBottomNavigationBar(
-        //   value: CustomNavigationBar.chat,
-        // ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Consumer<IMessageViewModel>(
-                builder: (context, vm, child) {
-                  return ListMessage(
-                    Messages: vm.Messages,
-                  );
-                },
+      body: Scaffold(
+          appBar: _appBar,
+          bottomNavigationBar: _bottomNavigationBar,
+          // floatingActionButton: const CustomFloatingButton(),
+          // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          // bottomNavigationBar: const CustomBottomNavigationBar(
+          //   value: CustomNavigationBar.chat,
+          // ),
+          body: Column(
+            children: [
+              Expanded(
+                child: Consumer<IMessageViewModel>(
+                  builder: (context, vm, child) {
+                    return ListMessage(
+                      Messages: vm.Messages,
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
-        ));
+            ],
+          )),
+    );
   }
 }

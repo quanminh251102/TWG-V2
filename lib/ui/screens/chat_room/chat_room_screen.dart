@@ -54,7 +54,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
         ),
         body: Column(
           children: [
-            Text('chat_rooms'),
             Expanded(
               child: Consumer<IChatRoomViewModel>(
                 builder: (context, vm, child) {
