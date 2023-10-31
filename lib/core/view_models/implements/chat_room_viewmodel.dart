@@ -31,7 +31,8 @@ class ChatRoomViewModel with ChangeNotifier implements IChatRoomViewModel {
     _ChatRooms.clear();
   }
 
-  void _addSocketEvent() {
+  @override
+  void initSocketEventForChatRoom() {
     _iSocketService.socket!.on("reload_chat_room", (jsonData) async {
       final paginationProducts = await _iChatRoomService.getChatRooms(
         page: 1,
@@ -54,10 +55,6 @@ class ChatRoomViewModel with ChangeNotifier implements IChatRoomViewModel {
 
   @override
   Future<void> init(String status) async {
-    if (_isAddSocket == false) {
-      _addSocketEvent();
-      _isAddSocket = true;
-    }
     _reset();
     final paginationProducts = await _iChatRoomService.getChatRooms(
       page: 1,

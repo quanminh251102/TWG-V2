@@ -6,6 +6,7 @@ import 'package:twg/core/services/interfaces/ibooking_service.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
 import 'package:twg/ui/common_widgets/custom_order_floating_button.dart';
@@ -25,6 +26,7 @@ class BookingScreen extends StatefulWidget {
 class _BookingScreenState extends State<BookingScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  late IChatRoomViewModel _iChatRoomViewModel;
 
   @override
   void initState() {
@@ -32,6 +34,8 @@ class _BookingScreenState extends State<BookingScreen>
       length: 3,
       vsync: this,
     );
+    _iChatRoomViewModel = context.read<IChatRoomViewModel>();
+    _iChatRoomViewModel.initSocketEventForChatRoom();
     super.initState();
   }
 

@@ -7,4 +7,5 @@ abstract class IChatRoomViewModel implements ChangeNotifier {
   String? get keyword;
   Future<void> init(String status);
   Future<void> getMoreChatRooms(String status);
+  void initSocketEventForChatRoom();
 }

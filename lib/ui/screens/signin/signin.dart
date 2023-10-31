@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/global/router.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -21,6 +22,7 @@ class _SignInScreenState extends State<SignInScreen> {
   late TextEditingController password;
   late GlobalKey<FormState> _formKey;
   late IAuthViewModel _iAuthViewModel;
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +38,7 @@ class _SignInScreenState extends State<SignInScreen> {
     email = TextEditingController();
     password = TextEditingController();
     _iAuthViewModel = context.read<IAuthViewModel>();
+
     // checkLastLogin();
   }
 
