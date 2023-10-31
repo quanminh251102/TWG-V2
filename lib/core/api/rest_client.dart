@@ -7,6 +7,7 @@ import 'package:twg/core/dtos/base_api_dto.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/dtos/message/message_dto.dart';
+import 'package:twg/core/dtos/message/send_message_dto.dart';
 import 'package:twg/core/dtos/pagination/pagination_dto.dart';
 
 part 'rest_client.g.dart';
@@ -49,7 +50,7 @@ abstract class RestClient {
     @Query('userId2') String? userId2,
   });
 
-  //chat_room
+  //message
   @GET('/api/message')
   Future<BaseApiDto<List<MessageDto>>> getMessages({
     @Header('api_key') String? token,
@@ -58,6 +59,11 @@ abstract class RestClient {
     @Query('sortCreatedAt') int? sortCreatedAt,
     @Query('sortUpdatedAt') int? sortUpdatedAt,
     @Query('chat_room_id') String? chat_room_id,
+  });
+  @POST('/api/message')
+  Future<BaseApiDto<MessageDto>> sendMessage({
+    @Header('api_key') String? token,
+    @Body() required SendMessageDto model,
   });
 
   ///account

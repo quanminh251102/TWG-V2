@@ -4,11 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_custom_cards/flutter_custom_cards.dart';
+import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
 import 'package:twg/global/router.dart';
 
 class ListChatRoomItem extends StatefulWidget {
@@ -25,7 +27,7 @@ class ListChatRoomItem extends StatefulWidget {
 class _ListChatRoomItemState extends State<ListChatRoomItem> {
   bool isNavigateChatRoom = false;
   bool isNavigateCreateApply = false;
-
+  late IMessageViewModel _iMessageViewModel;
   void navigateChatRoom(BuildContext context) async {
     setState(() {
       isNavigateChatRoom = true;
@@ -68,19 +70,19 @@ class _ListChatRoomItemState extends State<ListChatRoomItem> {
   }
 
   @override
+  void initState() {
+    _iMessageViewModel = context.read<IMessageViewModel>();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return CustomCard(
       elevation: 0,
       height: 80,
       childPadding: 8,
       onTap: () {
-        // BlocProvider.of<Message.MessageCubit>(context)
-        //     .setChatRoom(chatRoom);
-        // BlocProvider.of<Message.MessageCubit>(context)
-        //     .get_message();
-        // BlocProvider.of<Message.MessageCubit>(context)
-        //     .join_chat_room();
-        // appRouter.push(const ChatPageRoute());
+        _iMessageViewModel.setCurrentChatRoom(widget.ChatRoom);
         Get.offNamed(MyRouter.message);
       },
       borderRadius: 12,

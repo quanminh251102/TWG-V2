@@ -52,19 +52,26 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     Future.delayed(Duration.zero, () async {
       await _iMessageViewModel.init('');
     });
-    scrollController.addListener(() async {
-      if (scrollController.position.atEdge) {
-        bool isTop = scrollController.position.pixels == 0;
-        if (!isTop) {
-          await _iMessageViewModel.getMoreMessages('');
-        }
-      }
-    });
+    // scrollController.addListener(() async {
+    //   if (scrollController.position.atEdge) {
+    //     bool isTop = scrollController.position.pixels == 0;
+    //     if (!isTop) {
+    //       await _iMessageViewModel.getMoreMessages('');
+    //     }
+    //   }
+    // });
     super.initState();
   }
 
   @override
+  void dispose() {
+    _iMessageViewModel.removeMessageEvent();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // scrollController.jumpTo(double.infinity);
     const appBarHeight = 80.0;
     const botttomNavigatebarHeight = 80.0;
     final bodyHeight = MediaQuery.of(context).size.height -
@@ -214,7 +221,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                 //   _controller.text.trim(),
                 //   "isText",
                 // );
-
+                _iMessageViewModel.sendMessage(_controller.text.trim());
                 _controller.text = "";
                 // if (list.length > 0) {
                 //   itemScrollController.jumpTo(index: list.length);
