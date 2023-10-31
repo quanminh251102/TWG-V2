@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:twg/ui/screens/booking/add_booking.dart';
 import 'package:twg/ui/screens/booking/booking_screen.dart';
+import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
+import 'package:twg/ui/screens/chat_room/chat_screen.dart';
 import 'package:twg/ui/screens/home/home.dart';
 import 'package:twg/ui/screens/signin/signin.dart';
 import 'package:twg/ui/screens/signup/signup.dart';
@@ -13,6 +15,8 @@ class MyRouter {
   static const String home = '/home';
   static const String booking = '/booking';
   static const String addBooking = '/addBooking';
+  static const String chatRoom = '/chatRoom';
+  static const String message = '/message';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -57,10 +61,20 @@ class MyRouter {
           settings,
           const BookingScreen(),
         );
+      case chatRoom:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const ChatRoomScreen(),
+        );
       case addBooking:
         return _buildRouteNavigationWithoutEffect(
           settings,
           const AddBookingScreen(),
+        );
+      case message:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const ChatScreen(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

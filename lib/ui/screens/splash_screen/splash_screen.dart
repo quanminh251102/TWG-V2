@@ -23,6 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void initialization() async {
     await Future.delayed(const Duration(seconds: 2));
+
     await _viewModel.goToNextPage();
   }
 
