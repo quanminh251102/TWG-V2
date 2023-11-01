@@ -21,6 +21,7 @@ class _SignInScreenState extends State<SignInScreen> {
   late TextEditingController password;
   late GlobalKey<FormState> _formKey;
   late IAuthViewModel _iAuthViewModel;
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +37,7 @@ class _SignInScreenState extends State<SignInScreen> {
     email = TextEditingController();
     password = TextEditingController();
     _iAuthViewModel = context.read<IAuthViewModel>();
+
     // checkLastLogin();
   }
 

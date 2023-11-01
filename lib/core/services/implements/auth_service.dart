@@ -76,9 +76,12 @@ class AuthService implements IAuthService {
       if (token != null) {
         LoadingDialogUtils.showLoading();
         try {
-          profileResponseDto = await getRestClient().getProfile(token: token);
+          profileResponseDto = await getRestClient()
+              .getProfile(token: result.data!.accsess_token.toString());
           account = profileResponseDto.data;
           locator<GlobalData>().currentUser = account;
+          locator<GlobalData>().token = result.data!.accsess_token.toString();
+          TokenUtils.currentEmail = account!.email.toString();
           return account;
         } on Exception catch (e) {
           print(e);

@@ -40,6 +40,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               child: _BottomBarItem(
                 onTap: () {
                   // Get.toNamed(MyRouter., arguments: -1)
+                  Get.toNamed(MyRouter.booking);
                 },
                 title: 'Chuyến đi',
                 image: 'assets/icons/book.svg',
@@ -53,7 +54,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               child: _BottomBarItem(
                 onTap: () {
                   if (locator<GlobalData>().currentUser != null) {
-                    // Get.toNamed(MyRouter.order);
+                    Get.toNamed(MyRouter.chatRoom);
                   } else {
                     Get.dialog(
                       const ConfirmLoginDialog(),

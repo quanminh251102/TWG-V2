@@ -5,6 +5,9 @@ import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/dtos/auth/login_dto.dart';
 import 'package:twg/core/dtos/base_api_dto.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
+import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
+import 'package:twg/core/dtos/message/message_dto.dart';
+import 'package:twg/core/dtos/message/send_message_dto.dart';
 import 'package:twg/core/dtos/pagination/pagination_dto.dart';
 
 part 'rest_client.g.dart';
@@ -39,6 +42,34 @@ abstract class RestClient {
   Future<BaseApiDto<BookingDto>> createBooking({
     @Header('api_key') required String token,
     @Body() required BookingDto model,
+  });
+
+  //chat_room
+  @GET('/api/chat_room')
+  Future<BaseApiDto<List<ChatRoomDto>>> getChatRooms({
+    @Header('api_key') String? token,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('sortCreatedAt') int? sortCreatedAt,
+    @Query('sortUpdatedAt') int? sortUpdatedAt,
+    @Query('userId1') String? userId1,
+    @Query('userId2') String? userId2,
+  });
+
+  //message
+  @GET('/api/message')
+  Future<BaseApiDto<List<MessageDto>>> getMessages({
+    @Header('api_key') String? token,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('sortCreatedAt') int? sortCreatedAt,
+    @Query('sortUpdatedAt') int? sortUpdatedAt,
+    @Query('chat_room_id') String? chat_room_id,
+  });
+  @POST('/api/message')
+  Future<BaseApiDto<MessageDto>> sendMessage({
+    @Header('api_key') String? token,
+    @Body() required SendMessageDto model,
   });
 
   ///account

@@ -3,7 +3,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:twg/core/services/interfaces/iauth_service.dart';
+import 'package:twg/core/services/interfaces/isocket_service.dart';
 import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
+import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
 import 'package:twg/global/router.dart';
 
@@ -25,10 +27,13 @@ class AuthViewModel with ChangeNotifier implements IAuthViewModel {
     }
   }
 
+  final ISocketService _iSocketService = locator<ISocketService>();
   @override
   Future<void> login(String phone, String password) async {
     var account = await _iAuthService.login(phone, password);
+
     if (account != null) {
+      _iSocketService.connectServer(locator<GlobalData>().token);
       await EasyLoading.showSuccess('Đăng nhập thành công!');
       Get.offNamed(MyRouter.booking);
     } else {

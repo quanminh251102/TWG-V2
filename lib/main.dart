@@ -2,15 +2,20 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 // import 'package:hoangduc/translation/strings.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/ui/utils/navigation_utils.dart';
+import 'package:twg/ui/utils/notification_utils.dart';
 import 'core/utils/color_utils.dart';
 import 'global/locator.dart';
 import 'global/providers.dart';
 import 'global/router.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +24,7 @@ Future<void> main() async {
   ]);
   configLoading();
   await setupLocator();
+  NotifiationUtils().initNotification();
   runApp(const MyApp());
 }
 
@@ -72,7 +78,7 @@ class _MyAppState extends State<MyApp> {
               title: 'TWG',
               navigatorKey: NavigationUtils.navigatorKey,
               onGenerateRoute: (settings) => MyRouter.generateRoute(settings),
-              initialRoute: MyRouter.splash,
+              initialRoute: MyRouter.signIn,
               theme: ThemeData(
                 appBarTheme: const AppBarTheme(
                   backgroundColor: ColorUtils.white,
