@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
+import 'package:twg/core/dtos/call/call_info_dto.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/dtos/message/message_dto.dart';
 
@@ -15,4 +16,5 @@ abstract class IMessageViewModel implements ChangeNotifier {
   late ScrollController scrollController;
   void jumbToLastMessage();
   AccountDto? getPartner();
+  CallInfoDto? getCallInfo();
 }

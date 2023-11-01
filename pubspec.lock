@@ -289,6 +289,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+  dart_webrtc:
+    dependency: transitive
+    description:
+      name: dart_webrtc
+      sha256: "5897a3bdd6c7fded07e80e250260ca4c9cd61f9080911aa308b516e1206745a9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.3"
   dbus:
     dependency: transitive
     description:
@@ -616,6 +624,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_webrtc:
+    dependency: "direct main"
+    description:
+      name: flutter_webrtc
+      sha256: "8522e9f347aed9f03ec591d05fc286a698c1b11a1a6d3e994e92727d24c6f352"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.46"
   font_awesome_flutter:
     dependency: "direct main"
     description:
@@ -1136,6 +1152,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  platform_detect:
+    dependency: transitive
+    description:
+      name: platform_detect
+      sha256: "08f4ee79c0e1c4858d37e06b22352a3ebdef5466b613749a3adb03e703d4f5b0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.11"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -1629,6 +1653,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.0"
+  webrtc_interface:
+    dependency: transitive
+    description:
+      name: webrtc_interface
+      sha256: "2efbd3e4e5ebeb2914253bcc51dafd3053c4b87b43f3076c74835a9deecbae3a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
   wechat_assets_picker:
     dependency: transitive
     description:

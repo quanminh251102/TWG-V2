@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:twg/core/dtos/call/call_info_dto.dart';
+import 'package:twg/core/view_models/interfaces/icall_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
 import 'package:twg/ui/screens/chat_room/widget/list_message.dart';
 
@@ -14,6 +16,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   // late TabController _tabController;
   late IMessageViewModel _iMessageViewModel;
   late final ScrollController scrollController;
+  late ICallViewModel _iCallViewModel;
 
   late TextEditingController _controller = TextEditingController();
   ScrollController controller = new ScrollController();
@@ -36,6 +39,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    _iCallViewModel = context.read<ICallViewModel>();
     // _tabController = TabController(
     //   length: 2,
     //   vsync: this,
@@ -130,22 +134,18 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
         ],
       ),
       actions: [
+        // IconButton(
+        //   onPressed: () {
+        //     //make_call('just_audio');
+        //   },
+        //   icon: const Icon(
+        //     Icons.call,
+        //   ),
+        // ),
         IconButton(
           onPressed: () {
-            //make_call('just_audio');
-
-            // BlocProvider.of<CallingAudioCubit>(context).make_call(
-            //     context.read<MessageCubit>().chatRoom.partner_id, 'audio');
-          },
-          icon: const Icon(
-            Icons.call,
-          ),
-        ),
-        IconButton(
-          onPressed: () {
-            //make_call('meeting');
-            // BlocProvider.of<CallingAudioCubit>(context).make_call(
-            //     context.read<MessageCubit>().chatRoom.partner_id, 'video');
+            _iCallViewModel
+                .makeCall(_iMessageViewModel.getCallInfo() as CallInfoDto);
           },
           icon: const Icon(
             Icons.video_call_sharp,
