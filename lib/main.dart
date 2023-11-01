@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
               initialRoute: MyRouter.splash,
               theme: ThemeData(
                 appBarTheme: const AppBarTheme(
-                  backgroundColor: ColorUtils.primaryColor,
+                  backgroundColor: ColorUtils.white,
                   iconTheme: IconThemeData(color: Colors.black),
                   foregroundColor: Colors.black,
                 ),

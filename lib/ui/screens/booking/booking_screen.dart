@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:twg/core/services/interfaces/ibooking_service.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
-import 'package:twg/global/router.dart';
+import 'package:twg/global/global_data.dart';
+import 'package:twg/global/locator.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
-import 'package:twg/ui/common_widgets/custom_order_floating_button.dart';
-
+import 'package:twg/ui/common_widgets/custom_booking_floating_button.dart';
+import 'package:twg/ui/common_widgets/confirm_login_dialog.dart';
+import 'package:twg/ui/screens/booking/widget/create_post_bottom_sheet.dart';
 import 'widget/list_booking.dart';
 part './widget/available_tab.dart';
 part './widget/cancel_tab.dart';
@@ -53,7 +53,7 @@ class _BookingScreenState extends State<BookingScreen>
           tabs: const [
             Tab(
                 child: Text(
-              'Đang hoạt động',
+              'Hoạt động',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 14),
             )),
@@ -74,16 +74,33 @@ class _BookingScreenState extends State<BookingScreen>
           'CHUYẾN ĐI',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
         actions: [
           IconButton(
             icon: const Icon(
-              Icons.add_box_outlined,
-              color: Colors.white,
+              Icons.note_add_outlined,
+              color: Colors.black,
             ),
-            onPressed: () => Get.toNamed(MyRouter.addBooking),
+            onPressed: () {
+              if (locator<GlobalData>().currentUser != null) {
+                Get.bottomSheet(
+                  const CreatePostSheet(),
+                  backgroundColor: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                );
+              } else {
+                Get.dialog(
+                  const ConfirmLoginDialog(),
+                );
+              }
+            },
           )
         ],
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twg/ui/screens/booking/add_booking.dart';
 import 'package:twg/ui/screens/booking/booking_screen.dart';
-import 'package:twg/ui/screens/home/home.dart';
+import 'package:twg/ui/screens/home/home_screen.dart';
 import 'package:twg/ui/screens/signin/signin.dart';
 import 'package:twg/ui/screens/signup/signup.dart';
 import 'package:twg/ui/screens/splash_screen/splash_screen.dart';
@@ -60,7 +60,9 @@ class MyRouter {
       case addBooking:
         return _buildRouteNavigationWithoutEffect(
           settings,
-          const AddBookingScreen(),
+          AddBookingScreen(
+            bookingType: settings.arguments as BookingType,
+          ),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

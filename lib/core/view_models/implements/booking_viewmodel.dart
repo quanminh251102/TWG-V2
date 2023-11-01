@@ -12,6 +12,11 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   String? _keyword;
 
   final IBookingService _iBookingService = locator<IBookingService>();
+  BookingDto? _bookingDto;
+
+  @override
+  BookingDto? get bookingDto => _bookingDto;
+
   @override
   List<BookingDto> get bookings => _bookings;
   @override

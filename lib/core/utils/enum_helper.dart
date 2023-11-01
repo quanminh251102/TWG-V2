@@ -53,4 +53,8 @@ class EnumMap {
     BookingStatusType.available: MyEnum(value: 1, description: 'available'),
     BookingStatusType.cancel: MyEnum(value: 2, description: 'cancel'),
   };
+  static Map<BookingType, MyEnum> bookingType = {
+    BookingType.findDriver: MyEnum(value: 0, description: 'Tìm tài xế'),
+    BookingType.findPassenger: MyEnum(value: 1, description: 'Tìm hành khách'),
+  };
 }

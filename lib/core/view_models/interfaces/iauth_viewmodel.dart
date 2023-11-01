@@ -4,6 +4,7 @@ import 'package:twg/core/dtos/auth/account_dto.dart';
 abstract class IAuthViewModel implements ChangeNotifier {
   Future<void> login(String phone, String password);
   Future<void> logout();
+  Future<void> signInGoogle();
   // List<ProvinceDto> get provinces;
   // List<ChannelDto> get channels;
   // List<ChannelDto> get listChannel;

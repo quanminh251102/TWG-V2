@@ -35,6 +35,12 @@ abstract class RestClient {
     @Query('authorId') String? authorId,
   });
 
+  @POST("/api/auth/login")
+  Future<BaseApiDto<BookingDto>> createBooking({
+    @Header('api_key') required String token,
+    @Body() required BookingDto model,
+  });
+
   ///account
   // @GET("/api/account/profile")
   // Future<BaseApiDto<AccountDto>> getProfile({
