@@ -1,12 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
-
 import 'package:twg/core/dtos/message/message_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_custom_cards/flutter_custom_cards.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
 
@@ -44,7 +39,7 @@ class _ListMessageItemState extends State<ListMessageItem> {
                 Container(
                   constraints: const BoxConstraints(maxWidth: 180),
                   child: Text(
-                    message!.message as String,
+                    message.message as String,
                     style: const TextStyle(color: Colors.black, fontSize: 15),
                   ),
                 ),
@@ -84,7 +79,7 @@ class _ListMessageItemState extends State<ListMessageItem> {
                   Container(
                     constraints: const BoxConstraints(maxWidth: 180),
                     child: Text(
-                      message!.message as String,
+                      message.message as String,
                       style: const TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   ),
@@ -157,7 +152,7 @@ class _ListMessageItemState extends State<ListMessageItem> {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
-          message!.message as String,
+          message.message as String,
           style: TextStyle(color: Colors.black, fontSize: 12),
         ),
       )));
@@ -167,7 +162,7 @@ class _ListMessageItemState extends State<ListMessageItem> {
       isNavigateMessage = true;
     });
     // Rawait Future.delayed(Duration(seconds: 2));
-    String result = "pass";
+    // String result = "pass";
     // Message Message = Message(
     //     id: '',
     //     partner_name: '',
@@ -211,7 +206,7 @@ class _ListMessageItemState extends State<ListMessageItem> {
         .toString()
         .substring(11, 16);
 
-    String _type = _message!.type as String;
+    String _type = _message.type as String;
     bool isMe = locator<GlobalData>().currentUser?.email.toString() ==
         _message.userId!.email.toString();
     return (_type == "isDate")

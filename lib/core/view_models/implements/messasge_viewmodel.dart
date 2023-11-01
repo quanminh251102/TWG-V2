@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/dtos/message/message_dto.dart';
@@ -37,8 +35,8 @@ class MessageViewModel with ChangeNotifier implements IMessageViewModel {
 
   @override
   void jumbToLastMessage() {
-    if (_scrollController!.hasClients) {
-      _scrollController!.jumpTo(_scrollController!.position.maxScrollExtent);
+    if (_scrollController.hasClients) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     }
   }
 

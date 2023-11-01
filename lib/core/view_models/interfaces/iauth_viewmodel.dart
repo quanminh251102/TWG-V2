@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:twg/core/dtos/auth/account_dto.dart';
 
 abstract class IAuthViewModel implements ChangeNotifier {
   Future<void> login(String phone, String password);

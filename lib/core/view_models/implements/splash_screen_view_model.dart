@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twg/core/services/interfaces/iauth_service.dart';
 import 'package:twg/core/services/interfaces/isocket_service.dart';
-import 'package:twg/core/utils/token_utils.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
 

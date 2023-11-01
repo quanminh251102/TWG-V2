@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 // import 'package:hoangduc/translation/strings.dart';
 import 'package:provider/provider.dart';
-import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/ui/utils/navigation_utils.dart';
 import 'package:twg/ui/utils/notification_utils.dart';
 import 'core/utils/color_utils.dart';

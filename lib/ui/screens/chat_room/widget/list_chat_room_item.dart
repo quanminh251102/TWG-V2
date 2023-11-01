@@ -1,11 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -36,7 +33,7 @@ class _ListChatRoomItemState extends State<ListChatRoomItem> {
       isNavigateChatRoom = true;
     });
     // Rawait Future.delayed(Duration(seconds: 2));
-    String result = "pass";
+    // String result = "pass";
     // ChatRoom chatRoom = ChatRoom(
     //     id: '',
     //     partner_name: '',

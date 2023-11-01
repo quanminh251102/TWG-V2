@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/message/message_dto.dart';
-import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
 import 'package:twg/ui/screens/chat_room/widget/list_message_item.dart';
 
