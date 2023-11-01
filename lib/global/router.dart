@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:twg/ui/screens/booking/add_booking.dart';
 import 'package:twg/ui/screens/booking/booking_screen.dart';
+import 'package:twg/ui/screens/call/call.dart';
+import 'package:twg/ui/screens/call/incoming_call.dart';
 import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
 import 'package:twg/ui/screens/chat_room/chat_screen.dart';
 import 'package:twg/ui/screens/home/home.dart';
@@ -17,6 +19,8 @@ class MyRouter {
   static const String addBooking = '/addBooking';
   static const String chatRoom = '/chatRoom';
   static const String message = '/message';
+  static const String call = '/call';
+  static const String incomingCall = '/incomingCall';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -75,6 +79,16 @@ class MyRouter {
         return _buildRouteNavigationWithoutEffect(
           settings,
           const ChatScreen(),
+        );
+      case call:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const CallScreen(),
+        );
+      case incomingCall:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const InComingCallScreen(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

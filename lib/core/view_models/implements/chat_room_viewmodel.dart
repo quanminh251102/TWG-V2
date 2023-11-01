@@ -14,7 +14,6 @@ class ChatRoomViewModel with ChangeNotifier implements IChatRoomViewModel {
   bool _isLoading = false;
   int page = 1;
   String? _keyword;
-  bool _isAddSocket = false;
 
   final IChatRoomService _iChatRoomService = locator<IChatRoomService>();
   final ISocketService _iSocketService = locator<ISocketService>();

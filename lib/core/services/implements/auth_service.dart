@@ -30,6 +30,7 @@ class AuthService implements IAuthService {
               .getProfile(token: result.data!.accsess_token.toString());
           account = profileResponseDto.data;
           locator<GlobalData>().currentUser = account;
+          locator<GlobalData>().token = result.data!.accsess_token.toString();
           TokenUtils.currentEmail = account!.email.toString();
           return account;
         } on Exception catch (e) {

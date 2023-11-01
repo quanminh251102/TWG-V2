@@ -1,8 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
+import 'package:twg/core/dtos/call/call_info_dto.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/dtos/message/message_dto.dart';
 import 'package:twg/core/dtos/message/send_message_dto.dart';
@@ -37,8 +36,8 @@ class MessageViewModel with ChangeNotifier implements IMessageViewModel {
 
   @override
   void jumbToLastMessage() {
-    if (_scrollController!.hasClients) {
-      _scrollController!.jumpTo(_scrollController!.position.maxScrollExtent);
+    if (_scrollController.hasClients) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     }
   }
 
@@ -68,6 +67,28 @@ class MessageViewModel with ChangeNotifier implements IMessageViewModel {
             _currentChatRoom.user1!.email.toString())
         ? _currentChatRoom.user2
         : _currentChatRoom.user1;
+  }
+
+  @override
+  CallInfoDto? getCallInfo() {
+    AccountDto me, partner;
+    if (locator<GlobalData>().currentUser?.email.toString() ==
+        _currentChatRoom.user1!.email.toString()) {
+      me = _currentChatRoom.user1 as AccountDto;
+      partner = _currentChatRoom.user2 as AccountDto;
+    } else {
+      me = _currentChatRoom.user2 as AccountDto;
+      partner = _currentChatRoom.user1 as AccountDto;
+    }
+
+    return CallInfoDto(
+      callerId: me.email,
+      callerName: me.firstName,
+      receiverId: partner.email,
+      receiverName: partner.firstName,
+      receiverAvatar: partner.avatarUrl,
+      callerAvatar: me.avatarUrl,
+    );
   }
 
   @override

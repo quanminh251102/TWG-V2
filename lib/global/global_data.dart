@@ -8,6 +8,7 @@ class GlobalData {
   DeviceInfo deviceInfo = DeviceInfo();
   AccountInfo accountInfo = AccountInfo();
   AccountInfo newAccount = AccountInfo();
+  String token = '';
   late String logLevel;
   AccountDto? currentUser;
   // AccessToken? token;
