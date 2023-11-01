@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:twg/core/services/interfaces/iauth_service.dart';
 import 'package:twg/core/services/interfaces/isocket_service.dart';
 import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
@@ -10,6 +11,22 @@ import 'package:twg/global/router.dart';
 
 class AuthViewModel with ChangeNotifier implements IAuthViewModel {
   final IAuthService _iAuthService = locator<IAuthService>();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  @override
+  Future<void> signInGoogle() async {
+    GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+    if (googleSignInAccount != null) {
+      // var account = await _iAuthService.registerSocial(
+      //     googleSignInAccount.displayName ?? "",
+      //     googleSignInAccount.email,
+      //     googleSignInAccount.id);
+      // if (account != null) {
+      //   Get.offNamed(MyRouter.booking);
+      // }
+    }
+  }
+
   final ISocketService _iSocketService = locator<ISocketService>();
   @override
   Future<void> login(String phone, String password) async {

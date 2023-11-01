@@ -5,7 +5,7 @@ import 'package:twg/ui/screens/call/call.dart';
 import 'package:twg/ui/screens/call/incoming_call.dart';
 import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
 import 'package:twg/ui/screens/chat_room/chat_screen.dart';
-import 'package:twg/ui/screens/home/home.dart';
+import 'package:twg/ui/screens/home/home_screen.dart';
 import 'package:twg/ui/screens/signin/signin.dart';
 import 'package:twg/ui/screens/signup/signup.dart';
 import 'package:twg/ui/screens/splash_screen/splash_screen.dart';
@@ -73,7 +73,9 @@ class MyRouter {
       case addBooking:
         return _buildRouteNavigationWithoutEffect(
           settings,
-          const AddBookingScreen(),
+          AddBookingScreen(
+            bookingType: settings.arguments as BookingType,
+          ),
         );
       case message:
         return _buildRouteNavigationWithoutEffect(

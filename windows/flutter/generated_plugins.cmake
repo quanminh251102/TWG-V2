@@ -3,10 +3,8 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  awesome_notifications
   connectivity_plus
   file_selector_windows
-  flutter_webrtc
   local_auth_windows
   permission_handler_windows
   url_launcher_windows

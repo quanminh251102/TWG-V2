@@ -23,10 +23,16 @@ class CustomFloatingButton extends StatelessWidget {
           backgroundColor: ColorUtils.primaryColor,
           onPressed: () {
             if (locator<GlobalData>().currentUser != null) {
-              Get.bottomSheet(CreatePostSheet(),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ));
+              Get.bottomSheet(
+                const CreatePostSheet(),
+                backgroundColor: Colors.white,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
+                ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+              );
             } else {
               Get.dialog(
                 const ConfirmLoginDialog(),

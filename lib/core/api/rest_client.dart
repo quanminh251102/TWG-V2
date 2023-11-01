@@ -38,6 +38,12 @@ abstract class RestClient {
     @Query('authorId') String? authorId,
   });
 
+  @POST("/api/auth/login")
+  Future<BaseApiDto<BookingDto>> createBooking({
+    @Header('api_key') required String token,
+    @Body() required BookingDto model,
+  });
+
   //chat_room
   @GET('/api/chat_room')
   Future<BaseApiDto<List<ChatRoomDto>>> getChatRooms({

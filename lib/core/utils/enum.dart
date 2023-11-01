@@ -21,3 +21,10 @@ enum BookingStatusType {
   @JsonValue(2)
   cancel,
 }
+
+enum BookingType {
+  @JsonValue(0)
+  findDriver,
+  @JsonValue(1)
+  findPassenger,
+}

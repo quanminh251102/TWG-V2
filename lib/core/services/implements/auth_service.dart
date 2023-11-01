@@ -11,6 +11,56 @@ import '../../../ui/utils/loading_dialog_utils.dart';
 import '../interfaces/iauth_service.dart';
 
 class AuthService implements IAuthService {
+  // @override
+  // Future<AccountDto?> registerSocial(
+  //     String name, String emailAddress, String clientId) async {
+  //   LoadingDialogUtils.showLoading();
+  //   try {
+  //     var result = await getRestClient().registerSocial(
+  //       RegisterSocialDto(
+  //         name: name,
+  //         surName: name,
+  //         emailAddress: emailAddress,
+  //         clientId: clientId,
+  //       ),
+  //     );
+  //     if (result.result!.accessToken != null) {
+  //       TokenUtils.saveToken("Bearer ${result.result!.accessToken}",
+  //           result.result!.encryptedAccessToken!);
+  //       locator<GlobalData>().token = AccessToken(
+  //           accessToken: "Bearer ${result.result!.accessToken}",
+  //           userId: result.result!.userId!,
+  //           encryptedAccessToken: result.result!.encryptedAccessToken!);
+  //       locator<GlobalData>().token!.accessToken =
+  //           "Bearer ${result.result!.accessToken}";
+  //       BaseApiDto<AccountDto> profileResponseDto;
+  //       AccountDto? account;
+  //       LoadingDialogUtils.showLoading();
+
+  //       try {
+  //         profileResponseDto = await getRestClient().getProfile(
+  //           token: locator<GlobalData>().token!.accessToken,
+  //         );
+  //         account = profileResponseDto.result;
+  //         locator<GlobalData>().currentUser = account;
+  //         return account;
+  //       } on Exception catch (e) {
+  //         print(e);
+  //       } finally {
+  //         LoadingDialogUtils.hideLoading();
+  //       }
+  //       return null;
+  //     } else {
+  //       EasyLoading.showError("Đăng kí thất bại!");
+  //     }
+  //   } on Exception catch (e) {
+  //     print(e);
+  //   } finally {
+  //     LoadingDialogUtils.hideLoading();
+  //   }
+  //   return null;
+  // }
+
   @override
   Future<AccountDto?> login(String emailOrPhone, String password) async {
     AccountDto? account;

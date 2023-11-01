@@ -12,6 +12,8 @@ CallInfoDto _$CallInfoDtoFromJson(Map<String, dynamic> json) => CallInfoDto(
       receiverId: json['receiverId'] as String?,
       callerName: json['callerName'] as String?,
       receiverName: json['receiverName'] as String?,
+      callerAvatar: json['callerAvatar'] as String?,
+      receiverAvatar: json['receiverAvatar'] as String?,
       isCaller: json['isCaller'] as bool?,
     );
 
@@ -22,5 +24,7 @@ Map<String, dynamic> _$CallInfoDtoToJson(CallInfoDto instance) =>
       'receiverId': instance.receiverId,
       'callerName': instance.callerName,
       'receiverName': instance.receiverName,
+      'callerAvatar': instance.callerAvatar,
+      'receiverAvatar': instance.receiverAvatar,
       'isCaller': instance.isCaller,
     };

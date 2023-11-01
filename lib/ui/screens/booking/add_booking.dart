@@ -1,13 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+
 import 'package:twg/core/utils/color_utils.dart';
 
 enum BookingType { findDriver, findPassenger }
 
 class AddBookingScreen extends StatefulWidget {
-  const AddBookingScreen({super.key});
-
+  const AddBookingScreen({
+    Key? key,
+    required this.bookingType,
+  }) : super(key: key);
+  final BookingType bookingType;
   @override
   State<AddBookingScreen> createState() => _AddBookingScreenState();
 }
@@ -103,11 +108,13 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
     return Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
-            title: const Text(
-              'ĐĂNG BÀI',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            centerTitle: true),
+          title: const Text(
+            'ĐĂNG BÀI',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          elevation: 0,
+        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(
@@ -140,7 +147,7 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                               return null;
                             },
                             decoration: InputDecoration(
-                              filled: true, //<-- SEE HERE
+                              filled: true,
                               fillColor: startPlaceFocus.hasFocus
                                   ? ColorUtils.primaryColor.withOpacity(0.1)
                                   : Colors.white,
@@ -252,88 +259,7 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                                 )),
                           ),
                         ),
-                        const Text(
-                          'Loại bài đăng',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white),
-                          width: screenSize.width * 0.9,
-                          height: screenSize.height * 0.08,
-                          child: Center(
-                            child: RadioListTile(
-                              controlAffinity: ListTileControlAffinity.trailing,
-                              title: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    "assets/icons/driver.svg",
-                                    height: 40,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  const Text(
-                                    'Tìm tài xế',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              value: BookingType.findDriver,
-                              groupValue: _bookingType,
-                              onChanged: (value) {
-                                setState(() {
-                                  _bookingType = value!;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Container(
-                            width: screenSize.width * 0.9,
-                            height: screenSize.height * 0.08,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white),
-                            child: Center(
-                              child: RadioListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
-                                title: Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      "assets/icons/passenger.svg",
-                                      height: 40,
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    const Text(
-                                      'Tìm hành khách',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                value: BookingType.findPassenger,
-                                groupValue: _bookingType,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _bookingType = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
+
                         const SizedBox(
                           height: 10,
                         ),
@@ -345,7 +271,9 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                         Padding(
                           padding: const EdgeInsets.only(top: 10.0, bottom: 10),
                           child: TextFormField(
-                            style: const TextStyle(fontWeight: FontWeight.w600),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
                             controller: price,
                             validator: (value) {
                               if (value!.isEmpty) {
