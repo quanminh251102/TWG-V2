@@ -1,3 +1,4 @@
+import 'package:geolocator/geolocator.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
 
 class GlobalData {
@@ -11,6 +12,8 @@ class GlobalData {
   String token = '';
   late String logLevel;
   AccountDto? currentUser;
+  Position? currentPosition;
+  String goongsRestToken = 'W58VBTcAl1Wg8qcZy6Y4JUvaeDHmf7MEbFZ6WCbR';
   // AccessToken? token;
 }
 
