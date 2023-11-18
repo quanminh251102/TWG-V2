@@ -1,22 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:twg/core/utils/color_utils.dart';
 
 class CustomSearchField extends StatefulWidget {
-  CustomSearchField({
-    super.key,
-    this.onTap,
-    this.onFieldSubmitted,
-    this.readOnly = false,
-    this.focusNode,
-    this.controller,
-  });
   final Function()? onTap;
   final Function(String value)? onFieldSubmitted;
+  final Function(String value)? onChanged;
   final FocusNode? focusNode;
   TextEditingController? controller;
 
   final bool readOnly;
+  CustomSearchField({
+    Key? key,
+    this.onTap,
+    this.onFieldSubmitted,
+    this.onChanged,
+    this.focusNode,
+    this.controller,
+    required this.readOnly,
+  }) : super(key: key);
   @override
   State<CustomSearchField> createState() => _CustomSearchFieldState();
 }
@@ -41,11 +45,13 @@ class _CustomSearchFieldState extends State<CustomSearchField> {
             _focusNode.hasFocus ? ColorUtils.primaryColor : Colors.white,
         focusNode: _focusNode,
         onTap: widget.onTap,
+        onChanged: widget.onChanged,
         onFieldSubmitted: widget.onFieldSubmitted,
         readOnly: widget.readOnly,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(
             vertical: 5.h,
+            horizontal: 10.w,
           ),
           prefixIcon: Icon(
             Icons.search_outlined,
