@@ -72,6 +72,13 @@ abstract class RestClient {
     @Body() required SendMessageDto model,
   });
 
+  // profile
+  @PATCH("/api/user/profile")
+  Future<BaseApiDto<AccountDto>> updateProfile(
+    @Header('api_key') String token,
+    @Body() AccountDto model,
+  );
+
   ///account
   // @GET("/api/account/profile")
   // Future<BaseApiDto<AccountDto>> getProfile({

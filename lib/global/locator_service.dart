@@ -5,6 +5,7 @@ import 'package:twg/core/services/implements/chat_room_service.dart';
 import 'package:twg/core/services/implements/goongs_service.dart';
 import 'package:twg/core/services/implements/map_service.dart';
 import 'package:twg/core/services/implements/message_service.dart';
+import 'package:twg/core/services/implements/profile_service.dart';
 import 'package:twg/core/services/implements/socket_service.dart';
 
 import 'package:twg/core/services/interfaces/iauth_service.dart';
@@ -13,6 +14,7 @@ import 'package:twg/core/services/interfaces/ichat_room_service.dart';
 import 'package:twg/core/services/interfaces/igoong_service.dart';
 import 'package:twg/core/services/interfaces/imap_service.dart';
 import 'package:twg/core/services/interfaces/imessage_service.dart';
+import 'package:twg/core/services/interfaces/iprofile_service.dart';
 import 'package:twg/core/services/interfaces/isocket_service.dart';
 
 void registerServiceSingletons(GetIt locator) {
@@ -23,6 +25,7 @@ void registerServiceSingletons(GetIt locator) {
   locator.registerLazySingleton<ISocketService>(() => SocketService());
   locator.registerLazySingleton<IMapService>(() => MapService());
   locator.registerLazySingleton<IGoongService>(() => GoongService());
+  locator.registerLazySingleton<IProfileService>(() => ProfileService());
 
   // locator.registerLazySingleton<ICategoryService>(() => CategoryService());
   // locator

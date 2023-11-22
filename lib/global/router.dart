@@ -6,6 +6,7 @@ import 'package:twg/ui/screens/call/incoming_call.dart';
 import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
 import 'package:twg/ui/screens/chat_room/chat_screen.dart';
 import 'package:twg/ui/screens/home/home_screen.dart';
+import 'package:twg/ui/screens/home/profile_screen.dart';
 import 'package:twg/ui/screens/signin/signin.dart';
 import 'package:twg/ui/screens/signup/signup.dart';
 import 'package:twg/ui/screens/splash_screen/splash_screen.dart';
@@ -21,6 +22,7 @@ class MyRouter {
   static const String message = '/message';
   static const String call = '/call';
   static const String incomingCall = '/incomingCall';
+  static const String profile = '/profile';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -91,6 +93,11 @@ class MyRouter {
         return _buildRouteNavigationWithoutEffect(
           settings,
           const InComingCallScreen(),
+        );
+      case profile:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const ProfileScreen(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

@@ -5,6 +5,7 @@ import 'package:twg/core/view_models/implements/booking_viewmodel.dart';
 import 'package:twg/core/view_models/implements/call_viewmodel.dart';
 import 'package:twg/core/view_models/implements/home_viewmodel.dart';
 import 'package:twg/core/view_models/implements/messasge_viewmodel.dart';
+import 'package:twg/core/view_models/implements/profile_viewmodel.dart';
 import 'package:twg/core/view_models/implements/splash_screen_view_model.dart';
 import 'package:twg/core/view_models/implements/chat_room_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
@@ -12,6 +13,7 @@ import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/icall_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ihome_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/iprofile_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/isplash_screen_view_model.dart';
 import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 
@@ -36,6 +38,9 @@ List<SingleChildWidget> viewModelProviders = [
   ),
   ChangeNotifierProvider<IHomeViewModel>(
     create: (_) => HomeViewModel(),
+  ),
+  ChangeNotifierProvider<IProfileViewModel>(
+    create: (_) => ProfileViewModel(),
   ),
   // ChangeNotifierProvider<INotificationViewModel>(
   //   create: (_) => NotificationViewModel(),
