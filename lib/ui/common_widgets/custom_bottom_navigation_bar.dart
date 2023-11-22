@@ -70,10 +70,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
               child: _BottomBarItem(
                 onTap: () {
                   if (locator<GlobalData>().currentUser != null) {
-                    // Get.toNamed(
-                    //   MyRouter.customerManagementTabbar,
-                    //   arguments: true,
-                    // );
+                    Get.toNamed(
+                      MyRouter.profile,
+                      arguments: true,
+                    );
                   } else {
                     Get.dialog(
                       const ConfirmLoginDialog(),
