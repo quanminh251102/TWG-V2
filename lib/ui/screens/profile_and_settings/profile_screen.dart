@@ -1,10 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/iprofile_viewmodel.dart';
+import 'package:twg/global/router.dart';
 import 'package:twg/ui/common_widgets/custom_booking_floating_button.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
 
@@ -208,19 +212,9 @@ class _ProfileScreenState extends State<ProfileScreen>
         ListTile(
           leading: const Icon(Icons.account_box),
           title: const Text('Cập nhật thông tin cá nhân'),
-          trailing: this._isLoadingForUpdateProfilePage
-              ? const CircularProgressIndicator()
-              : const Icon(
-                  Icons.keyboard_arrow_right,
-                ),
+          trailing: const Icon(Icons.keyboard_arrow_right),
           onTap: () {
-            if (this._isLoadingForUpdateProfilePage == false) {
-              setState(() {
-                _isLoadingForUpdateProfilePage = true;
-              });
-              // BlocProvider.of<UpdateProfileCubit>(context)
-              //     .navigateToUpdateProfileScreen(cancel_loading);
-            }
+            Get.offNamed(MyRouter.updateProfile);
           },
         ),
         // const ListTile(
@@ -238,7 +232,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           title: const Text('Chính sách quyền riêng tư'),
           trailing: const Icon(Icons.keyboard_arrow_right),
           onTap: () {
-            // appRouter.push(const PrivacyPolicyPageRoute());
+            Get.offNamed(MyRouter.privacyPolicy);
           },
         ),
         ListTile(
@@ -246,10 +240,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           title: const Text('Bài đăng của tôi'),
           trailing: const Icon(Icons.keyboard_arrow_right),
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const MyBookPage()),
-            // );
+            // Get.offNamed(MyRouter.privacyPolicy);
           },
         ),
         ListTile(
@@ -257,10 +248,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           title: const Text('Apply của tôi'),
           trailing: const Icon(Icons.keyboard_arrow_right),
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const MyApplyPage()),
-            // );
+            //  Get.offNamed(MyRouter.privacyPolicy);
           },
         ),
         ListTile(
@@ -268,10 +256,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           title: const Text('Đánh giá'),
           trailing: const Icon(Icons.keyboard_arrow_right),
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const MyReViewsPage()),
-            // );
+            // Get.offNamed(MyRouter.privacyPolicy);
           },
         ),
         ListTile(
@@ -303,36 +288,72 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: CustomHomeAppBar(),
-        floatingActionButton: const CustomFloatingButton(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: const CustomBottomNavigationBar(
-          value: CustomNavigationBar.account,
-        ),
-        body: Column(
-          children: [
-            // Text('Email : ${locator<GlobalData>().currentUser?.email}'),
-            // Text('${locator<GlobalData>().currentUser?.firstName}'),
-            // Text(TokenUtils.currentEmail),
-            Text('profile'),
+      // appBar: CustomHomeAppBar(),
+      floatingActionButton: const CustomFloatingButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: const CustomBottomNavigationBar(
+        value: CustomNavigationBar.account,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.05,
+              vertical: MediaQuery.of(context).size.height * 0.05),
+          child: Column(children: [
+            const Align(
+              child: Text(
+                'Thông tin tài khoản',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              alignment: Alignment.topLeft,
+            ),
+            const SizedBox(height: 8),
             Consumer<IProfileViewModel>(
               builder: (context, vm, child) {
                 return Column(
                   children: [
-                    Text(
-                      vm.accountDto.avatarUrl.toString(),
+                    CachedNetworkImage(
+                      imageUrl: vm.accountDto.avatarUrl.toString(),
+                      imageBuilder: (context, imageProvider) => Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(Radius.circular(
+                                  60.0) //                 <--- border radius here
+                              ),
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
-                    Text(
-                      vm.accountDto.firstName.toString(),
+                    Visibility(
+                        visible: _isLoadingImage,
+                        child: const CircularProgressIndicator()),
+                    ElevatedButton(
+                      onPressed: () {
+                        openMediaDialog();
+                      },
+                      child: const Text('Đổi ảnh đại diện'),
                     ),
-                    Text(
-                      vm.accountDto.email.toString(),
-                    ),
+                    const SizedBox(height: 8),
+                    Text(vm.accountDto.firstName.toString()),
+                    const SizedBox(height: 8),
+                    Text(vm.accountDto.email.toString()),
+                    const SizedBox(height: 24),
                   ],
                 );
               },
             ),
-          ],
-        ));
+            ...settings(context),
+          ]),
+        ),
+      ),
+    );
   }
 }

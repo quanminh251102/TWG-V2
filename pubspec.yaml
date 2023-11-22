@@ -98,6 +98,8 @@ dependencies:
   geolocator: ^10.1.0
   geocoding: ^2.1.1
   location: ^5.0.3
+  dropdown_textfield: ^1.0.8
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

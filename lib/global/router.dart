@@ -6,7 +6,9 @@ import 'package:twg/ui/screens/call/incoming_call.dart';
 import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
 import 'package:twg/ui/screens/chat_room/chat_screen.dart';
 import 'package:twg/ui/screens/home/home_screen.dart';
-import 'package:twg/ui/screens/home/profile_screen.dart';
+import 'package:twg/ui/screens/profile_and_settings/privacy_policy/privacy_policy_page.dart';
+import 'package:twg/ui/screens/profile_and_settings/profile_screen.dart';
+import 'package:twg/ui/screens/profile_and_settings/update_profile/update_profile_page.dart';
 import 'package:twg/ui/screens/signin/signin.dart';
 import 'package:twg/ui/screens/signup/signup.dart';
 import 'package:twg/ui/screens/splash_screen/splash_screen.dart';
@@ -23,6 +25,8 @@ class MyRouter {
   static const String call = '/call';
   static const String incomingCall = '/incomingCall';
   static const String profile = '/profile';
+  static const String updateProfile = '/updateProfile';
+  static const String privacyPolicy = '/privacyPolicy';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -98,6 +102,16 @@ class MyRouter {
         return _buildRouteNavigationWithoutEffect(
           settings,
           const ProfileScreen(),
+        );
+      case privacyPolicy:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const PrivacyPolicyPage(),
+        );
+      case updateProfile:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const UpdateProfilePage(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(
