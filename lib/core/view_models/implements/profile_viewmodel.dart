@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
+import 'package:twg/core/services/interfaces/icloudinary_service.dart';
 import 'package:twg/core/services/interfaces/iprofile_service.dart';
 import 'package:twg/core/view_models/interfaces/iprofile_viewmodel.dart';
 import 'package:twg/global/locator.dart';
@@ -15,6 +17,7 @@ class ProfileViewModel with ChangeNotifier implements IProfileViewModel {
   AccountDto get accountDto => _accountDto;
 
   final IProfileService _iMessageService = locator<IProfileService>();
+  final ICloudinaryService _iCloudinaryService = locator<ICloudinaryService>();
 
   @override
   Future<void> getProfile() async {
@@ -34,5 +37,11 @@ class ProfileViewModel with ChangeNotifier implements IProfileViewModel {
       return 'Thành công';
     }
     return 'Thất bại';
+  }
+
+  @override
+  Future<String> uploadFile(XFile file) async {
+    var result = await _iCloudinaryService.uploadFile(file);
+    return result;
   }
 }

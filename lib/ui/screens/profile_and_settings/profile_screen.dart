@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/iprofile_viewmodel.dart';
@@ -26,97 +27,103 @@ class _ProfileScreenState extends State<ProfileScreen>
   bool _isLoadingForUpdateProfilePage = false;
   bool _isLoadingImage = false;
 
-  void uploadImage(XFile file) {
+  void uploadImage(XFile file) async {
     setState(() {
       _isLoadingImage = true;
     });
 
-    // ImageService.uploadFile(file).then((value) async {
-    //   if (value != "error") {
-    //     // context
-    //     //     .read<MessageCubit>()
-    //     //     .send_message_to_chat_room(value, "isImage");
-    //     await UserService.editAvatar(value);
-    //     appUser.edit_avatar(value);
-    //     //appRouter.push(HomePageViewRoute(email: appUser.gmail));
-    //   }
-    //   setState(() {
-    //     _isLoadingImage = false;
-    //   });
-    // });
+    var result = await _iProfileViewModel.uploadFile(file);
+
+    if (result != 'error') {
+      AccountDto value = _iProfileViewModel.accountDto;
+
+      value.avatarUrl = result;
+      //  this._birthday.toString(),
+      String text = await _iProfileViewModel.updateProfile(value);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(text),
+        ),
+      );
+    }
+
+    setState(() {
+      _isLoadingImage = false;
+    });
   }
 
   void openMediaDialog() {
-    // showDialog(
-    //     context: context,
-    //     builder: (context) {
-    //       return AlertDialog(
-    //         backgroundColor: Colors.white,
-    //         title: const Text(
-    //           'Chọn nguồn',
-    //           style: TextStyle(fontSize: 14),
-    //         ),
-    //         content: Container(
-    //           margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-    //           child: Row(
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: [
-    //               InkWell(
-    //                 onTap: () async {
-    //                   final ImagePicker _picker = ImagePicker();
-    //                   final XFile? image =
-    //                       await _picker.pickImage(source: ImageSource.camera);
-    //                   if (image != null) {
-    //                     print("get successfully");
-    //                     uploadImage(image);
-    //                     Future.delayed(Duration.zero, () {
-    //                       Navigator.pop(context);
-    //                     });
-    //                   }
-    //                 },
-    //                 child: Column(
-    //                   mainAxisSize: MainAxisSize.min,
-    //                   children: const [
-    //                     Icon(
-    //                       Icons.camera_alt,
-    //                       size: 30,
-    //                     ),
-    //                     Text('Máy ảnh')
-    //                   ],
-    //                 ),
-    //               ),
-    //               const SizedBox(
-    //                 width: 100,
-    //               ),
-    //               InkWell(
-    //                 onTap: () async {
-    //                   final ImagePicker _picker = ImagePicker();
-    //                   final XFile? image =
-    //                       await _picker.pickImage(source: ImageSource.gallery);
-    //                   if (image != null) {
-    //                     uploadImage(image);
-    //                     Future.delayed(Duration.zero, () {
-    //                       Navigator.pop(context);
-    //                     });
-    //                     // image.path
-    //                   }
-    //                 },
-    //                 child: Column(
-    //                   mainAxisSize: MainAxisSize.min,
-    //                   children: [
-    //                     const Icon(
-    //                       Icons.image,
-    //                       size: 30,
-    //                     ),
-    //                     const Text('Thư viện')
-    //                   ],
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //       );
-    //     });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: const Text(
+              'Chọn nguồn',
+              style: TextStyle(fontSize: 14),
+            ),
+            content: Container(
+              margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      final ImagePicker _picker = ImagePicker();
+                      final XFile? image =
+                          await _picker.pickImage(source: ImageSource.camera);
+                      if (image != null) {
+                        print("get successfully");
+                        uploadImage(image);
+                        Future.delayed(Duration.zero, () {
+                          Navigator.pop(context);
+                        });
+                      }
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(
+                          Icons.camera_alt,
+                          size: 30,
+                        ),
+                        Text('Máy ảnh')
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 100,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      final ImagePicker _picker = ImagePicker();
+                      final XFile? image =
+                          await _picker.pickImage(source: ImageSource.gallery);
+                      if (image != null) {
+                        uploadImage(image);
+                        Future.delayed(Duration.zero, () {
+                          Navigator.pop(context);
+                        });
+                        // image.path
+                      }
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.image,
+                          size: 30,
+                        ),
+                        const Text('Thư viện')
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   void _modalBottomSheetLogout(context) {
