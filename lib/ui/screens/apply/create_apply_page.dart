@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:provider/provider.dart';
+import 'package:twg/core/dtos/apply/create_apply_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
+import 'package:twg/global/router.dart';
 
 class CreateApplyPage extends StatefulWidget {
   // final Booking booking;
@@ -13,7 +19,9 @@ class CreateApplyPage extends StatefulWidget {
 
 enum PriceOpition { accpected, refuse }
 
-class _CreateApplyPageState extends State<CreateApplyPage> {
+class _CreateApplyPageState extends State<CreateApplyPage>
+    with TickerProviderStateMixin {
+  late IApplyViewModel _iApplyViewModel;
   PriceOpition _site = PriceOpition.accpected;
   late FocusNode noteFocus;
   late FocusNode dealPriceFocus;
@@ -24,6 +32,7 @@ class _CreateApplyPageState extends State<CreateApplyPage> {
 
   @override
   void initState() {
+    _iApplyViewModel = context.read<IApplyViewModel>();
     super.initState();
     _site = PriceOpition.accpected;
 
@@ -45,36 +54,33 @@ class _CreateApplyPageState extends State<CreateApplyPage> {
     // setState(() {
     //   isLoading_create_apply = true;
     // });
-    // int price = 0;
-    // if (_site == PriceOpition.accpected) {
-    //   price = 0;
-    // } else {
-    //   price = int.parse(dealPrice.text.trim());
-    // }
-    // String note_string = " ";
-    // if (note.text.trim().length > 0) {
-    //   note_string = note.text.trim();
-    // }
-    // String result = "pass";
-    // // await Future.delayed(Duration(seconds: 2));
-    // Map<String, dynamic> _body = {
-    //   'booking_id': widget.booking.id,
-    //   'deal_price': price.toString(),
-    //   'note': note_string,
-    //   'applyer_Id': appUser.id,
-    // };
-    // result = await ApplyService.createApply(_body);
-    // if (result != "pass") {
-    //   var snackBar = SnackBar(
-    //     content: Text(result),
-    //   );
-    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    // } else {
-    //   const snackBar = SnackBar(
-    //     content: Text('Tạo apply thành công'),
-    //   );
-    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    // }
+    try {
+      int price = 0;
+      if (_site == PriceOpition.accpected) {
+        price = 0;
+      } else {
+        price = int.parse(dealPrice.text.trim());
+      }
+      String note_string = " ";
+      if (note.text.trim().length > 0) {
+        note_string = note.text.trim();
+      }
+      String result = "pass";
+
+      var bookingId = _iApplyViewModel.bookingDto!.id.toString();
+      print(bookingId);
+      result = await _iApplyViewModel
+          .createApply(CreateApplyDto(dealPrice: price, booking: bookingId));
+      // var snackBar = SnackBar(
+      //   content: Text(result),
+      // );
+      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } catch (e) {
+      // var snackBar = SnackBar(
+      //   content: Text('Xay ra loi'),
+      // );
+      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
 
     // setState(() {
     //   isLoading_create_apply = false;
@@ -87,6 +93,11 @@ class _CreateApplyPageState extends State<CreateApplyPage> {
       appBar: AppBar(
         title: const Text('Tạo apply'),
         centerTitle: true,
+        leading: InkWell(
+            onTap: () {
+              Get.offNamed(MyRouter.profile);
+            },
+            child: const Icon(Icons.arrow_back_ios)),
       ),
       body: SingleChildScrollView(
         child: Padding(

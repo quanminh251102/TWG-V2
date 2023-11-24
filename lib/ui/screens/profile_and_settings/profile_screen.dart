@@ -255,7 +255,23 @@ class _ProfileScreenState extends State<ProfileScreen>
           title: const Text('Apply của tôi'),
           trailing: const Icon(Icons.keyboard_arrow_right),
           onTap: () {
-            //  Get.offNamed(MyRouter.privacyPolicy);
+            Get.offNamed(MyRouter.myApply);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.check),
+          title: const Text('Apply in booking'),
+          trailing: const Icon(Icons.keyboard_arrow_right),
+          onTap: () {
+            Get.offNamed(MyRouter.applyInBooking);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.check),
+          title: const Text('create'),
+          trailing: const Icon(Icons.keyboard_arrow_right),
+          onTap: () {
+            Get.offNamed(MyRouter.createApply);
           },
         ),
         ListTile(

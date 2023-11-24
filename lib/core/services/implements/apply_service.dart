@@ -7,6 +7,7 @@ import 'package:twg/core/services/interfaces/iapply_service.dart';
 import 'package:twg/core/services/interfaces/imessage_service.dart';
 import 'package:twg/core/utils/token_utils.dart';
 import 'package:twg/global/locator.dart';
+import 'package:twg/ui/utils/loading_dialog_utils.dart';
 
 class ApplyService implements IApplyService {
   int _total = 0;
@@ -43,27 +44,34 @@ class ApplyService implements IApplyService {
   }
 
   @override
-  Future<void> createApply(
+  Future<String> createApply(
     CreateApplyDto? value,
   ) async {
     String? token = await TokenUtils.getToken();
+    LoadingDialogUtils.showLoading();
+    var resText = '';
     try {
+      print(value!.toJson());
       var result = await getRestClient().createApply(
         token.toString(),
         value as CreateApplyDto,
       );
-
+      print(result.message);
       if (result.success) {
-        return;
+        resText = 'Thành công';
+      } else {
+        resText = 'Thất bại';
       }
     } on Exception catch (e) {
       print(e);
     }
-    return;
+    resText = 'Thất bại';
+    LoadingDialogUtils.hideLoading();
+    return resText;
   }
 
   @override
-  Future<void> updateApply(
+  Future<String> updateApply(
     String? id,
     UpdateApplyDto? value,
   ) async {
@@ -74,13 +82,14 @@ class ApplyService implements IApplyService {
         token.toString(),
         value as UpdateApplyDto,
       );
-
       if (result.success) {
-        return;
+        return 'Thành công';
+      } else {
+        return 'Thất bại';
       }
     } on Exception catch (e) {
       print(e);
     }
-    return;
+    return 'Thất bại';
   }
 }

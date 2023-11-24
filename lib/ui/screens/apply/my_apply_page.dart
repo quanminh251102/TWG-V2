@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_cards/flutter_custom_cards.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:provider/provider.dart';
+import 'package:twg/core/dtos/apply/apply_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
+import 'package:twg/global/router.dart';
 import 'package:twg/ui/utils/handling_string_utils.dart';
 
 class MyApplyPage extends StatefulWidget {
@@ -10,10 +16,12 @@ class MyApplyPage extends StatefulWidget {
   State<MyApplyPage> createState() => _MyApplyPageState();
 }
 
-class _MyApplyPageState extends State<MyApplyPage> {
+class _MyApplyPageState extends State<MyApplyPage>
+    with TickerProviderStateMixin {
+  late IApplyViewModel _iApplyViewModel;
   bool isLoading_getMyApply = false;
-  List<dynamic> applys = [];
-  List<dynamic> applys_selected = [];
+  List<ApplyDto> applys = [];
+  List<ApplyDto> applys_selected = [];
   TextEditingController _startPoint = TextEditingController();
   TextEditingController _endPoint = TextEditingController();
   late FocusNode startPointFocus;
@@ -21,43 +29,26 @@ class _MyApplyPageState extends State<MyApplyPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
-
+    _iApplyViewModel = context.read<IApplyViewModel>();
     startPointFocus = FocusNode();
     endPointFocus = FocusNode();
 
-    init();
-  }
+    Future.delayed(Duration.zero, () async {
+      setState(() {
+        isLoading_getMyApply = true;
+      });
 
-  void init() async {
-    // setState(() {
-    //   isLoading_getMyApply = true;
-    // });
+      await _iApplyViewModel.init('');
 
-    // String result = "pass";
+      applys = _iApplyViewModel.applys;
+      applys_selected = applys;
 
-    // try {
-    //   applys = await ApplyService.getMyApply();
-    //   applys_selected = applys;
-    // } catch (e) {
-    //   result = "error";
-    // }
-
-    // if (result == "error") {
-    //   const snackBar = SnackBar(
-    //     content: Text('Bị lổi'),
-    //   );
-    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    // } else {
-    //   const snackBar = SnackBar(
-    //     content: Text('Thành công'),
-    //   );
-    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    // }
-    // setState(() {
-    //   isLoading_getMyApply = false;
-    // });
+      setState(() {
+        isLoading_getMyApply = false;
+      });
+    });
+    // TODO: implement initState
+    super.initState();
   }
 
   void do_filter() {
@@ -65,11 +56,11 @@ class _MyApplyPageState extends State<MyApplyPage> {
       print("do filter");
       applys_selected = applys.where((apply) {
         String booking_startPoint =
-            apply["booking"]["startPointMainText"].toString().toLowerCase() +
-                apply["booking"]["startPointAddress"].toString().toLowerCase();
+            apply.booking!.startPointMainText.toString().toLowerCase() +
+                apply.booking!.startPointAddress.toString().toLowerCase();
         String booking_endPoint =
-            apply["booking"]["endPointMainText"].toString().toLowerCase() +
-                apply["booking"]["endPointAddress"].toString().toLowerCase();
+            apply.booking!.endPointMainText.toString().toLowerCase() +
+                apply.booking!.endPointAddress.toString().toLowerCase();
         String search_startPoint = _startPoint.text.trim().toLowerCase();
         String search_endPoint = _endPoint.text.trim().toLowerCase();
 
@@ -173,14 +164,19 @@ class _MyApplyPageState extends State<MyApplyPage> {
       appBar: AppBar(
         title: const Text('Apply của tôi'),
         centerTitle: true,
+        leading: InkWell(
+            onTap: () {
+              Get.offNamed(MyRouter.profile);
+            },
+            child: const Icon(Icons.arrow_back_ios)),
       ),
       body: isLoading_getMyApply
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
+          : Padding(
+              padding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -203,9 +199,9 @@ class _MyApplyPageState extends State<MyApplyPage> {
                                         children: [
                                           CircleAvatar(
                                             radius: 30.0,
-                                            backgroundImage: NetworkImage(
-                                                _apply["booking"]["authorId"]
-                                                    ["avatarUrl"]),
+                                            backgroundImage: NetworkImage(_apply
+                                                .booking!.authorId!.avatarUrl
+                                                .toString()),
                                             backgroundColor: Colors.transparent,
                                           ),
                                           const SizedBox(width: 12),
@@ -214,14 +210,16 @@ class _MyApplyPageState extends State<MyApplyPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                _apply["booking"]["authorId"]
-                                                    ["first_name"],
+                                                _apply.booking!.authorId!
+                                                    .firstName
+                                                    .toString(),
                                                 style: const TextStyle(
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
-                                              Text(_apply["booking"]["authorId"]
-                                                  ["phoneNumber"]),
+                                              Text(_apply.booking!.authorId!
+                                                  .phoneNumber
+                                                  .toString()),
                                             ],
                                           ),
                                         ],
@@ -231,17 +229,18 @@ class _MyApplyPageState extends State<MyApplyPage> {
                                             CrossAxisAlignment.end,
                                         children: [
                                           Text(
-                                              'Giá : ${HandlingStringUtils.priceInPost_noType((_apply["booking"]["price"]).toString())}'),
+                                              'Giá : ${HandlingStringUtils.priceInPost_noType((_apply.booking!.price).toString())}'),
                                           Text(HandlingStringUtils
                                               .timeDistanceFromNow(
-                                                  DateTime.parse(
-                                                      _apply["createdAt"]))),
+                                                  DateTime.parse(_apply
+                                                      .createdAt
+                                                      .toString()))),
                                         ],
                                       )
                                     ],
                                   ),
                                   const SizedBox(height: 8),
-                                  if (_apply["state"] == 'waiting')
+                                  if (_apply.state == 'waiting')
                                     Row(
                                       children: [
                                         Material(
@@ -273,7 +272,7 @@ class _MyApplyPageState extends State<MyApplyPage> {
                                         ),
                                       ],
                                     ),
-                                  if (_apply["state"] == 'accepted')
+                                  if (_apply.state == 'accepted')
                                     Row(
                                       children: [
                                         Material(
@@ -305,7 +304,7 @@ class _MyApplyPageState extends State<MyApplyPage> {
                                         ),
                                       ],
                                     ),
-                                  if (_apply["state"] == 'starting') ...[
+                                  if (_apply.state == 'starting') ...[
                                     Row(
                                       children: [
                                         Material(
@@ -343,7 +342,7 @@ class _MyApplyPageState extends State<MyApplyPage> {
                                         },
                                         child: const Text('Xem bản đồ')),
                                   ],
-                                  if (_apply["state"] == 'close')
+                                  if (_apply.state == 'close')
                                     Row(
                                       children: [
                                         Material(
@@ -375,7 +374,7 @@ class _MyApplyPageState extends State<MyApplyPage> {
                                         ),
                                       ],
                                     ),
-                                  if (_apply["state"] == 'refuse')
+                                  if (_apply.state == 'refuse')
                                     Row(
                                       children: [
                                         Material(
@@ -413,9 +412,9 @@ class _MyApplyPageState extends State<MyApplyPage> {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                      "Điểm đi: ${_apply["booking"]["startPointAddress"]}"),
+                                      "Điểm đi: ${_apply.booking!.startPointAddress}"),
                                   Text(
-                                      "Điểm đến: ${_apply["booking"]["endPointAddress"]}"),
+                                      "Điểm đến: ${_apply.booking!.endPointAddress}"),
                                 ])),
                         const SizedBox(height: 12),
                       ],

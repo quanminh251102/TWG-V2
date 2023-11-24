@@ -13,6 +13,6 @@ abstract class IApplyService {
     String? bookingId,
   });
   int get total;
-  Future<void> createApply(CreateApplyDto value);
-  Future<void> updateApply(String id, UpdateApplyDto value);
+  Future<String> createApply(CreateApplyDto value);
+  Future<String> updateApply(String id, UpdateApplyDto value);
 }

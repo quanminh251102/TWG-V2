@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'widgets/apply_in_booking_item.dart';
 
 class ApplyInBookingPage extends StatefulWidget {
@@ -12,7 +14,9 @@ class ApplyInBookingPage extends StatefulWidget {
   State<ApplyInBookingPage> createState() => _ApplyInBookingPageState();
 }
 
-class _ApplyInBookingPageState extends State<ApplyInBookingPage> {
+class _ApplyInBookingPageState extends State<ApplyInBookingPage>
+    with TickerProviderStateMixin {
+  late IApplyViewModel _iApplyViewModel;
   bool isLoading_getApplyInBooking = false;
   List<dynamic> applys = [];
   List<dynamic> applys_selected = [];
@@ -20,6 +24,7 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage> {
   late FocusNode nameFocus;
   @override
   void initState() {
+    _iApplyViewModel = context.read<IApplyViewModel>();
     // TODO: implement initState
     super.initState();
 
@@ -99,10 +104,11 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage> {
               ),
             ),
             hintText: 'Tìm kiếm',
-            // prefixIcon: Icon(
-            //   Icons.email_outlined,
-            //   color: nameFocus.hasFocus ? ColorUtils.primaryColor : Colors.black,
-            // ),
+            prefixIcon: Icon(
+              Icons.email_outlined,
+              color:
+                  nameFocus.hasFocus ? ColorUtils.primaryColor : Colors.black,
+            ),
           ),
           onChanged: (text) {
             do_filter();
