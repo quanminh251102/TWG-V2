@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:twg/core/dtos/apply/apply_dto.dart';
+import 'package:twg/core/dtos/apply/create_apply_dto.dart';
+import 'package:twg/core/dtos/apply/update_apply_dto.dart';
 import 'package:twg/core/dtos/auth/access_token_dto.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/dtos/auth/login_dto.dart';
@@ -77,6 +80,29 @@ abstract class RestClient {
   Future<BaseApiDto<AccountDto>> updateProfile(
     @Header('api_key') String token,
     @Body() AccountDto model,
+  );
+
+  // apply
+  @GET('/api/apply')
+  Future<BaseApiDto<List<ApplyDto>>> getApplys({
+    @Header('api_key') String? token,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('sortCreatedAt') int? sortCreatedAt,
+    @Query('sortUpdatedAt') int? sortUpdatedAt,
+    @Query('applyerId') String? applyerId,
+    @Query('bookingId') String? bookingId,
+  });
+  @POST("/api/apply")
+  Future<BaseApiDto<AccountDto>> createApply(
+    @Header('api_key') String token,
+    @Body() CreateApplyDto model,
+  );
+  @PATCH("/api/apply/{id}")
+  Future<BaseApiDto<AccountDto>> updateApply(
+    @Path("id") String id,
+    @Header('api_key') String token,
+    @Body() UpdateApplyDto model,
   );
 
   ///account

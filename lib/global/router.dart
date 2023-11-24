@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:twg/ui/screens/apply/apply_in_booking_page.dart';
+import 'package:twg/ui/screens/apply/create_apply_page.dart';
+import 'package:twg/ui/screens/apply/my_apply_page.dart';
 import 'package:twg/ui/screens/booking/add_booking.dart';
 import 'package:twg/ui/screens/booking/booking_screen.dart';
 import 'package:twg/ui/screens/call/call.dart';
@@ -27,6 +30,9 @@ class MyRouter {
   static const String profile = '/profile';
   static const String updateProfile = '/updateProfile';
   static const String privacyPolicy = '/privacyPolicy';
+  static const String createApply = '/createApply';
+  static const String applyInBooking = '/applyInBooking';
+  static const String myApply = '/myApply';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -112,6 +118,22 @@ class MyRouter {
         return _buildRouteNavigationWithoutEffect(
           settings,
           const UpdateProfilePage(),
+        );
+
+      case createApply:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const CreateApplyPage(),
+        );
+      case applyInBooking:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const ApplyInBookingPage(),
+        );
+      case myApply:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const MyApplyPage(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

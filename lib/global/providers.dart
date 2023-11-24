@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:twg/core/view_models/implements/apply_viewmodel.dart';
 import 'package:twg/core/view_models/implements/auth_viewmodel.dart';
 import 'package:twg/core/view_models/implements/booking_viewmodel.dart';
 import 'package:twg/core/view_models/implements/call_viewmodel.dart';
@@ -8,6 +9,7 @@ import 'package:twg/core/view_models/implements/messasge_viewmodel.dart';
 import 'package:twg/core/view_models/implements/profile_viewmodel.dart';
 import 'package:twg/core/view_models/implements/splash_screen_view_model.dart';
 import 'package:twg/core/view_models/implements/chat_room_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/icall_viewmodel.dart';
@@ -41,6 +43,9 @@ List<SingleChildWidget> viewModelProviders = [
   ),
   ChangeNotifierProvider<IProfileViewModel>(
     create: (_) => ProfileViewModel(),
+  ),
+  ChangeNotifierProvider<IApplyViewModel>(
+    create: (_) => ApplyViewModel(),
   ),
   // ChangeNotifierProvider<INotificationViewModel>(
   //   create: (_) => NotificationViewModel(),
