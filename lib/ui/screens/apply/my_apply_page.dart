@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
-import 'package:twg/core/dtos/apply/apply_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/global/router.dart';
@@ -31,49 +30,11 @@ class _MyApplyPageState extends State<MyApplyPage>
     endPointFocus = FocusNode();
 
     Future.delayed(Duration.zero, () async {
-      // setState(() {
-      //   isLoading_getMyApply = true;
-      // });
-
       await _iApplyViewModel.init('');
-
-      // applys = _iApplyViewModel.applys;
-      // applys_selected = applys;
-
-      // setState(() {
-      //   isLoading_getMyApply = false;
-      // });
     });
     // TODO: implement initState
     super.initState();
   }
-
-  // void do_filter() {
-  //   setState(() {
-  //     print("do filter");
-  //     applys_selected = applys.where((apply) {
-  //       String booking_startPoint =
-  //           apply.booking!.startPointMainText.toString().toLowerCase() +
-  //               apply.booking!.startPointAddress.toString().toLowerCase();
-  //       String booking_endPoint =
-  //           apply.booking!.endPointMainText.toString().toLowerCase() +
-  //               apply.booking!.endPointAddress.toString().toLowerCase();
-  //       String search_startPoint = _startPoint.text.trim().toLowerCase();
-  //       String search_endPoint = _endPoint.text.trim().toLowerCase();
-
-  //       if (booking_startPoint.contains(search_startPoint) &&
-  //           booking_endPoint.contains(search_endPoint)) {
-  //         return true;
-  //       }
-  //       return false;
-  //     }).toList();
-  //     print(applys_selected);
-  //   });
-  // }
-
-  // void watch_map(_apply) {
-  //   // appRouter.push(TrackingScreenRoute(apply: _apply));
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -192,6 +153,16 @@ class _MyApplyPageState extends State<MyApplyPage>
                         ],
                     ],
                   );
+
+                  // return ListView.builder(
+                  //   itemBuilder: (ctx, index) {
+                  //     return ApplyItem(
+                  //       apply: vm.applysAfterFilter[index],
+                  //       vm: _iApplyViewModel,
+                  //     );
+                  //   },
+                  //   itemCount: vm.applysAfterFilter.length,
+                  // );
                 },
               ),
             ],

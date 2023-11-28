@@ -35,6 +35,15 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
     notifyListeners();
   }
 
+  String _applyerName = '';
+
+  @override
+  void setApplyerName(String value) {
+    _applyerName = value;
+    filter();
+    notifyListeners();
+  }
+
   int _totalCount = 0;
   bool _isLoading = false;
   int page = 1;
@@ -77,8 +86,13 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
       String search_startPoint = _startPoint.toLowerCase();
       String search_endPoint = _endPoint.toLowerCase();
 
+      String apply_applyerName =
+          apply.applyer!.firstName.toString().toLowerCase();
+      String search_applyerName = _applyerName.toString().toLowerCase();
+
       if (booking_startPoint.contains(search_startPoint) &&
-          booking_endPoint.contains(search_endPoint)) {
+          booking_endPoint.contains(search_endPoint) &&
+          apply_applyerName.contains(search_applyerName)) {
         return true;
       }
       return false;
@@ -100,6 +114,7 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
     final paginationProducts = await _iApplyService.getApplys(
       page: 1,
       pageSize: 10,
+      bookingId: _isMyApplys ? null : _bookingDto!.id,
     );
     _applys = paginationProducts ?? [];
     _totalCount = _iApplyService.total;
@@ -118,6 +133,7 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
     final paginationApplys = await _iApplyService.getApplys(
       page: page,
       pageSize: page * 10,
+      bookingId: _isMyApplys ? null : _bookingDto!.id,
     );
 
     _applys.addAll(

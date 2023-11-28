@@ -24,41 +24,107 @@ class ApplyItem extends StatelessWidget {
       childPadding: 12,
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 30.0,
-                    backgroundImage:
-                        NetworkImage(apply.applyer!.avatarUrl.toString()),
-                    backgroundColor: Colors.transparent,
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+          // user is the one who create booking
+          if (!vm.isMyApplys)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 30.0,
+                      backgroundImage:
+                          NetworkImage(apply.applyer!.avatarUrl.toString()),
+                      backgroundColor: Colors.transparent,
+                    ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          apply.applyer!.firstName.toString(),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(apply.applyer!.phoneNumber.toString()),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    if (apply.dealPrice == 0)
                       Text(
-                        apply.applyer!.firstName.toString(),
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        'Đồng ý giá : ${HandlingStringUtils.priceInPost_noType((apply.booking!.price.toString()).toString())}',
+                        style: const TextStyle(color: Colors.green),
                       ),
-                      Text(apply.applyer!.phoneNumber.toString()),
-                    ],
-                  ),
-                ],
+                    if (apply.dealPrice != 0)
+                      Text(
+                        'Deal giá : ${HandlingStringUtils.priceInPost_noType((apply.dealPrice.toString()).toString())}',
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    Text(HandlingStringUtils.timeDistanceFromNow(
+                        DateTime.parse(apply.createdAt.toString()))),
+                  ],
+                )
+              ],
+            ),
+          // user is applyer
+          if (vm.isMyApplys) ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 30.0,
+                      backgroundImage: NetworkImage(
+                          apply.booking!.authorId!.avatarUrl.toString()),
+                      backgroundColor: Colors.transparent,
+                    ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          apply.booking!.authorId!.firstName.toString(),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(apply.booking!.authorId!.phoneNumber.toString()),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                        'Giá : ${HandlingStringUtils.priceInPost_noType((apply.booking!.price).toString())}'),
+                    Text(HandlingStringUtils.timeDistanceFromNow(
+                        DateTime.parse(apply.createdAt.toString()))),
+                  ],
+                )
+              ],
+            ),
+            if (apply.dealPrice == 0)
+              Text(
+                'Bạn đồng ý giá : ${HandlingStringUtils.priceInPost_noType((apply.booking!.price.toString()).toString())}',
+                style: const TextStyle(color: Colors.green),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                      'Giá : ${HandlingStringUtils.priceInPost_noType((apply.booking!.price.toString()).toString())}'),
-                  Text(HandlingStringUtils.timeDistanceFromNow(
-                      DateTime.parse(apply.createdAt.toString()))),
-                ],
-              )
-            ],
-          ),
+            if (apply.dealPrice != 0)
+              Text(
+                'Bạn đã deal giá : ${HandlingStringUtils.priceInPost_noType((apply.dealPrice.toString()).toString())}',
+                style: const TextStyle(color: Colors.red),
+              ),
+            const SizedBox(height: 8),
+            const Text(
+              "Thông tin chuyến đi",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text("Điểm đi: ${apply.booking!.startPointAddress}"),
+            Text("Điểm đến: ${apply.booking!.endPointAddress}"),
+          ],
+
           const SizedBox(height: 8),
           if (apply.state == "waiting") ApplyItemWaiting(apply: apply, vm: vm),
           if (apply.state == "accepted")

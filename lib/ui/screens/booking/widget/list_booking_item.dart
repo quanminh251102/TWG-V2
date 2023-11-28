@@ -332,6 +332,7 @@ class _ListBookingItemState extends State<ListBookingItem> {
                     if (isMyList)
                       ElevatedButton(
                         onPressed: () {
+                          _iApplyViewModel.setBookingDto(widget.booking);
                           Get.offNamed(MyRouter.applyInBooking);
                         },
                         child: Text('Danh sách'),

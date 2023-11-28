@@ -21,4 +21,5 @@ abstract class IApplyViewModel implements ChangeNotifier {
   List<ApplyDto> get applysAfterFilter;
   void setStartPoint(String value);
   void setEndPoint(String value);
+  void setApplyerName(String value);
 }
