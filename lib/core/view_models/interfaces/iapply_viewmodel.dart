@@ -17,4 +17,8 @@ abstract class IApplyViewModel implements ChangeNotifier {
 
   bool get isMyApplys;
   void setIsMyApplys(bool value);
+
+  List<ApplyDto> get applysAfterFilter;
+  void setStartPoint(String value);
+  void setEndPoint(String value);
 }

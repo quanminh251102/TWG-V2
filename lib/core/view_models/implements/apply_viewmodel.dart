@@ -13,6 +13,28 @@ import 'package:twg/global/router.dart';
 
 class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
   List<ApplyDto> _applys = [];
+
+  List<ApplyDto> _applysAfterFilter = [];
+  @override
+  List<ApplyDto> get applysAfterFilter => _applysAfterFilter;
+  String _startPoint = '';
+
+  @override
+  void setStartPoint(String value) {
+    _startPoint = value;
+    filter();
+    notifyListeners();
+  }
+
+  String _endPoint = '';
+
+  @override
+  void setEndPoint(String value) {
+    _endPoint = value;
+    filter();
+    notifyListeners();
+  }
+
   int _totalCount = 0;
   bool _isLoading = false;
   int page = 1;
@@ -44,10 +66,32 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
     _isMyApplys = value;
   }
 
+  void filter() {
+    _applysAfterFilter = applys.where((apply) {
+      String booking_startPoint =
+          apply.booking!.startPointMainText.toString().toLowerCase() +
+              apply.booking!.startPointAddress.toString().toLowerCase();
+      String booking_endPoint =
+          apply.booking!.endPointMainText.toString().toLowerCase() +
+              apply.booking!.endPointAddress.toString().toLowerCase();
+      String search_startPoint = _startPoint.toLowerCase();
+      String search_endPoint = _endPoint.toLowerCase();
+
+      if (booking_startPoint.contains(search_startPoint) &&
+          booking_endPoint.contains(search_endPoint)) {
+        return true;
+      }
+      return false;
+    }).toList();
+  }
+
   void _reset() {
     _keyword = null;
     page = 1;
     _applys.clear();
+    _applysAfterFilter.clear();
+    _startPoint = '';
+    _endPoint = '';
   }
 
   @override
@@ -59,6 +103,7 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
     );
     _applys = paginationProducts ?? [];
     _totalCount = _iApplyService.total;
+    filter();
     notifyListeners();
   }
 
@@ -81,6 +126,7 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
     _totalCount = _iApplyService.total;
     page += 1;
     _isLoading = false;
+    filter();
     notifyListeners();
   }
 
