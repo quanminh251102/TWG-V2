@@ -11,4 +11,11 @@ abstract class IBookingService {
     String? authorId,
   });
   int get total;
+  Future<List<BookingDto>?> getMyBookings({
+    String? token,
+    int? page,
+    int? pageSize,
+    int? sortCreatedAt,
+    int? sortUpdatedAt,
+  });
 }

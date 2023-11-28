@@ -13,6 +13,7 @@ class ___CancelBookingTabState extends State<_CancelBookingTab> {
     _iBookingViewModel = context.read<IBookingViewModel>();
     scrollController = ScrollController();
     Future.delayed(Duration.zero, () async {
+      _iBookingViewModel.setIsMyList(false);
       await _iBookingViewModel.init(
         EnumHelper.getDescription(
           EnumMap.bookingStatusType,

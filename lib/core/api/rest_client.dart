@@ -40,6 +40,14 @@ abstract class RestClient {
     @Query('status') String? status,
     @Query('authorId') String? authorId,
   });
+  @GET('/api/booking')
+  Future<BaseApiDto<List<BookingDto>>> getMyBookings({
+    @Header('api_key') String? token,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('sortCreatedAt') int? sortCreatedAt,
+    @Query('sortUpdatedAt') int? sortUpdatedAt,
+  });
 
   @POST("/api/auth/login")
   Future<BaseApiDto<BookingDto>> createBooking({

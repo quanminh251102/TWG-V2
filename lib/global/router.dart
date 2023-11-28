@@ -4,6 +4,7 @@ import 'package:twg/ui/screens/apply/create_apply_page.dart';
 import 'package:twg/ui/screens/apply/my_apply_page.dart';
 import 'package:twg/ui/screens/booking/add_booking.dart';
 import 'package:twg/ui/screens/booking/booking_screen.dart';
+import 'package:twg/ui/screens/booking/my_booking_page.dart';
 import 'package:twg/ui/screens/call/call.dart';
 import 'package:twg/ui/screens/call/incoming_call.dart';
 import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
@@ -33,6 +34,7 @@ class MyRouter {
   static const String createApply = '/createApply';
   static const String applyInBooking = '/applyInBooking';
   static const String myApply = '/myApply';
+  static const String myBooking = '/myBooking';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -134,6 +136,11 @@ class MyRouter {
         return _buildRouteNavigationWithoutEffect(
           settings,
           const MyApplyPage(),
+        );
+      case myBooking:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const MyBookPage(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

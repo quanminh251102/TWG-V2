@@ -247,7 +247,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           title: const Text('Các chuyến đi đã đăng'),
           trailing: const Icon(Icons.keyboard_arrow_right),
           onTap: () {
-            // Get.offNamed(MyRouter.privacyPolicy);
+            Get.offNamed(MyRouter.myBooking);
           },
         ),
         ListTile(

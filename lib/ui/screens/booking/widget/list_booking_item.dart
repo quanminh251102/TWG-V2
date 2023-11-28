@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/global/router.dart';
 
 class ListBookingItem extends StatefulWidget {
@@ -26,10 +27,14 @@ class _ListBookingItemState extends State<ListBookingItem> {
   bool isNavigateChatRoom = false;
   bool isNavigateCreateApply = false;
   late IApplyViewModel _iApplyViewModel;
+  late IBookingViewModel _iBookingViewModel;
+  bool isMyList = false;
 
   @override
   void initState() {
     _iApplyViewModel = context.read<IApplyViewModel>();
+    _iBookingViewModel = context.read<IBookingViewModel>();
+    isMyList = _iBookingViewModel.isMyList;
     super.initState();
   }
 
@@ -324,46 +329,47 @@ class _ListBookingItemState extends State<ListBookingItem> {
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 5),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            (isNavigateChatRoom)
-                                ? const CircularProgressIndicator()
-                                : ElevatedButton(
-                                    onPressed: () {
-                                      navigateChatRoom(context);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        minimumSize: const Size(120, 30),
-                                        maximumSize: const Size(120, 30),
-                                        backgroundColor:
-                                            ColorUtils.primaryColor),
-                                    child: const Text(
-                                      'Trò chuyện',
-                                      style: TextStyle(color: Colors.white),
+                    if (isMyList == false)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 5),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              (isNavigateChatRoom)
+                                  ? const CircularProgressIndicator()
+                                  : ElevatedButton(
+                                      onPressed: () {
+                                        navigateChatRoom(context);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          minimumSize: const Size(120, 30),
+                                          maximumSize: const Size(120, 30),
+                                          backgroundColor:
+                                              ColorUtils.primaryColor),
+                                      child: const Text(
+                                        'Trò chuyện',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                            (isNavigateCreateApply)
-                                ? const CircularProgressIndicator()
-                                : ElevatedButton(
-                                    onPressed: () {
-                                      navigateCreateApply(context);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        minimumSize: const Size(100, 30),
-                                        maximumSize: const Size(100, 30),
-                                        backgroundColor:
-                                            ColorUtils.primaryColor),
-                                    child: const Text(
-                                      'Tham gia',
-                                      style: TextStyle(color: Colors.white),
+                              (isNavigateCreateApply)
+                                  ? const CircularProgressIndicator()
+                                  : ElevatedButton(
+                                      onPressed: () {
+                                        navigateCreateApply(context);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          minimumSize: const Size(100, 30),
+                                          maximumSize: const Size(100, 30),
+                                          backgroundColor:
+                                              ColorUtils.primaryColor),
+                                      child: const Text(
+                                        'Tham gia',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                          ]),
-                    ),
+                            ]),
+                      ),
                   ],
                 ),
               ],
