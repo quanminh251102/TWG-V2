@@ -329,6 +329,13 @@ class _ListBookingItemState extends State<ListBookingItem> {
                         ),
                       ],
                     ),
+                    if (isMyList)
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.offNamed(MyRouter.applyInBooking);
+                        },
+                        child: Text('Danh sách'),
+                      ),
                     if (isMyList == false)
                       Padding(
                         padding: const EdgeInsets.symmetric(

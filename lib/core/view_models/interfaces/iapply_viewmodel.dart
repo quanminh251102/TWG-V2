@@ -14,4 +14,7 @@ abstract class IApplyViewModel implements ChangeNotifier {
   Future<void> getMoreApplys(String status);
   Future<void> createApply(CreateApplyDto value);
   Future<void> updateApply(String id, UpdateApplyDto value);
+
+  bool get isMyApplys;
+  void setIsMyApplys(bool value);
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
-import 'widgets/apply_in_booking_item.dart';
+import 'widgets/apply_item.dart';
 
 class ApplyInBookingPage extends StatefulWidget {
   // final dynamic booking;
@@ -25,6 +25,7 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage>
   @override
   void initState() {
     _iApplyViewModel = context.read<IApplyViewModel>();
+    _iApplyViewModel.setIsMyApplys(false);
     // TODO: implement initState
     super.initState();
 
@@ -118,7 +119,10 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage>
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Danh sách người dùng muốn tham gia')),
+      appBar: AppBar(
+        title: const Text('Danh sách người dùng muốn tham gia'),
+        elevation: 0.0,
+      ),
       body: isLoading_getApplyInBooking
           ? const Center(
               child: CircularProgressIndicator(),
@@ -135,9 +139,9 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage>
                       const Text('Danh sách rỗng'),
                     if (applys_selected.length > 0)
                       for (var _apply in applys_selected) ...[
-                        ApplyInBookItem(
+                        ApplyItem(
                           apply: _apply,
-                          reload: init,
+                          vm: _iApplyViewModel,
                         ),
                         const SizedBox(height: 12),
                       ],

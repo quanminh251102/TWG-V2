@@ -7,6 +7,7 @@ import 'package:twg/core/dtos/apply/apply_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/global/router.dart';
+import 'package:twg/ui/screens/apply/widgets/apply_item.dart';
 import 'package:twg/ui/utils/handling_string_utils.dart';
 
 class MyApplyPage extends StatefulWidget {
@@ -30,6 +31,7 @@ class _MyApplyPageState extends State<MyApplyPage>
   @override
   void initState() {
     _iApplyViewModel = context.read<IApplyViewModel>();
+    _iApplyViewModel.setIsMyApplys(true);
     startPointFocus = FocusNode();
     endPointFocus = FocusNode();
 
@@ -186,237 +188,238 @@ class _MyApplyPageState extends State<MyApplyPage>
                       const Text('Danh sách rỗng'),
                     if (applys_selected.length > 0)
                       for (var _apply in applys_selected) ...[
-                        CustomCard(
-                            borderRadius: 10,
-                            childPadding: 16,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 30.0,
-                                            backgroundImage: NetworkImage(_apply
-                                                .booking!.authorId!.avatarUrl
-                                                .toString()),
-                                            backgroundColor: Colors.transparent,
-                                          ),
-                                          const SizedBox(width: 12),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                _apply.booking!.authorId!
-                                                    .firstName
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(_apply.booking!.authorId!
-                                                  .phoneNumber
-                                                  .toString()),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                              'Giá : ${HandlingStringUtils.priceInPost_noType((_apply.booking!.price).toString())}'),
-                                          Text(HandlingStringUtils
-                                              .timeDistanceFromNow(
-                                                  DateTime.parse(_apply
-                                                      .createdAt
-                                                      .toString()))),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8),
-                                  if (_apply.state == 'waiting')
-                                    Row(
-                                      children: [
-                                        Material(
-                                          color: const Color(0xffEDF3FC),
-                                          borderRadius:
-                                              BorderRadius.circular(52),
-                                          child: InkWell(
-                                            onTap: () {},
-                                            borderRadius:
-                                                BorderRadius.circular(52),
-                                            child: Container(
-                                              width: 109,
-                                              height: 39,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(52),
-                                              ),
-                                              alignment: Alignment.center,
-                                              child: const Text(
-                                                'Đang chờ',
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xff5386E4),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  if (_apply.state == 'accepted')
-                                    Row(
-                                      children: [
-                                        Material(
-                                          color: const Color(0xffE8FDF2),
-                                          borderRadius:
-                                              BorderRadius.circular(52),
-                                          child: InkWell(
-                                            onTap: () {},
-                                            borderRadius:
-                                                BorderRadius.circular(52),
-                                            child: Container(
-                                              width: 76,
-                                              height: 39,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(52),
-                                              ),
-                                              alignment: Alignment.center,
-                                              child: const Text(
-                                                'Chấp nhận',
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xff0E9D57),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  if (_apply.state == 'starting') ...[
-                                    Row(
-                                      children: [
-                                        Material(
-                                          color: const Color(0xffE8FDF2),
-                                          borderRadius:
-                                              BorderRadius.circular(52),
-                                          child: InkWell(
-                                            onTap: () {},
-                                            borderRadius:
-                                                BorderRadius.circular(52),
-                                            child: Container(
-                                              width: 120,
-                                              height: 39,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(52),
-                                              ),
-                                              alignment: Alignment.center,
-                                              child: const Text(
-                                                'Đang bắt đầu',
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xff0E9D57),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          watch_map(_apply);
-                                        },
-                                        child: const Text('Xem bản đồ')),
-                                  ],
-                                  if (_apply.state == 'close')
-                                    Row(
-                                      children: [
-                                        Material(
-                                          color: const Color(0xffE8FDF2),
-                                          borderRadius:
-                                              BorderRadius.circular(52),
-                                          child: InkWell(
-                                            onTap: () {},
-                                            borderRadius:
-                                                BorderRadius.circular(52),
-                                            child: Container(
-                                              width: 120,
-                                              height: 39,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(52),
-                                              ),
-                                              alignment: Alignment.center,
-                                              child: const Text(
-                                                'Đã hoàn thành',
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xff0E9D57),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  if (_apply.state == 'refuse')
-                                    Row(
-                                      children: [
-                                        Material(
-                                            color: const Color(0xffFFEDED),
-                                            borderRadius:
-                                                BorderRadius.circular(52),
-                                            child: InkWell(
-                                              onTap: () {},
-                                              borderRadius:
-                                                  BorderRadius.circular(52),
-                                              child: Container(
-                                                width: 80,
-                                                height: 39,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(52),
-                                                ),
-                                                alignment: Alignment.center,
-                                                child: const Text(
-                                                  'Bị từ chối',
-                                                  style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color(0xffDC312D),
-                                                  ),
-                                                ),
-                                              ),
-                                            ))
-                                      ],
-                                    ),
-                                  const SizedBox(height: 8),
-                                  const Text(
-                                    "Thông tin bài post",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                      "Điểm đi: ${_apply.booking!.startPointAddress}"),
-                                  Text(
-                                      "Điểm đến: ${_apply.booking!.endPointAddress}"),
-                                ])),
+                        // CustomCard(
+                        //     borderRadius: 10,
+                        //     childPadding: 16,
+                        //     child: Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         children: [
+                        //           Row(
+                        //             mainAxisAlignment:
+                        //                 MainAxisAlignment.spaceBetween,
+                        //             children: [
+                        //               Row(
+                        //                 children: [
+                        //                   CircleAvatar(
+                        //                     radius: 30.0,
+                        //                     backgroundImage: NetworkImage(_apply
+                        //                         .booking!.authorId!.avatarUrl
+                        //                         .toString()),
+                        //                     backgroundColor: Colors.transparent,
+                        //                   ),
+                        //                   const SizedBox(width: 12),
+                        //                   Column(
+                        //                     crossAxisAlignment:
+                        //                         CrossAxisAlignment.start,
+                        //                     children: [
+                        //                       Text(
+                        //                         _apply.booking!.authorId!
+                        //                             .firstName
+                        //                             .toString(),
+                        //                         style: const TextStyle(
+                        //                             fontWeight:
+                        //                                 FontWeight.bold),
+                        //                       ),
+                        //                       Text(_apply.booking!.authorId!
+                        //                           .phoneNumber
+                        //                           .toString()),
+                        //                     ],
+                        //                   ),
+                        //                 ],
+                        //               ),
+                        //               Column(
+                        //                 crossAxisAlignment:
+                        //                     CrossAxisAlignment.end,
+                        //                 children: [
+                        //                   Text(
+                        //                       'Giá : ${HandlingStringUtils.priceInPost_noType((_apply.booking!.price).toString())}'),
+                        //                   Text(HandlingStringUtils
+                        //                       .timeDistanceFromNow(
+                        //                           DateTime.parse(_apply
+                        //                               .createdAt
+                        //                               .toString()))),
+                        //                 ],
+                        //               )
+                        //             ],
+                        //           ),
+                        //           const SizedBox(height: 8),
+                        //           if (_apply.state == 'waiting')
+                        //             Row(
+                        //               children: [
+                        //                 Material(
+                        //                   color: const Color(0xffEDF3FC),
+                        //                   borderRadius:
+                        //                       BorderRadius.circular(52),
+                        //                   child: InkWell(
+                        //                     onTap: () {},
+                        //                     borderRadius:
+                        //                         BorderRadius.circular(52),
+                        //                     child: Container(
+                        //                       width: 109,
+                        //                       height: 39,
+                        //                       decoration: BoxDecoration(
+                        //                         borderRadius:
+                        //                             BorderRadius.circular(52),
+                        //                       ),
+                        //                       alignment: Alignment.center,
+                        //                       child: const Text(
+                        //                         'Đang chờ',
+                        //                         style: TextStyle(
+                        //                           fontSize: 13,
+                        //                           fontWeight: FontWeight.bold,
+                        //                           color: Color(0xff5386E4),
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           if (_apply.state == 'accepted')
+                        //             Row(
+                        //               children: [
+                        //                 Material(
+                        //                   color: const Color(0xffE8FDF2),
+                        //                   borderRadius:
+                        //                       BorderRadius.circular(52),
+                        //                   child: InkWell(
+                        //                     onTap: () {},
+                        //                     borderRadius:
+                        //                         BorderRadius.circular(52),
+                        //                     child: Container(
+                        //                       width: 76,
+                        //                       height: 39,
+                        //                       decoration: BoxDecoration(
+                        //                         borderRadius:
+                        //                             BorderRadius.circular(52),
+                        //                       ),
+                        //                       alignment: Alignment.center,
+                        //                       child: const Text(
+                        //                         'Chấp nhận',
+                        //                         style: TextStyle(
+                        //                           fontSize: 13,
+                        //                           fontWeight: FontWeight.bold,
+                        //                           color: Color(0xff0E9D57),
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           if (_apply.state == 'starting') ...[
+                        //             Row(
+                        //               children: [
+                        //                 Material(
+                        //                   color: const Color(0xffE8FDF2),
+                        //                   borderRadius:
+                        //                       BorderRadius.circular(52),
+                        //                   child: InkWell(
+                        //                     onTap: () {},
+                        //                     borderRadius:
+                        //                         BorderRadius.circular(52),
+                        //                     child: Container(
+                        //                       width: 120,
+                        //                       height: 39,
+                        //                       decoration: BoxDecoration(
+                        //                         borderRadius:
+                        //                             BorderRadius.circular(52),
+                        //                       ),
+                        //                       alignment: Alignment.center,
+                        //                       child: const Text(
+                        //                         'Đang bắt đầu',
+                        //                         style: TextStyle(
+                        //                           fontSize: 13,
+                        //                           fontWeight: FontWeight.bold,
+                        //                           color: Color(0xff0E9D57),
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //             ElevatedButton(
+                        //                 onPressed: () {
+                        //                   watch_map(_apply);
+                        //                 },
+                        //                 child: const Text('Xem bản đồ')),
+                        //           ],
+                        //           if (_apply.state == 'close')
+                        //             Row(
+                        //               children: [
+                        //                 Material(
+                        //                   color: const Color(0xffE8FDF2),
+                        //                   borderRadius:
+                        //                       BorderRadius.circular(52),
+                        //                   child: InkWell(
+                        //                     onTap: () {},
+                        //                     borderRadius:
+                        //                         BorderRadius.circular(52),
+                        //                     child: Container(
+                        //                       width: 120,
+                        //                       height: 39,
+                        //                       decoration: BoxDecoration(
+                        //                         borderRadius:
+                        //                             BorderRadius.circular(52),
+                        //                       ),
+                        //                       alignment: Alignment.center,
+                        //                       child: const Text(
+                        //                         'Đã hoàn thành',
+                        //                         style: TextStyle(
+                        //                           fontSize: 13,
+                        //                           fontWeight: FontWeight.bold,
+                        //                           color: Color(0xff0E9D57),
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           if (_apply.state == 'refuse')
+                        //             Row(
+                        //               children: [
+                        //                 Material(
+                        //                     color: const Color(0xffFFEDED),
+                        //                     borderRadius:
+                        //                         BorderRadius.circular(52),
+                        //                     child: InkWell(
+                        //                       onTap: () {},
+                        //                       borderRadius:
+                        //                           BorderRadius.circular(52),
+                        //                       child: Container(
+                        //                         width: 80,
+                        //                         height: 39,
+                        //                         decoration: BoxDecoration(
+                        //                           borderRadius:
+                        //                               BorderRadius.circular(52),
+                        //                         ),
+                        //                         alignment: Alignment.center,
+                        //                         child: const Text(
+                        //                           'Bị từ chối',
+                        //                           style: TextStyle(
+                        //                             fontSize: 13,
+                        //                             fontWeight: FontWeight.bold,
+                        //                             color: Color(0xffDC312D),
+                        //                           ),
+                        //                         ),
+                        //                       ),
+                        //                     ))
+                        //               ],
+                        //             ),
+                        //           const SizedBox(height: 8),
+                        //           const Text(
+                        //             "Thông tin bài post",
+                        //             style:
+                        //                 TextStyle(fontWeight: FontWeight.bold),
+                        //           ),
+                        //           Text(
+                        //               "Điểm đi: ${_apply.booking!.startPointAddress}"),
+                        //           Text(
+                        //               "Điểm đến: ${_apply.booking!.endPointAddress}"),
+                        //         ])),
+                        ApplyItem(apply: _apply, vm: _iApplyViewModel),
                         const SizedBox(height: 12),
                       ],
                   ],

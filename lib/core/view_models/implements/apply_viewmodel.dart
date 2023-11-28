@@ -35,6 +35,15 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
   String? get keyword => _keyword;
   @override
   bool get isLoading => _isLoading;
+
+  bool _isMyApplys = false;
+  @override
+  bool get isMyApplys => _isMyApplys;
+  @override
+  void setIsMyApplys(bool value) {
+    _isMyApplys = value;
+  }
+
   void _reset() {
     _keyword = null;
     page = 1;
