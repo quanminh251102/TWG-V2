@@ -5,9 +5,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:lottie/lottie.dart' as lottie;
 import 'package:provider/provider.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:twg/core/dtos/goongs/place_dto.dart';
+import 'package:twg/core/services/interfaces/isocket_service.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
+import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/icall_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ihome_viewmodel.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
@@ -39,6 +44,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final customMarkers = <Marker>[];
   final FocusNode _focusNode = FocusNode();
 
+  late IChatRoomViewModel _iChatRoomViewModel;
+  late ICallViewModel _iCallViewModel;
+  final ISocketService _iSocketService = locator<ISocketService>();
+  late IApplyViewModel _iApplyViewModel;
+
   @override
   void dispose() {
     _focusNode.dispose();
@@ -49,6 +59,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void initState() {
     mapController = MapController();
     _iHomeViewModel = context.read<IHomeViewModel>();
+
+    _iChatRoomViewModel = context.read<IChatRoomViewModel>();
+    _iChatRoomViewModel.initSocketEventForChatRoom();
+
+    _iApplyViewModel = context.read<IApplyViewModel>();
+    _iApplyViewModel.initSocketEventForApply();
+
+    _iCallViewModel = context.read<ICallViewModel>();
+    _iCallViewModel.initSocketEventForCall();
+    _iCallViewModel.setSocket(_iSocketService.socket as IO.Socket);
+
     Future.delayed(
       Duration.zero,
       () async {

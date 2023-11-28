@@ -22,4 +22,6 @@ abstract class IApplyViewModel implements ChangeNotifier {
   void setStartPoint(String value);
   void setEndPoint(String value);
   void setApplyerName(String value);
+
+  void initSocketEventForApply();
 }

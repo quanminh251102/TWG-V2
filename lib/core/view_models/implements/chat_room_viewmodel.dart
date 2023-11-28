@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
@@ -7,6 +8,12 @@ import 'package:twg/core/services/interfaces/isocket_service.dart';
 import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/global/locator.dart';
 import 'package:twg/ui/utils/notification_utils.dart';
+import 'package:windows_notification/notification_message.dart';
+import 'package:windows_notification/windows_notification.dart';
+
+final _winNotifyPlugin = WindowsNotification(
+    applicationId:
+        "r{D65231B0-B2F1-4857-A4CE-A8E7C6EA7D27}\WindowsPowerShell\v1.0\powershell.exe");
 
 class ChatRoomViewModel with ChangeNotifier implements IChatRoomViewModel {
   List<ChatRoomDto> _ChatRooms = [];
@@ -45,11 +52,26 @@ class ChatRoomViewModel with ChangeNotifier implements IChatRoomViewModel {
     _iSocketService.socket!.on("receive_notification", (jsonData) async {
       final jsonValue = json.encode(jsonData);
       final data = json.decode(jsonValue) as Map<String, dynamic>;
-      NotifiationUtils().showNotification(
-        title: "Thông báo",
-        body: data["notification_body"],
-      );
+
+      if (Platform.isWindows) {
+        // create new NotificationMessage instance with id, title, body, and images
+        NotificationMessage message = NotificationMessage.fromPluginTemplate(
+          "test1",
+          "Thông báo",
+          data["notification_body"],
+        );
+
+// show notification
+        _winNotifyPlugin.showNotificationPluginTemplate(message);
+      } else {
+        NotifiationUtils().showNotification(
+          title: "Thông báo",
+          body: data["notification_body"],
+        );
+      }
     });
+
+    print('init socket chat room');
   }
 
   @override

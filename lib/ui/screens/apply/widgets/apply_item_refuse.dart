@@ -15,34 +15,6 @@ class ApplyItemRefuse extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Row(
-        //   children: [
-        //     Material(
-        //       color: Color(0xffFFEDED),
-        //       borderRadius: BorderRadius.circular(52),
-        //       child: InkWell(
-        //         onTap: () {},
-        //         borderRadius: BorderRadius.circular(52),
-        //         child: Container(
-        //           width: 80,
-        //           height: 39,
-        //           decoration: BoxDecoration(
-        //             borderRadius: BorderRadius.circular(52),
-        //           ),
-        //           alignment: Alignment.center,
-        //           child: const Text(
-        //             'Bị từ chối',
-        //             style: TextStyle(
-        //               fontSize: 13,
-        //               fontWeight: FontWeight.bold,
-        //               color: Color(0xffDC312D),
-        //             ),
-        //           ),
-        //         ),
-        //       ),
-        //     )
-        //   ],
-        // ),
         const StatusLabel(
           width: 80,
           backgroundColor: Color(0xffFFEDED),

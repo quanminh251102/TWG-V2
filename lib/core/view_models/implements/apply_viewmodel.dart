@@ -7,6 +7,7 @@ import 'package:twg/core/dtos/apply/create_apply_dto.dart';
 import 'package:twg/core/dtos/apply/update_apply_dto.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/services/interfaces/iapply_service.dart';
+import 'package:twg/core/services/interfaces/isocket_service.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/global/locator.dart';
 import 'package:twg/global/router.dart';
@@ -75,6 +76,15 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
     _isMyApplys = value;
   }
 
+  final ISocketService _iSocketService = locator<ISocketService>();
+  @override
+  void initSocketEventForApply() {
+    _iSocketService.socket!.on("reload_apply", (jsonData) async {
+      init('');
+      print('reload_apply');
+    });
+  }
+
   void filter() {
     _applysAfterFilter = applys.where((apply) {
       String booking_startPoint =
@@ -115,6 +125,7 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
       page: 1,
       pageSize: 10,
       bookingId: _isMyApplys ? null : _bookingDto!.id,
+      sortUpdatedAt: -1,
     );
     _applys = paginationProducts ?? [];
     _totalCount = _iApplyService.total;
@@ -134,6 +145,7 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
       page: page,
       pageSize: page * 10,
       bookingId: _isMyApplys ? null : _bookingDto!.id,
+      sortUpdatedAt: -1,
     );
 
     _applys.addAll(
