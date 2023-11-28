@@ -118,7 +118,7 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage>
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Apply của bài đăng')),
+      appBar: AppBar(title: const Text('Danh sách người dùng muốn tham gia')),
       body: isLoading_getApplyInBooking
           ? const Center(
               child: CircularProgressIndicator(),

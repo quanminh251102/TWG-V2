@@ -12,6 +12,6 @@ abstract class IApplyViewModel implements ChangeNotifier {
   void setBookingDto(BookingDto value);
   Future<void> init(String status);
   Future<void> getMoreApplys(String status);
-  Future<String> createApply(CreateApplyDto value);
-  Future<String> updateApply(String id, UpdateApplyDto value);
+  Future<void> createApply(CreateApplyDto value);
+  Future<void> updateApply(String id, UpdateApplyDto value);
 }

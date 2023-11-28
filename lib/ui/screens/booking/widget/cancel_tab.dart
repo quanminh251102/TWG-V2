@@ -19,6 +19,7 @@ class ___CancelBookingTabState extends State<_CancelBookingTab> {
           BookingStatusType.cancel,
         ),
       );
+      print('booking length :${_iBookingViewModel.bookings.length}');
     });
     scrollController.addListener(() async {
       if (scrollController.position.atEdge) {

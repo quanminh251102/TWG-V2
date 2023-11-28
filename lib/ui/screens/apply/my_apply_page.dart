@@ -162,8 +162,9 @@ class _MyApplyPageState extends State<MyApplyPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Apply của tôi'),
+        title: const Text('Các chuyến đi đã gửi yêu cầu'),
         centerTitle: true,
+        elevation: 0.0,
         leading: InkWell(
             onTap: () {
               Get.offNamed(MyRouter.profile);

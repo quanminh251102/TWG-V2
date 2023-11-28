@@ -19,6 +19,7 @@ class ___CompleteBookingTabState extends State<_CompleteBookingTab> {
           BookingStatusType.complete,
         ),
       );
+      print('booking length :${_iBookingViewModel.bookings.length}');
     });
     scrollController.addListener(() async {
       if (scrollController.position.atEdge) {

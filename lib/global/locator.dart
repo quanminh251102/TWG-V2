@@ -33,12 +33,11 @@ void setupRestClient() {
           await EasyLoading.showError("Không có internet!");
           handler.reject(error);
         } else {
-          // EasyLoading.showError('Lỗi server');
-          // handler.reject(error);
           if (error.response?.statusCode == 400) {
             var errorDetails = ErrorDetailsDto.fromJson(error.response?.data);
-            print(errorDetails.message);
-            await EasyLoading.showError(errorDetails.message);
+
+            await EasyLoading.showError(errorDetails.message,
+                duration: const Duration(seconds: 3));
             handler.reject(error);
           } else if (error.response?.statusCode == 500) {
             await EasyLoading.showError('Lỗi server');

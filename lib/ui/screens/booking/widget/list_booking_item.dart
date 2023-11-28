@@ -1,10 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
+import 'package:twg/global/router.dart';
 
 class ListBookingItem extends StatefulWidget {
   final BookingDto booking;
@@ -20,11 +25,20 @@ class ListBookingItem extends StatefulWidget {
 class _ListBookingItemState extends State<ListBookingItem> {
   bool isNavigateChatRoom = false;
   bool isNavigateCreateApply = false;
+  late IApplyViewModel _iApplyViewModel;
+
+  @override
+  void initState() {
+    _iApplyViewModel = context.read<IApplyViewModel>();
+    super.initState();
+  }
 
   void navigateChatRoom(BuildContext context) async {
     setState(() {
       isNavigateChatRoom = true;
     });
+    _iApplyViewModel.setBookingDto(widget.booking);
+
     // Rawait Future.delayed(Duration(seconds: 2));
     String result = "pass";
     // ChatRoom chatRoom = ChatRoom(
@@ -55,11 +69,8 @@ class _ListBookingItemState extends State<ListBookingItem> {
   }
 
   void navigateCreateApply(BuildContext context) async {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) => CreateApplyPage(booking: widget.booking)),
-    // );
+    _iApplyViewModel.setBookingDto(widget.booking);
+    Get.offNamed(MyRouter.createApply);
   }
 
   @override
@@ -347,7 +358,7 @@ class _ListBookingItemState extends State<ListBookingItem> {
                                         backgroundColor:
                                             ColorUtils.primaryColor),
                                     child: const Text(
-                                      'Apply',
+                                      'Tham gia',
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),

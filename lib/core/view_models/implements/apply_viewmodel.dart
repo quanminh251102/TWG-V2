@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:twg/core/dtos/apply/apply_dto.dart';
 import 'package:twg/core/dtos/apply/create_apply_dto.dart';
 import 'package:twg/core/dtos/apply/update_apply_dto.dart';
@@ -6,6 +9,7 @@ import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/services/interfaces/iapply_service.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/global/locator.dart';
+import 'package:twg/global/router.dart';
 
 class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
   List<ApplyDto> _applys = [];
@@ -16,7 +20,7 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
 
   final IApplyService _iApplyService = locator<IApplyService>();
 
-  BookingDto? _bookingDto = BookingDto(id: '655f6d330bb38fe8bf8d6e17');
+  BookingDto? _bookingDto;
   @override
   BookingDto? get bookingDto => _bookingDto;
 
@@ -72,15 +76,19 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
   }
 
   @override
-  Future<String> createApply(CreateApplyDto value) async {
+  Future<void> createApply(CreateApplyDto value) async {
     var result = await _iApplyService.createApply(value);
-    print('view model $result');
-    return result;
+    if (result != 'Thất bại') {
+      await EasyLoading.showSuccess(result);
+      Get.offNamed(MyRouter.myApply);
+    }
   }
 
   @override
-  Future<String> updateApply(String id, UpdateApplyDto value) async {
+  Future<void> updateApply(String id, UpdateApplyDto value) async {
     var result = await _iApplyService.updateApply(id, value);
-    return result;
+    if (result != 'Thất bại') {
+      await EasyLoading.showSuccess(result);
+    }
   }
 }
