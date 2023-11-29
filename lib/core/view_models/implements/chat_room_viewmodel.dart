@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
+import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 import 'package:twg/core/services/interfaces/ichat_room_service.dart';
 import 'package:twg/core/services/interfaces/isocket_service.dart';
 import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
@@ -106,5 +107,10 @@ class ChatRoomViewModel with ChangeNotifier implements IChatRoomViewModel {
     page += 1;
     _isLoading = false;
     notifyListeners();
+  }
+
+  @override
+  Future<ChatRoomDto?> createChatRoom(CreateChatRoomDto value) async {
+    return await _iChatRoomService.createChatRoom(value);
   }
 }

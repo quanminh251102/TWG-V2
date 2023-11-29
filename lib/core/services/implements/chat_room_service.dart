@@ -1,4 +1,5 @@
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
+import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 import 'package:twg/core/services/interfaces/ichat_room_service.dart';
 import 'package:twg/core/utils/token_utils.dart';
 import 'package:twg/global/locator.dart';
@@ -28,6 +29,24 @@ class ChatRoomService implements IChatRoomService {
 
       if (result.success) {
         _total = result.total ?? 0;
+        return result.data;
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  @override
+  Future<ChatRoomDto?> createChatRoom(CreateChatRoomDto value) async {
+    String? token = await TokenUtils.getToken();
+    try {
+      var result = await getRestClient().createChatRoom(
+        token.toString(),
+        value,
+      );
+
+      if (result.success) {
         return result.data;
       }
     } on Exception catch (e) {

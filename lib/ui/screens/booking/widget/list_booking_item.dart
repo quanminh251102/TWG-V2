@@ -7,9 +7,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:twg/core/dtos/booking/booking_dto.dart';
+import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
 import 'package:twg/global/router.dart';
 
 class ListBookingItem extends StatefulWidget {
@@ -28,49 +31,28 @@ class _ListBookingItemState extends State<ListBookingItem> {
   bool isNavigateCreateApply = false;
   late IApplyViewModel _iApplyViewModel;
   late IBookingViewModel _iBookingViewModel;
+  late IMessageViewModel _iMessageViewModel;
+  late IChatRoomViewModel _iChatRoomViewModel;
   bool isMyList = false;
 
   @override
   void initState() {
     _iApplyViewModel = context.read<IApplyViewModel>();
     _iBookingViewModel = context.read<IBookingViewModel>();
+    _iMessageViewModel = context.read<IMessageViewModel>();
+    _iChatRoomViewModel = context.read<IChatRoomViewModel>();
     isMyList = _iBookingViewModel.isMyList;
     super.initState();
   }
 
   void navigateChatRoom(BuildContext context) async {
-    setState(() {
-      isNavigateChatRoom = true;
-    });
-    _iApplyViewModel.setBookingDto(widget.booking);
-
-    // Rawait Future.delayed(Duration(seconds: 2));
-    String result = "pass";
-    // ChatRoom chatRoom = ChatRoom(
-    //     id: '',
-    //     partner_name: '',
-    //     partner_gmail: '',
-    //     partner_avatar: '',
-    //     partner_id: '',
-    //     numUnWatch: 0,
-    //     lastMessage: {});
-    // try {
-    //   await ChatRoomService.getChatRoomInBooking(widget.booking.authorId)
-    //       .then((value) {
-    //     chatRoom = value;
-    //   });
-    // } catch (e) {
-    //   result = "error";
-    // }
-    // if (result == "pass") {
-    //   BlocProvider.of<MessageCubit>(context).setChatRoom(chatRoom);
-    //   BlocProvider.of<MessageCubit>(context).get_message();
-    //   BlocProvider.of<MessageCubit>(context).join_chat_room();
-    //   appRouter.push(const ChatPageRoute());
-    // }
-    // setState(() {
-    //   isNavigateChatRoom = false;
-    // });
+    var value = await _iChatRoomViewModel.createChatRoom(
+      CreateChatRoomDto(userId: widget.booking.authorId!.id),
+    );
+    if (value != null) {
+      _iMessageViewModel.setCurrentChatRoom(value);
+      Get.offNamed(MyRouter.message);
+    }
   }
 
   void navigateCreateApply(BuildContext context) async {

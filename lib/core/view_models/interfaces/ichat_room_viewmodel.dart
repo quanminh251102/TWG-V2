@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
+import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 
 abstract class IChatRoomViewModel implements ChangeNotifier {
   List<ChatRoomDto> get ChatRooms;
@@ -8,4 +9,5 @@ abstract class IChatRoomViewModel implements ChangeNotifier {
   Future<void> init(String status);
   Future<void> getMoreChatRooms(String status);
   void initSocketEventForChatRoom();
+  Future<ChatRoomDto?> createChatRoom(CreateChatRoomDto value);
 }
