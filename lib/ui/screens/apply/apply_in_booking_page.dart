@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ireview_viewmodel.dart';
 import 'package:twg/global/router.dart';
 import 'widgets/apply_item.dart';
 
@@ -17,6 +18,7 @@ class ApplyInBookingPage extends StatefulWidget {
 class _ApplyInBookingPageState extends State<ApplyInBookingPage>
     with TickerProviderStateMixin {
   late IApplyViewModel _iApplyViewModel;
+  late IReviewViewModel _iReviewViewModel;
   TextEditingController _name = TextEditingController();
   late FocusNode nameFocus;
 
@@ -24,6 +26,8 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage>
   void initState() {
     _iApplyViewModel = context.read<IApplyViewModel>();
     _iApplyViewModel.setIsMyApplys(false);
+
+    _iReviewViewModel = context.read<IReviewViewModel>();
     // TODO: implement initState
     super.initState();
 
@@ -107,6 +111,7 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage>
                           ApplyItem(
                             apply: _apply,
                             vm: _iApplyViewModel,
+                            rvm: _iReviewViewModel,
                           ),
                           const SizedBox(height: 12),
                         ],

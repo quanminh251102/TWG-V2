@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import 'package:twg/core/dtos/apply/apply_dto.dart';
+import 'package:twg/core/dtos/review/create_review_dto.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ireview_viewmodel.dart';
 import 'package:twg/ui/screens/apply/widgets/status_label.dart';
 
 class ApplyItemClose extends StatelessWidget {
   final ApplyDto apply;
   final IApplyViewModel vm;
+  final IReviewViewModel? rvm;
   const ApplyItemClose({
     Key? key,
     required this.apply,
     required this.vm,
+    this.rvm,
   }) : super(key: key);
   void close_review(context) async {
     final _dialog = RatingDialog(
@@ -45,27 +49,12 @@ class ApplyItemClose extends StatelessWidget {
           // ask the user to contact you instead of leaving a bad review
         } else {}
 
-        // Map<String, dynamic> _body = {
-        //   "creater_id": appUser.id,
-        //   "receiver_id": widget.apply.applyer._id,
-        //   "apply_id": widget.apply._id,
-        //   "review_note": (response.comment == "") ? " " : response.comment,
-        //   "review_star": "${response.rating}"
-        // };
-
-        // String result = await ReviewService.createReview(_body);
-
-        // if (result == "pass") {
-        //   const snackBar = SnackBar(
-        //     content: Text('Thành công'),
-        //   );
-        //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        // } else {
-        //   const snackBar = SnackBar(
-        //     content: Text('Bị lỗi'),
-        //   );
-        //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        // }
+        await rvm!.createReview(CreateReviewDto(
+          applyId: apply.id,
+          receiverId: apply.applyer!.id,
+          note: response.comment,
+          star: response.rating.toInt(),
+        ));
       },
     );
 

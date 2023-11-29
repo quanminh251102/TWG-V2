@@ -12,6 +12,8 @@ import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/dtos/message/message_dto.dart';
 import 'package:twg/core/dtos/message/send_message_dto.dart';
 import 'package:twg/core/dtos/pagination/pagination_dto.dart';
+import 'package:twg/core/dtos/review/create_review_dto.dart';
+import 'package:twg/core/dtos/review/review_dto.dart';
 
 part 'rest_client.g.dart';
 
@@ -40,7 +42,7 @@ abstract class RestClient {
     @Query('status') String? status,
     @Query('authorId') String? authorId,
   });
-  @GET('/api/booking')
+  @GET('/api/booking/my-list')
   Future<BaseApiDto<List<BookingDto>>> getMyBookings({
     @Header('api_key') String? token,
     @Query('page') int? page,
@@ -112,6 +114,21 @@ abstract class RestClient {
     @Header('api_key') String token,
     @Body() UpdateApplyDto model,
   );
+
+  //review
+  @POST("/api/review")
+  Future<BaseApiDto<CreateReviewDto>> createReview(
+    @Header('api_key') String token,
+    @Body() CreateReviewDto model,
+  );
+  @GET('/api/review')
+  Future<BaseApiDto<List<ReviewDto>>> getReviews({
+    @Header('api_key') String? token,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('sortCreatedAt') int? sortCreatedAt,
+    @Query('sortUpdatedAt') int? sortUpdatedAt,
+  });
 
   ///account
   // @GET("/api/account/profile")
