@@ -35,4 +35,30 @@ class BookingService implements IBookingService {
     }
     return null;
   }
+
+  @override
+  Future<List<BookingDto>?> getMyBookings({
+    String? token,
+    int? page,
+    int? pageSize,
+    int? sortCreatedAt,
+    int? sortUpdatedAt,
+  }) async {
+    String? token = await TokenUtils.getToken();
+    try {
+      var result = await getRestClient().getMyBookings(
+        token: token,
+        page: page,
+        pageSize: pageSize,
+      );
+
+      if (result.success) {
+        _total = result.total ?? 0;
+        return result.data;
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    return null;
+  }
 }

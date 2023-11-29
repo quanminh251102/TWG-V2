@@ -4,11 +4,13 @@ import 'package:twg/ui/screens/apply/create_apply_page.dart';
 import 'package:twg/ui/screens/apply/my_apply_page.dart';
 import 'package:twg/ui/screens/booking/add_booking.dart';
 import 'package:twg/ui/screens/booking/booking_screen.dart';
+import 'package:twg/ui/screens/booking/my_booking_page.dart';
 import 'package:twg/ui/screens/call/call.dart';
 import 'package:twg/ui/screens/call/incoming_call.dart';
 import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
 import 'package:twg/ui/screens/chat_room/chat_screen.dart';
 import 'package:twg/ui/screens/home/home_screen.dart';
+import 'package:twg/ui/screens/profile_and_settings/my_reviews/my_reviews_page.dart';
 import 'package:twg/ui/screens/profile_and_settings/privacy_policy/privacy_policy_page.dart';
 import 'package:twg/ui/screens/profile_and_settings/profile_screen.dart';
 import 'package:twg/ui/screens/profile_and_settings/update_profile/update_profile_page.dart';
@@ -33,6 +35,8 @@ class MyRouter {
   static const String createApply = '/createApply';
   static const String applyInBooking = '/applyInBooking';
   static const String myApply = '/myApply';
+  static const String myBooking = '/myBooking';
+  static const String myReview = '/myReview';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -134,6 +138,17 @@ class MyRouter {
         return _buildRouteNavigationWithoutEffect(
           settings,
           const MyApplyPage(),
+        );
+      case myBooking:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const MyBookPage(),
+        );
+
+      case myReview:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const MyReViewsPage(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

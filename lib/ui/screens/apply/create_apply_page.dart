@@ -69,7 +69,7 @@ class _CreateApplyPageState extends State<CreateApplyPage>
 
       var bookingId = _iApplyViewModel.bookingDto!.id.toString();
       print(bookingId);
-      result = await _iApplyViewModel
+      await _iApplyViewModel
           .createApply(CreateApplyDto(dealPrice: price, booking: bookingId));
       // var snackBar = SnackBar(
       //   content: Text(result),
@@ -91,8 +91,9 @@ class _CreateApplyPageState extends State<CreateApplyPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tạo apply'),
+        title: const Text('Tham gia chuyến đi'),
         centerTitle: true,
+        elevation: 0.0,
         leading: InkWell(
             onTap: () {
               Get.offNamed(MyRouter.profile);

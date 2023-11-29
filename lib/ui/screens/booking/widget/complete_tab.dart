@@ -13,12 +13,14 @@ class ___CompleteBookingTabState extends State<_CompleteBookingTab> {
     _iBookingViewModel = context.read<IBookingViewModel>();
     scrollController = ScrollController();
     Future.delayed(Duration.zero, () async {
+      _iBookingViewModel.setIsMyList(false);
       await _iBookingViewModel.init(
         EnumHelper.getDescription(
           EnumMap.bookingStatusType,
           BookingStatusType.complete,
         ),
       );
+      print('booking length :${_iBookingViewModel.bookings.length}');
     });
     scrollController.addListener(() async {
       if (scrollController.position.atEdge) {

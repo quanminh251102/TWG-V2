@@ -244,34 +244,18 @@ class _ProfileScreenState extends State<ProfileScreen>
         ),
         ListTile(
           leading: const Icon(Icons.book),
-          title: const Text('Bài đăng của tôi'),
+          title: const Text('Các chuyến đi đã đăng'),
           trailing: const Icon(Icons.keyboard_arrow_right),
           onTap: () {
-            // Get.offNamed(MyRouter.privacyPolicy);
+            Get.offNamed(MyRouter.myBooking);
           },
         ),
         ListTile(
           leading: const Icon(Icons.check),
-          title: const Text('Apply của tôi'),
+          title: const Text('Các chuyến đi đã gửi yêu cầu'),
           trailing: const Icon(Icons.keyboard_arrow_right),
           onTap: () {
             Get.offNamed(MyRouter.myApply);
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.check),
-          title: const Text('Apply in booking'),
-          trailing: const Icon(Icons.keyboard_arrow_right),
-          onTap: () {
-            Get.offNamed(MyRouter.applyInBooking);
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.check),
-          title: const Text('create'),
-          trailing: const Icon(Icons.keyboard_arrow_right),
-          onTap: () {
-            Get.offNamed(MyRouter.createApply);
           },
         ),
         ListTile(
@@ -279,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           title: const Text('Đánh giá'),
           trailing: const Icon(Icons.keyboard_arrow_right),
           onTap: () {
-            // Get.offNamed(MyRouter.privacyPolicy);
+            Get.offNamed(MyRouter.myReview);
           },
         ),
         ListTile(

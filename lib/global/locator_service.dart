@@ -8,6 +8,7 @@ import 'package:twg/core/services/implements/goongs_service.dart';
 import 'package:twg/core/services/implements/map_service.dart';
 import 'package:twg/core/services/implements/message_service.dart';
 import 'package:twg/core/services/implements/profile_service.dart';
+import 'package:twg/core/services/implements/review_service.dart';
 import 'package:twg/core/services/implements/socket_service.dart';
 import 'package:twg/core/services/interfaces/iapply_service.dart';
 
@@ -19,6 +20,7 @@ import 'package:twg/core/services/interfaces/igoong_service.dart';
 import 'package:twg/core/services/interfaces/imap_service.dart';
 import 'package:twg/core/services/interfaces/imessage_service.dart';
 import 'package:twg/core/services/interfaces/iprofile_service.dart';
+import 'package:twg/core/services/interfaces/ireview_service.dart';
 import 'package:twg/core/services/interfaces/isocket_service.dart';
 
 void registerServiceSingletons(GetIt locator) {
@@ -32,6 +34,7 @@ void registerServiceSingletons(GetIt locator) {
   locator.registerLazySingleton<IProfileService>(() => ProfileService());
   locator.registerLazySingleton<ICloudinaryService>(() => CloudinaryService());
   locator.registerLazySingleton<IApplyService>(() => ApplyService());
+  locator.registerLazySingleton<IReviewService>(() => ReviewService());
   // locator.registerLazySingleton<ICategoryService>(() => CategoryService());
   // locator
   //     .registerLazySingleton<IManufactureService>(() => ManufactureService());

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
-import 'widgets/apply_in_booking_item.dart';
+import 'package:twg/core/view_models/interfaces/ireview_viewmodel.dart';
+import 'package:twg/global/router.dart';
+import 'widgets/apply_item.dart';
 
 class ApplyInBookingPage extends StatefulWidget {
-  // final dynamic booking;
-  // const ApplyInBookingPage({super.key, required this.booking});
-
   const ApplyInBookingPage({super.key});
 
   @override
@@ -17,62 +18,24 @@ class ApplyInBookingPage extends StatefulWidget {
 class _ApplyInBookingPageState extends State<ApplyInBookingPage>
     with TickerProviderStateMixin {
   late IApplyViewModel _iApplyViewModel;
-  bool isLoading_getApplyInBooking = false;
-  List<dynamic> applys = [];
-  List<dynamic> applys_selected = [];
+  late IReviewViewModel _iReviewViewModel;
   TextEditingController _name = TextEditingController();
   late FocusNode nameFocus;
+
   @override
   void initState() {
     _iApplyViewModel = context.read<IApplyViewModel>();
+    _iApplyViewModel.setIsMyApplys(false);
+
+    _iReviewViewModel = context.read<IReviewViewModel>();
     // TODO: implement initState
     super.initState();
 
-    nameFocus = FocusNode();
-
-    init();
-  }
-
-  void init() async {
-    // setState(() {
-    //   isLoading_getApplyInBooking = true;
-    // });
-
-    // String result = "pass";
-
-    // // print(widget.booking.toString());
-    // try {
-    //   applys = await ApplyService.getApplyInBooking(widget.booking["_id"]);
-    //   applys_selected = applys;
-    // } catch (e) {
-    //   result = "error";
-    //   print(e);
-    // }
-
-    // if (result == "error") {
-    //   print('lỗi');
-    // } else {
-    //   print('thành công');
-    // }
-    // setState(() {
-    //   isLoading_getApplyInBooking = false;
-    // });
-  }
-
-  void do_filter() {
-    setState(() {
-      print("do filter");
-      applys_selected = applys.where((apply) {
-        String name = apply["applyer"]["first_name"].toString().toLowerCase();
-        String search_name = _name.text.trim().toLowerCase();
-
-        if (name.contains(search_name)) {
-          return true;
-        }
-        return false;
-      }).toList();
-      print(applys_selected);
+    Future.delayed(Duration.zero, () async {
+      await _iApplyViewModel.init('');
     });
+
+    nameFocus = FocusNode();
   }
 
   @override
@@ -111,40 +74,65 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage>
             ),
           ),
           onChanged: (text) {
-            do_filter();
+            _iApplyViewModel.setApplyerName(text.trim());
           },
         ),
       ];
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Apply của bài đăng')),
-      body: isLoading_getApplyInBooking
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...search_bar(),
-                    const SizedBox(height: 20),
-                    if (applys_selected.length == 0)
-                      const Text('Danh sách rỗng'),
-                    if (applys_selected.length > 0)
-                      for (var _apply in applys_selected) ...[
-                        ApplyInBookItem(
-                          apply: _apply,
-                          reload: init,
-                        ),
-                        const SizedBox(height: 12),
-                      ],
-                  ],
-                ),
+      appBar: AppBar(
+        title: const Text('Danh sách tham gia'),
+        centerTitle: true,
+        elevation: 0.0,
+        leading: InkWell(
+          onTap: () {
+            Get.offNamed(MyRouter.profile);
+          },
+          child: const Icon(Icons.arrow_back_ios),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...search_bar(),
+              const SizedBox(height: 20),
+              Consumer<IApplyViewModel>(
+                builder: (context, vm, child) {
+                  return Column(
+                    children: [
+                      if (vm.applysAfterFilter.isEmpty)
+                        const Text('Danh sách rỗng'),
+                      if (vm.applysAfterFilter.isNotEmpty)
+                        for (var _apply in vm.applysAfterFilter) ...[
+                          ApplyItem(
+                            apply: _apply,
+                            vm: _iApplyViewModel,
+                            rvm: _iReviewViewModel,
+                          ),
+                          const SizedBox(height: 12),
+                        ],
+                    ],
+                  );
+                },
               ),
-            ),
+              // if (applys_selected.length == 0)
+              //   const Text('Danh sách rỗng'),
+              // if (applys_selected.length > 0)
+              //   for (var _apply in applys_selected) ...[
+              //     ApplyItem(
+              //       apply: _apply,
+              //       vm: _iApplyViewModel,
+              //     ),
+              //     const SizedBox(height: 12),
+              //   ],
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

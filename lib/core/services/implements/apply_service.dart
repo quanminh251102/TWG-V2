@@ -63,9 +63,10 @@ class ApplyService implements IApplyService {
         resText = 'Thất bại';
       }
     } on Exception catch (e) {
+      resText = 'Thất bại';
       print(e);
     }
-    resText = 'Thất bại';
+
     LoadingDialogUtils.hideLoading();
     return resText;
   }
@@ -76,6 +77,7 @@ class ApplyService implements IApplyService {
     UpdateApplyDto? value,
   ) async {
     String? token = await TokenUtils.getToken();
+    var resText = '';
     try {
       var result = await getRestClient().updateApply(
         id.toString(),
@@ -83,13 +85,14 @@ class ApplyService implements IApplyService {
         value as UpdateApplyDto,
       );
       if (result.success) {
-        return 'Thành công';
+        resText = 'Thành công';
       } else {
-        return 'Thất bại';
+        resText = 'Thất bại';
       }
     } on Exception catch (e) {
+      resText = 'Thất bại';
       print(e);
     }
-    return 'Thất bại';
+    return resText;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
+import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 
 abstract class IChatRoomService {
   Future<List<ChatRoomDto>?> getChatRooms({
@@ -11,4 +12,5 @@ abstract class IChatRoomService {
     String? userId2,
   });
   int get total;
+  Future<ChatRoomDto?> createChatRoom(CreateChatRoomDto value);
 }

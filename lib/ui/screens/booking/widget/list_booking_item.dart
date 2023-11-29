@@ -1,10 +1,19 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'package:twg/core/dtos/booking/booking_dto.dart';
+import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
+import 'package:twg/global/router.dart';
 
 class ListBookingItem extends StatefulWidget {
   final BookingDto booking;
@@ -20,46 +29,35 @@ class ListBookingItem extends StatefulWidget {
 class _ListBookingItemState extends State<ListBookingItem> {
   bool isNavigateChatRoom = false;
   bool isNavigateCreateApply = false;
+  late IApplyViewModel _iApplyViewModel;
+  late IBookingViewModel _iBookingViewModel;
+  late IMessageViewModel _iMessageViewModel;
+  late IChatRoomViewModel _iChatRoomViewModel;
+  bool isMyList = false;
+
+  @override
+  void initState() {
+    _iApplyViewModel = context.read<IApplyViewModel>();
+    _iBookingViewModel = context.read<IBookingViewModel>();
+    _iMessageViewModel = context.read<IMessageViewModel>();
+    _iChatRoomViewModel = context.read<IChatRoomViewModel>();
+    isMyList = _iBookingViewModel.isMyList;
+    super.initState();
+  }
 
   void navigateChatRoom(BuildContext context) async {
-    setState(() {
-      isNavigateChatRoom = true;
-    });
-    // Rawait Future.delayed(Duration(seconds: 2));
-    String result = "pass";
-    // ChatRoom chatRoom = ChatRoom(
-    //     id: '',
-    //     partner_name: '',
-    //     partner_gmail: '',
-    //     partner_avatar: '',
-    //     partner_id: '',
-    //     numUnWatch: 0,
-    //     lastMessage: {});
-    // try {
-    //   await ChatRoomService.getChatRoomInBooking(widget.booking.authorId)
-    //       .then((value) {
-    //     chatRoom = value;
-    //   });
-    // } catch (e) {
-    //   result = "error";
-    // }
-    // if (result == "pass") {
-    //   BlocProvider.of<MessageCubit>(context).setChatRoom(chatRoom);
-    //   BlocProvider.of<MessageCubit>(context).get_message();
-    //   BlocProvider.of<MessageCubit>(context).join_chat_room();
-    //   appRouter.push(const ChatPageRoute());
-    // }
-    // setState(() {
-    //   isNavigateChatRoom = false;
-    // });
+    var value = await _iChatRoomViewModel.createChatRoom(
+      CreateChatRoomDto(userId: widget.booking.authorId!.id),
+    );
+    if (value != null) {
+      _iMessageViewModel.setCurrentChatRoom(value);
+      Get.offNamed(MyRouter.message);
+    }
   }
 
   void navigateCreateApply(BuildContext context) async {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) => CreateApplyPage(booking: widget.booking)),
-    // );
+    _iApplyViewModel.setBookingDto(widget.booking);
+    Get.offNamed(MyRouter.createApply);
   }
 
   @override
@@ -313,46 +311,55 @@ class _ListBookingItemState extends State<ListBookingItem> {
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 5),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            (isNavigateChatRoom)
-                                ? const CircularProgressIndicator()
-                                : ElevatedButton(
-                                    onPressed: () {
-                                      navigateChatRoom(context);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        minimumSize: const Size(120, 30),
-                                        maximumSize: const Size(120, 30),
-                                        backgroundColor:
-                                            ColorUtils.primaryColor),
-                                    child: const Text(
-                                      'Trò chuyện',
-                                      style: TextStyle(color: Colors.white),
+                    if (isMyList)
+                      ElevatedButton(
+                        onPressed: () {
+                          _iApplyViewModel.setBookingDto(widget.booking);
+                          Get.offNamed(MyRouter.applyInBooking);
+                        },
+                        child: Text('Danh sách'),
+                      ),
+                    if (isMyList == false)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 5),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              (isNavigateChatRoom)
+                                  ? const CircularProgressIndicator()
+                                  : ElevatedButton(
+                                      onPressed: () {
+                                        navigateChatRoom(context);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          minimumSize: const Size(120, 30),
+                                          maximumSize: const Size(120, 30),
+                                          backgroundColor:
+                                              ColorUtils.primaryColor),
+                                      child: const Text(
+                                        'Trò chuyện',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                            (isNavigateCreateApply)
-                                ? const CircularProgressIndicator()
-                                : ElevatedButton(
-                                    onPressed: () {
-                                      navigateCreateApply(context);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        minimumSize: const Size(100, 30),
-                                        maximumSize: const Size(100, 30),
-                                        backgroundColor:
-                                            ColorUtils.primaryColor),
-                                    child: const Text(
-                                      'Apply',
-                                      style: TextStyle(color: Colors.white),
+                              (isNavigateCreateApply)
+                                  ? const CircularProgressIndicator()
+                                  : ElevatedButton(
+                                      onPressed: () {
+                                        navigateCreateApply(context);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          minimumSize: const Size(100, 30),
+                                          maximumSize: const Size(100, 30),
+                                          backgroundColor:
+                                              ColorUtils.primaryColor),
+                                      child: const Text(
+                                        'Tham gia',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                          ]),
-                    ),
+                            ]),
+                      ),
                   ],
                 ),
               ],

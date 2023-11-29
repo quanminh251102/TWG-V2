@@ -39,7 +39,7 @@ class AuthViewModel with ChangeNotifier implements IAuthViewModel {
         MyRouter.home,
       );
     } else {
-      await EasyLoading.showError('Đăng nhập thất bại!');
+      // await EasyLoading.showError('Đăng nhập thất bại!');
     }
   }
 
