@@ -13,6 +13,7 @@ import 'core/utils/color_utils.dart';
 import 'global/locator.dart';
 import 'global/providers.dart';
 import 'global/router.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -78,7 +79,16 @@ class _MyAppState extends State<MyApp> {
               title: 'TWG',
               navigatorKey: NavigationUtils.navigatorKey,
               onGenerateRoute: (settings) => MyRouter.generateRoute(settings),
-              initialRoute: MyRouter.signIn,
+              initialRoute: MyRouter.splash,
+              locale: const Locale('vi', 'VN'), // Set the locale to Vietnamese
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('vi', 'VN'), // Include the Vietnamese locale
+              ],
               theme: ThemeData(
                 appBarTheme: const AppBarTheme(
                   backgroundColor: ColorUtils.white,

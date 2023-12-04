@@ -28,3 +28,12 @@ enum BookingType {
   @JsonValue(1)
   findPassenger,
 }
+
+enum SavePlaceType {
+  @JsonValue(0)
+  home,
+  @JsonValue(1)
+  company,
+  @JsonValue(2)
+  other,
+}

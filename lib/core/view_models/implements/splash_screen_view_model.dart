@@ -18,7 +18,7 @@ class SplashScreenViewModel extends ChangeNotifier
     if (logined) {
       _iSocketService.connectServer(locator<GlobalData>().token);
       Get.offNamed(
-        MyRouter.booking,
+        MyRouter.home,
       );
     } else {
       Get.offNamed(

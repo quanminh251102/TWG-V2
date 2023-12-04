@@ -57,4 +57,9 @@ class EnumMap {
     BookingType.findDriver: MyEnum(value: 0, description: 'Tìm tài xế'),
     BookingType.findPassenger: MyEnum(value: 1, description: 'Tìm hành khách'),
   };
+  static Map<SavePlaceType, MyEnum> savePlaceType = {
+    SavePlaceType.home: MyEnum(value: 0, description: 'nhà'),
+    SavePlaceType.company: MyEnum(value: 1, description: 'công ty'),
+    SavePlaceType.other: MyEnum(value: 2, description: 'địa điểm'),
+  };
 }

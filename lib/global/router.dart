@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twg/ui/screens/booking/add_booking.dart';
 import 'package:twg/ui/screens/booking/booking_screen.dart';
+import 'package:twg/ui/screens/booking/widget/pick_place_screen.dart';
 import 'package:twg/ui/screens/call/call.dart';
 import 'package:twg/ui/screens/call/incoming_call.dart';
 import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
@@ -27,6 +28,7 @@ class MyRouter {
   static const String profile = '/profile';
   static const String updateProfile = '/updateProfile';
   static const String privacyPolicy = '/privacyPolicy';
+  static const String pickPlaceMap = '/pickPlaceMap';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -112,6 +114,11 @@ class MyRouter {
         return _buildRouteNavigationWithoutEffect(
           settings,
           const UpdateProfilePage(),
+        );
+      case pickPlaceMap:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const PickPlaceScreen(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

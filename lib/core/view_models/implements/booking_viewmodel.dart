@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
+import 'package:twg/core/dtos/goongs/place_detail_dto.dart';
+import 'package:twg/core/dtos/goongs/place_dto.dart';
+import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 import 'package:twg/core/services/interfaces/ibooking_service.dart';
+import 'package:twg/core/services/interfaces/igoong_service.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/global/locator.dart';
 
@@ -12,7 +17,25 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   String? _keyword;
 
   final IBookingService _iBookingService = locator<IBookingService>();
+  final IGoongService _iGoongService = locator<IGoongService>();
+
   BookingDto? _bookingDto;
+  bool _onChangePlace = false;
+  bool _onSearchPlace = false;
+  List<Predictions> _listPredictions = [];
+
+  bool _loadingFromMap = false;
+  @override
+  bool get loadingFromMap => _loadingFromMap;
+
+  @override
+  bool get onSearchPlace => _onSearchPlace;
+
+  @override
+  bool get onChangePlace => _onChangePlace;
+
+  @override
+  List<Predictions> get listPredictions => _listPredictions;
 
   @override
   BookingDto? get bookingDto => _bookingDto;
@@ -43,6 +66,12 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   }
 
   @override
+  void initData() async {
+    _listPredictions.clear();
+    notifyListeners();
+  }
+
+  @override
   Future<void> getMoreBookings(String status) async {
     if (_totalCount == 0) {
       return;
@@ -63,5 +92,32 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     page += 1;
     _isLoading = false;
     notifyListeners();
+  }
+
+  @override
+  Future<void> onPickPlace(String keyWord) async {
+    _listPredictions.clear();
+    _onSearchPlace = true;
+    notifyListeners();
+    final predictions = await _iGoongService.searchPlace(keyWord);
+    _listPredictions = predictions ?? [];
+    _onSearchPlace = false;
+    notifyListeners();
+  }
+
+  @override
+  Future<PlaceDto?> getPlaceById(String locationId) async {
+    return await _iGoongService.getPlaceById(locationId);
+  }
+
+  @override
+  Future<List<PlaceDetailDto>?> getPlaceByGeocode(LatLng latLng) async {
+    _onChangePlace = true;
+    notifyListeners();
+    List<PlaceDetailDto>? placeDetailDto =
+        await _iGoongService.getPlaceByGeocode(latLng);
+    _onChangePlace = false;
+    notifyListeners();
+    return placeDetailDto;
   }
 }
