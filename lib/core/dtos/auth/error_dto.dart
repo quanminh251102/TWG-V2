@@ -3,16 +3,16 @@ part 'error_dto.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class ErrorDetailsDto {
-  final int code;
+  // final int code;
   final String message;
-  final String? details;
+  // final String? details;
   // @JsonKey(name: 'validationErrors')
   // final dynamic validationErrors;
 
   ErrorDetailsDto({
-    required this.code,
+    // required this.code,
     required this.message,
-    this.details,
+    // this.details,
     // this.validationErrors,
   });
 

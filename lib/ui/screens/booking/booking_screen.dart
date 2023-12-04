@@ -5,6 +5,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:twg/core/services/interfaces/isocket_service.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
+import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/icall_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
@@ -28,18 +29,29 @@ class BookingScreen extends StatefulWidget {
   State<BookingScreen> createState() => _BookingScreenState();
 }
 
-class _BookingScreenState extends State<BookingScreen> {
-  late IChatRoomViewModel _iChatRoomViewModel;
-  late ICallViewModel _iCallViewModel;
-  final ISocketService _iSocketService = locator<ISocketService>();
+class _BookingScreenState extends State<BookingScreen>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+  // late IChatRoomViewModel _iChatRoomViewModel;
+  // late ICallViewModel _iCallViewModel;
+  // final ISocketService _iSocketService = locator<ISocketService>();
+  // late IApplyViewModel _iApplyViewModel;
 
   @override
   void initState() {
-    _iChatRoomViewModel = context.read<IChatRoomViewModel>();
-    _iChatRoomViewModel.initSocketEventForChatRoom();
-    _iCallViewModel = context.read<ICallViewModel>();
-    _iCallViewModel.initSocketEventForCall();
-    _iCallViewModel.setSocket(_iSocketService.socket as IO.Socket);
+    _tabController = TabController(
+      length: 3,
+      vsync: this,
+    );
+    // _iChatRoomViewModel = context.read<IChatRoomViewModel>();
+    // _iChatRoomViewModel.initSocketEventForChatRoom();
+
+    // _iApplyViewModel = context.read<IApplyViewModel>();
+    // _iApplyViewModel.initSocketEventForApply();
+
+    // _iCallViewModel = context.read<ICallViewModel>();
+    // _iCallViewModel.initSocketEventForCall();
+    // _iCallViewModel.setSocket(_iSocketService.socket as IO.Socket);
     super.initState();
   }
 

@@ -13,9 +13,13 @@ abstract class IBookingViewModel implements ChangeNotifier {
   bool get onChangePlace;
   List<Predictions> get listPredictions;
   void initData();
+  bool get isMyList;
+  void setIsMyList(bool value);
   String? get keyword;
   Future<void> init(String status);
   Future<void> getMoreBookings(String status);
+  Future<void> initMyBookings();
+  Future<void> getMoreMyBookings();
   Future<void> onPickPlace(String keyWord);
   Future<PlaceDto?> getPlaceById(String locationId);
   Future<List<PlaceDetailDto>?> getPlaceByGeocode(LatLng latLng);

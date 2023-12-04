@@ -1,14 +1,20 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:twg/core/dtos/apply/apply_dto.dart';
+import 'package:twg/core/dtos/apply/create_apply_dto.dart';
+import 'package:twg/core/dtos/apply/update_apply_dto.dart';
 import 'package:twg/core/dtos/auth/access_token_dto.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/dtos/auth/login_dto.dart';
 import 'package:twg/core/dtos/base_api_dto.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
+import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 import 'package:twg/core/dtos/message/message_dto.dart';
 import 'package:twg/core/dtos/message/send_message_dto.dart';
 import 'package:twg/core/dtos/pagination/pagination_dto.dart';
+import 'package:twg/core/dtos/review/create_review_dto.dart';
+import 'package:twg/core/dtos/review/review_dto.dart';
 
 part 'rest_client.g.dart';
 
@@ -37,6 +43,14 @@ abstract class RestClient {
     @Query('status') String? status,
     @Query('authorId') String? authorId,
   });
+  @GET('/api/booking/my-list')
+  Future<BaseApiDto<List<BookingDto>>> getMyBookings({
+    @Header('api_key') String? token,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('sortCreatedAt') int? sortCreatedAt,
+    @Query('sortUpdatedAt') int? sortUpdatedAt,
+  });
 
   @POST("/api/auth/login")
   Future<BaseApiDto<BookingDto>> createBooking({
@@ -45,6 +59,11 @@ abstract class RestClient {
   });
 
   //chat_room
+  @POST("/api/chat_room")
+  Future<BaseApiDto<ChatRoomDto>> createChatRoom(
+    @Header('api_key') String token,
+    @Body() CreateChatRoomDto model,
+  );
   @GET('/api/chat_room')
   Future<BaseApiDto<List<ChatRoomDto>>> getChatRooms({
     @Header('api_key') String? token,
@@ -78,6 +97,44 @@ abstract class RestClient {
     @Header('api_key') String token,
     @Body() AccountDto model,
   );
+
+  // apply
+  @GET('/api/apply')
+  Future<BaseApiDto<List<ApplyDto>>> getApplys({
+    @Header('api_key') String? token,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('sortCreatedAt') int? sortCreatedAt,
+    @Query('sortUpdatedAt') int? sortUpdatedAt,
+    @Query('applyerId') String? applyerId,
+    @Query('bookingId') String? bookingId,
+  });
+  @POST("/api/apply")
+  Future<BaseApiDto<AccountDto>> createApply(
+    @Header('api_key') String token,
+    @Body() CreateApplyDto model,
+  );
+  @PATCH("/api/apply/{id}")
+  Future<BaseApiDto<AccountDto>> updateApply(
+    @Path("id") String id,
+    @Header('api_key') String token,
+    @Body() UpdateApplyDto model,
+  );
+
+  //review
+  @POST("/api/review")
+  Future<BaseApiDto<CreateReviewDto>> createReview(
+    @Header('api_key') String token,
+    @Body() CreateReviewDto model,
+  );
+  @GET('/api/review')
+  Future<BaseApiDto<List<ReviewDto>>> getReviews({
+    @Header('api_key') String? token,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('sortCreatedAt') int? sortCreatedAt,
+    @Query('sortUpdatedAt') int? sortUpdatedAt,
+  });
 
   ///account
   // @GET("/api/account/profile")

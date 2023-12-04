@@ -46,6 +46,15 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   String? get keyword => _keyword;
   @override
   bool get isLoading => _isLoading;
+
+  bool _isMyList = false;
+  @override
+  bool get isMyList => _isMyList;
+  @override
+  void setIsMyList(bool value) {
+    _isMyList = value;
+  }
+
   void _reset() {
     _keyword = null;
     page = 1;
@@ -81,6 +90,46 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
 
     final paginationBookings = await _iBookingService.getBookings(
       status: status,
+      page: page,
+      pageSize: page * 10,
+    );
+
+    _bookings.addAll(
+      paginationBookings ?? [],
+    );
+    _totalCount = _iBookingService.total;
+    page += 1;
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  void _resetMyBookings() {
+    _keyword = null;
+    page = 1;
+    _bookings.clear();
+  }
+
+  @override
+  Future<void> initMyBookings() async {
+    _resetMyBookings();
+    final paginationProducts = await _iBookingService.getMyBookings(
+      page: 1,
+      pageSize: 10,
+    );
+    _bookings = paginationProducts ?? [];
+    _totalCount = _iBookingService.total;
+    notifyListeners();
+  }
+
+  @override
+  Future<void> getMoreMyBookings() async {
+    if (_totalCount == 0) {
+      return;
+    }
+    _isLoading = true;
+    notifyListeners();
+
+    final paginationBookings = await _iBookingService.getMyBookings(
       page: page,
       pageSize: page * 10,
     );
