@@ -5,7 +5,7 @@ import 'package:twg/ui/screens/apply/my_apply_page.dart';
 import 'package:twg/ui/screens/booking/add_booking.dart';
 import 'package:twg/ui/screens/booking/booking_screen.dart';
 import 'package:twg/ui/screens/booking/my_booking_page.dart';
-import 'package:twg/ui/screens/booking/widget/pick_place_screen.dart';
+import 'package:twg/ui/screens/booking/pick_place_screen.dart';
 import 'package:twg/ui/screens/call/call.dart';
 import 'package:twg/ui/screens/call/incoming_call.dart';
 import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
