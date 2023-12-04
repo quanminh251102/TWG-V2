@@ -192,10 +192,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     alignment: Alignment.bottomRight,
                     zoomInColor: ColorUtils.white,
                     zoomOutColor: ColorUtils.white,
-                    zoomInColorIcon: Colors.black,
-                    zoomOutColorIcon: Colors.black,
+                    zoomInColorIcon: ColorUtils.primaryColor,
+                    zoomOutColorIcon: ColorUtils.primaryColor,
                     myLocationColor: ColorUtils.primaryColor,
-                    myLocationColorIcon: Colors.black,
+                    myLocationColorIcon: Colors.white,
                     onPressed: () {
                       _animatedMapMove(
                         LatLng(

@@ -30,7 +30,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
   String? _gender;
   DateTime? _birthday;
   bool _isLoadingUpdate = false;
-  // Function to show a date picker dialog when the birthday field is tapped
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
@@ -54,10 +53,10 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
     if (picked != _birthday) {
       setState(() {
         _birthday = picked;
-        if (this._birthday == null) {
-          this.birthday.text = 'Chọn ngày';
+        if (_birthday == null) {
+          birthday.text = 'Chọn ngày';
         } else {
-          this.birthday.text =
+          birthday.text =
               '${_birthday?.day}/${_birthday?.month}/${_birthday?.year}';
         }
       });
@@ -89,13 +88,13 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
     name = TextEditingController();
     birthday = TextEditingController();
 
-    this.name.text = _iProfileViewModel.accountDto.firstName.toString();
+    name.text = _iProfileViewModel.accountDto.firstName.toString();
 
     if (_iProfileViewModel.accountDto.gender == "male") {
-      this.gender.dropDownValue =
+      gender.dropDownValue =
           const DropDownValueModel(name: 'Nam', value: "male");
     } else {
-      this.gender.dropDownValue =
+      gender.dropDownValue =
           const DropDownValueModel(name: 'Nữ', value: "female");
     }
 
@@ -122,14 +121,14 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
 
   void function_pass() {
     setState(() {
-      this._isLoadingUpdate = false;
+      _isLoadingUpdate = false;
     });
     // showSnackBar(context, 'Cập nhật thành công');
   }
 
   void function_error() {
     setState(() {
-      this._isLoadingUpdate = false;
+      _isLoadingUpdate = false;
     });
     // showSnackBar(context, 'Đã xảy ra lổi');
   }

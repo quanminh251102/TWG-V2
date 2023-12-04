@@ -114,7 +114,7 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
               child: CustomButton(
                 onTap: () {
                   Get.toNamed(
-                    MyRouter.addBooking,
+                    MyRouter.pickPlaceMap,
                     arguments: selectedIndex == 0
                         ? BookingType.findDriver
                         : BookingType.findPassenger,

@@ -16,6 +16,7 @@ import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
 import 'package:twg/ui/common_widgets/custom_booking_floating_button.dart';
 import 'package:twg/ui/common_widgets/confirm_login_dialog.dart';
 import 'package:twg/ui/screens/booking/widget/create_post_bottom_sheet.dart';
+import 'package:twg/ui/screens/booking/widget/place_text_field.dart';
 import 'widget/list_booking.dart';
 part './widget/available_tab.dart';
 part './widget/cancel_tab.dart';
@@ -65,29 +66,6 @@ class _BookingScreenState extends State<BookingScreen>
       ),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorSize: TabBarIndicatorSize.label,
-          indicatorColor: ColorUtils.primaryColor,
-          tabs: const [
-            Tab(
-                child: Text(
-              'Hoạt động',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14),
-            )),
-            Tab(
-                child: Text(
-              'Hoàn thành',
-              style: TextStyle(fontSize: 14),
-            )),
-            Tab(
-                child: Text(
-              'Đã hủy',
-              style: TextStyle(fontSize: 14),
-            )),
-          ],
-        ),
         centerTitle: true,
         title: const Text(
           'CHUYẾN ĐI',
@@ -123,14 +101,7 @@ class _BookingScreenState extends State<BookingScreen>
           )
         ],
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _AvailableBookingTab(),
-          _CompleteBookingTab(),
-          _CancelBookingTab(),
-        ],
-      ),
+      // body: const PlaceTextField(),
     );
   }
 }

@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:twg/ui/screens/apply/apply_in_booking_page.dart';
 import 'package:twg/ui/screens/apply/create_apply_page.dart';
 import 'package:twg/ui/screens/apply/my_apply_page.dart';
+import 'package:twg/ui/screens/apply/apply_in_booking_page.dart';
+import 'package:twg/ui/screens/apply/create_apply_page.dart';
+import 'package:twg/ui/screens/apply/my_apply_page.dart';
 import 'package:twg/ui/screens/booking/add_booking.dart';
 import 'package:twg/ui/screens/booking/booking_screen.dart';
 import 'package:twg/ui/screens/booking/my_booking_page.dart';
+import 'package:twg/ui/screens/booking/pick_place_screen.dart';
 import 'package:twg/ui/screens/call/call.dart';
 import 'package:twg/ui/screens/call/incoming_call.dart';
 import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
@@ -37,6 +41,7 @@ class MyRouter {
   static const String myApply = '/myApply';
   static const String myBooking = '/myBooking';
   static const String myReview = '/myReview';
+  static const String pickPlaceMap = '/pickPlaceMap';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -149,6 +154,11 @@ class MyRouter {
         return _buildRouteNavigationWithoutEffect(
           settings,
           const MyReViewsPage(),
+        );
+      case pickPlaceMap:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const PickPlaceScreen(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

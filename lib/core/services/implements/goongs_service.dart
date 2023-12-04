@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:twg/constants.dart';
+import 'package:twg/core/dtos/goongs/place_detail_dto.dart';
 import 'package:twg/core/dtos/goongs/place_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 import 'package:twg/core/dtos/goongs/search_response_dto.dart';
@@ -36,6 +38,25 @@ class GoongService implements IGoongService {
       if (result.statusCode == 200) {
         PlaceDto placeDto = PlaceDto.fromJson(result.data['result']);
         return placeDto;
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  @override
+  Future<List<PlaceDetailDto>?> getPlaceByGeocode(LatLng latLng) async {
+    try {
+      var result = await Dio().get(
+        '$baseGoongsUrl/Geocode?latlng=${latLng.latitude},%20${latLng.longitude}&api_key=$goongKey',
+      );
+      if (result.statusCode == 200) {
+        List<PlaceDetailDto> placeDetailDto = [];
+        for (var place in result.data['results']) {
+          placeDetailDto.add(PlaceDetailDto.fromJson(place));
+        }
+        return placeDetailDto;
       }
     } on Exception catch (e) {
       print(e);

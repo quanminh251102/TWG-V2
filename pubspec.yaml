@@ -102,7 +102,11 @@ dependencies:
   cloudinary: ^1.2.0
   rating_dialog: ^2.0.4
   windows_notification: ^1.0.0
-  
+  syncfusion_flutter_datepicker: ^23.2.4
+  flutter_localizations:
+    sdk: flutter
+  snapping_sheet: ^3.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
