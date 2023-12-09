@@ -14,6 +14,7 @@ import 'package:twg/ui/screens/call/incoming_call.dart';
 import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
 import 'package:twg/ui/screens/chat_room/chat_screen.dart';
 import 'package:twg/ui/screens/home/home_screen.dart';
+import 'package:twg/ui/screens/profile_and_settings/account_screen.dart';
 import 'package:twg/ui/screens/profile_and_settings/my_reviews/my_reviews_page.dart';
 import 'package:twg/ui/screens/profile_and_settings/privacy_policy/privacy_policy_page.dart';
 import 'package:twg/ui/screens/profile_and_settings/profile_screen.dart';
@@ -116,7 +117,7 @@ class MyRouter {
       case profile:
         return _buildRouteNavigationWithoutEffect(
           settings,
-          const ProfileScreen(),
+          const AccountScreen(),
         );
       case privacyPolicy:
         return _buildRouteNavigationWithoutEffect(

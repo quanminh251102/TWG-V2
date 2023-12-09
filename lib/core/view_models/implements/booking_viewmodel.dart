@@ -169,4 +169,21 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     notifyListeners();
     return placeDetailDto;
   }
+
+  @override
+  Future<void> saveLocation(Predictions location) async {
+    await _iBookingService.saveLocation(location);
+  }
+
+  @override
+  Future<void> getSaveLocation() async {
+    _resetMyBookings();
+    final paginationProducts = await _iBookingService.getMyBookings(
+      page: 1,
+      pageSize: 10,
+    );
+    _bookings = paginationProducts ?? [];
+    _totalCount = _iBookingService.total;
+    notifyListeners();
+  }
 }

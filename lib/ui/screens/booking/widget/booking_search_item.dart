@@ -75,8 +75,11 @@ class BookingSearchItem extends StatelessWidget {
           SizedBox(
             width: 12.w,
           ),
-          const Icon(
-            Icons.bookmark_outline,
+          InkWell(
+            onTap: () async {},
+            child: const Icon(
+              Icons.bookmark_outline,
+            ),
           )
         ],
       ),

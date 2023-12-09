@@ -45,9 +45,28 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: CustomHomeAppBar(),
-        floatingActionButton: const CustomFloatingButton(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          title: const Text(
+            'Trò chuyện',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.notifications_none_outlined,
+                color: Colors.black,
+              ),
+              onPressed: () {},
+            )
+          ],
+        ),
+        extendBody: true,
         bottomNavigationBar: const CustomBottomNavigationBar(
           value: CustomNavigationBar.chat,
         ),

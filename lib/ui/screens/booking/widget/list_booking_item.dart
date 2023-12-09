@@ -1,11 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+import 'package:lottie/lottie.dart' as lottie;
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
@@ -68,7 +69,9 @@ class _ListBookingItemState extends State<ListBookingItem> {
         elevation: 3,
         shadowColor: Colors.grey,
         child: Container(
-          color: Colors.white.withOpacity(0.85),
+          color: Colors.white.withOpacity(
+            0.85,
+          ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
             child: Column(
@@ -229,70 +232,64 @@ class _ListBookingItemState extends State<ListBookingItem> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 5.0,
-                      ),
-                      child: Divider(
-                        color: Colors.grey.withOpacity(0.2),
-                        thickness: 1,
-                      ),
-                    ),
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/location-svgrepo-com.svg',
-                              height: 40,
-                            ),
-                            SvgPicture.asset(
-                              'assets/icons/downarrow.svg',
-                              height: 40,
-                            ),
-                            SvgPicture.asset(
-                              'assets/icons/location.svg',
-                              height: 40,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 40.0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.7,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      widget.booking.startPointMainText ?? "",
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                    ),
-                                    Text(widget.booking.startPointAddress ?? "",
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1),
-                                  ],
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 40.w,
+                                child: lottie.Lottie.asset(
+                                  "assets/lottie/person.json",
+                                  animate: true,
+                                  repeat: true,
                                 ),
                               ),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Column(
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.booking.startPointMainText ?? "",
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                  Text(widget.booking.startPointAddress ?? "",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30.h,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 40.w,
+                                child: lottie.Lottie.asset(
+                                  "assets/lottie/location-booking.json",
+                                  repeat: true,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(widget.booking.endPointMainText ?? "",
@@ -306,10 +303,13 @@ class _ListBookingItemState extends State<ListBookingItem> {
                                       maxLines: 1),
                                 ],
                               ),
-                            )
-                          ],
-                        ),
+                            ],
+                          ),
+                        )
                       ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
                     ),
                     if (isMyList)
                       ElevatedButton(
@@ -317,47 +317,82 @@ class _ListBookingItemState extends State<ListBookingItem> {
                           _iApplyViewModel.setBookingDto(widget.booking);
                           Get.offNamed(MyRouter.applyInBooking);
                         },
-                        child: Text('Danh sách'),
+                        child: const Text('Danh sách'),
                       ),
                     if (isMyList == false)
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 40, vertical: 5),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.w,
+                          vertical: 5.h,
+                        ),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               (isNavigateChatRoom)
                                   ? const CircularProgressIndicator()
-                                  : ElevatedButton(
-                                      onPressed: () {
+                                  : InkWell(
+                                      onTap: () {
                                         navigateChatRoom(context);
                                       },
-                                      style: ElevatedButton.styleFrom(
-                                          minimumSize: const Size(120, 30),
-                                          maximumSize: const Size(120, 30),
-                                          backgroundColor:
-                                              ColorUtils.primaryColor),
-                                      child: const Text(
-                                        'Trò chuyện',
-                                        style: TextStyle(color: Colors.white),
+                                      child: Container(
+                                        width: 150.w,
+                                        decoration: BoxDecoration(
+                                            color: ColorUtils.primaryColor,
+                                            border: Border.all(
+                                              color: ColorUtils.primaryColor,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              10.r,
+                                            )),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 15.h,
+                                            horizontal: 30.w,
+                                          ),
+                                          child: const Center(
+                                            child: Text(
+                                              'Trò chuyện',
+                                              style: TextStyle(
+                                                color: ColorUtils.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
                               (isNavigateCreateApply)
                                   ? const CircularProgressIndicator()
-                                  : ElevatedButton(
-                                      onPressed: () {
+                                  : InkWell(
+                                      onTap: () {
                                         navigateCreateApply(context);
                                       },
-                                      style: ElevatedButton.styleFrom(
-                                          minimumSize: const Size(100, 30),
-                                          maximumSize: const Size(100, 30),
-                                          backgroundColor:
-                                              ColorUtils.primaryColor),
-                                      child: const Text(
-                                        'Tham gia',
-                                        style: TextStyle(color: Colors.white),
+                                      child: Container(
+                                        width: 150.w,
+                                        decoration: BoxDecoration(
+                                            color: ColorUtils.primaryColor,
+                                            border: Border.all(
+                                              color: ColorUtils.primaryColor,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              10.r,
+                                            )),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 15.h,
+                                            horizontal: 30.w,
+                                          ),
+                                          child: const Center(
+                                            child: Text(
+                                              'Tham gia',
+                                              style: TextStyle(
+                                                  color: ColorUtils.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    )
                             ]),
                       ),
                   ],

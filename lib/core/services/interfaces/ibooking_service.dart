@@ -1,4 +1,5 @@
 import 'package:twg/core/dtos/booking/booking_dto.dart';
+import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 
 abstract class IBookingService {
   Future<List<BookingDto>?> getBookings({
@@ -18,4 +19,5 @@ abstract class IBookingService {
     int? sortCreatedAt,
     int? sortUpdatedAt,
   });
+  Future<bool> saveLocation(Predictions location);
 }

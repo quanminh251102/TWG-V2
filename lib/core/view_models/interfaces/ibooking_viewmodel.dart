@@ -23,4 +23,5 @@ abstract class IBookingViewModel implements ChangeNotifier {
   Future<void> onPickPlace(String keyWord);
   Future<PlaceDto?> getPlaceById(String locationId);
   Future<List<PlaceDetailDto>?> getPlaceByGeocode(LatLng latLng);
+  Future<void> saveLocation(Predictions location);
 }

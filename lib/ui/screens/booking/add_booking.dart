@@ -1,9 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/utils/money_utils.dart';
+import 'package:twg/global/router.dart';
+import 'package:twg/ui/common_widgets/custom_button.dart';
 
 enum BookingType { findDriver, findPassenger }
 
@@ -136,7 +142,10 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                         Padding(
                           padding: const EdgeInsets.only(top: 10.0),
                           child: TextFormField(
-                            onChanged: (value) {},
+                            readOnly: true,
+                            onTap: () {
+                              Get.toNamed(MyRouter.pickPlaceMap);
+                            },
                             style: const TextStyle(fontWeight: FontWeight.w600),
                             focusNode: startPlaceFocus,
                             controller: startPlace,
@@ -147,14 +156,6 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                               return null;
                             },
                             decoration: InputDecoration(
-                              filled: true,
-                              fillColor: startPlaceFocus.hasFocus
-                                  ? ColorUtils.primaryColor.withOpacity(0.1)
-                                  : Colors.white,
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: ColorUtils.primaryColor,
-                                      width: 2)),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Colors.grey.withOpacity(0.1),
@@ -163,19 +164,19 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                               ),
                               hintText: 'Điểm đi',
                               prefixIcon: Icon(
-                                Icons.start_outlined,
-                                color: startPlaceFocus.hasFocus
+                                Icons.person_pin,
+                                color: startPlace.text != ''
                                     ? ColorUtils.primaryColor
                                     : Colors.grey,
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
+                        SizedBox(
+                          height: 10.h,
                         ),
                         TextFormField(
-                          onChanged: (value) {},
+                          readOnly: true,
                           style: const TextStyle(fontWeight: FontWeight.bold),
                           focusNode: endPlaceFocus,
                           controller: endPlace,
@@ -185,17 +186,13 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                             }
                             return null;
                           },
+                          onTap: () {
+                            Get.toNamed(MyRouter.pickPlaceMap);
+                          },
                           decoration: InputDecoration(
                             labelStyle:
                                 const TextStyle(fontWeight: FontWeight.w600),
                             focusColor: Colors.black,
-                            filled: true, //<-- SEE HERE
-                            fillColor: endPlaceFocus.hasFocus
-                                ? ColorUtils.primaryColor.withOpacity(0.1)
-                                : Colors.white,
-                            focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ColorUtils.primaryColor, width: 2)),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Colors.grey.withOpacity(0.1),
@@ -203,21 +200,16 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                               ),
                             ),
                             hintText: 'Điểm đến',
-                            prefixIcon: Icon(Icons.place_outlined,
-                                color: endPlaceFocus.hasFocus
-                                    ? ColorUtils.primaryColor
-                                    : Colors.grey),
+                            prefixIcon: Icon(
+                              Icons.place_outlined,
+                              color: endPlace.text != ''
+                                  ? ColorUtils.primaryColor
+                                  : Colors.grey,
+                            ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        // Container(
-                        //     decoration: BoxDecoration(
-                        //         borderRadius: BorderRadius.circular(10)),
-                        //     child: state.imageRoute),
-                        const SizedBox(
-                          height: 10,
+                        SizedBox(
+                          height: 20.h,
                         ),
                         const Text(
                           'Thời gian',
@@ -228,6 +220,7 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                           padding: const EdgeInsets.only(top: 10.0, bottom: 10),
                           child: TextFormField(
                             readOnly: true,
+                            keyboardType: TextInputType.text,
                             style: const TextStyle(fontWeight: FontWeight.w600),
                             controller: time,
                             validator: (value) {
@@ -259,9 +252,8 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                                 )),
                           ),
                         ),
-
-                        const SizedBox(
-                          height: 10,
+                        SizedBox(
+                          height: 10.h,
                         ),
                         const Text(
                           'Giá tiền',
@@ -271,6 +263,9 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                         Padding(
                           padding: const EdgeInsets.only(top: 10.0, bottom: 10),
                           child: TextFormField(
+                            inputFormatters: [
+                              VietnameseMoneyFormatter(),
+                            ],
                             style: const TextStyle(
                               fontWeight: FontWeight.w600,
                             ),
@@ -281,6 +276,7 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                               }
                               return null;
                             },
+                            keyboardType: TextInputType.phone,
                             decoration: InputDecoration(
                                 filled: true, //<-- SEE HERE
                                 fillColor: Colors.white,
@@ -304,66 +300,66 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                                 )),
                           ),
                         ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
                         const Text(
                           'Nội dung',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: TextField(
-                            controller: textEditingController,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 20.0, horizontal: 20.0),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Color(0xffF2F2F3)),
-                                borderRadius: BorderRadius.circular(15),
+                          padding: EdgeInsets.symmetric(
+                            vertical: 10.h,
+                          ),
+                          child: SizedBox(
+                            child: TextField(
+                              controller: textEditingController,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10.h,
+                                  horizontal: 20.w,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Color(0xffF2F2F3)),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: ColorUtils.borderColor),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                hintText:
+                                    "Mình cần tìm người đi cùng chiều nay...",
+                                hintStyle: const TextStyle(
+                                    color: Color(0xff616161),
+                                    fontFamily: "AvertaStdCY-Regular"),
+                                filled: true,
+                                fillColor: Colors.white,
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ColorUtils.borderColor),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              hintText:
-                                  "Mình cần tìm người đi cùng chiều nay...",
-                              hintStyle: const TextStyle(
-                                  color: Color(0xff616161),
-                                  fontFamily: "AvertaStdCY-Regular"),
-                              filled: true,
-                              fillColor: Colors.white,
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.black),
+                              maxLines: 100,
+                              minLines: 5,
                             ),
-                            style: const TextStyle(
-                                fontSize: 14, color: Colors.black),
-                            maxLines: 100,
-                            minLines: 1,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20.0, bottom: 20),
                           child: isLoading
                               ? const Center(child: CircularProgressIndicator())
-                              : Align(
-                                  child: GestureDetector(
-                                    onTap: () async {},
-                                    child: Container(
-                                        height: screenSize.height * 0.06,
-                                        width: screenSize.width * 0.8,
-                                        decoration: BoxDecoration(
-                                            color: ColorUtils.primaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        child: const Center(
-                                          child: Text(
-                                            'Thêm bài viết',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 14),
-                                          ),
-                                        )),
+                              : Center(
+                                  child: CustomButton(
+                                    height: 50.h,
+                                    width: 300.w,
+                                    text: 'Thêm bài viết',
+                                    textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.sp,
+                                    ),
                                   ),
                                 ),
                         ),

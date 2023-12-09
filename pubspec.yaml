@@ -106,6 +106,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   snapping_sheet: ^3.1.0
+  flutter_map_location_marker: ^8.0.2
+  line_awesome_flutter: ^2.0.0
+  json_theme: ^6.4.0
 
 dev_dependencies:
   flutter_test:
@@ -133,6 +136,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/lottie/
+    - assets/appainter_theme.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

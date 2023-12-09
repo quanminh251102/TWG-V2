@@ -20,6 +20,11 @@ class CustomFloatingButton extends StatelessWidget {
         width: 86.r,
         color: Colors.transparent,
         child: FloatingActionButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+              40.r,
+            ),
+          ),
           backgroundColor: ColorUtils.primaryColor,
           onPressed: () {
             if (locator<GlobalData>().currentUser != null) {
