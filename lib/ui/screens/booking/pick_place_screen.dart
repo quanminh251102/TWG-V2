@@ -132,30 +132,22 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
   }
 
   Future<void> gotoPoint() async {
+    String currentPlaceId = '';
     if (isLocationFocus) {
-      PlaceDto? searchPlace =
-          await _iBookingViewModel.getPlaceById(currentLocation!.placeId!);
-      if (searchPlace != null) {
-        _animatedMapMove(
-          LatLng(
-            searchPlace.geometry!.location!.lat!,
-            searchPlace.geometry!.location!.lng!,
-          ),
-          19,
-        );
-      }
+      currentPlaceId = currentLocation!.placeId!;
     } else {
-      PlaceDto? searchPlace =
-          await _iBookingViewModel.getPlaceById(currentDestination!.placeId!);
-      if (searchPlace != null) {
-        _animatedMapMove(
-          LatLng(
-            searchPlace.geometry!.location!.lat!,
-            searchPlace.geometry!.location!.lng!,
-          ),
-          19,
-        );
-      }
+      currentPlaceId = currentDestination!.placeId!;
+    }
+    PlaceDto? searchPlace =
+        await _iBookingViewModel.getPlaceById(currentPlaceId);
+    if (searchPlace != null) {
+      _animatedMapMove(
+        LatLng(
+          searchPlace.geometry!.location!.lat!,
+          searchPlace.geometry!.location!.lng!,
+        ),
+        19,
+      );
     }
   }
 
@@ -250,6 +242,7 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
             color: Colors.black,
           ),
         ),
+        centerTitle: true,
         actions: [
           Visibility(
             visible: initialExtent == maxExtent &&
@@ -364,7 +357,9 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
                     ? Align(
                         alignment: Alignment.bottomCenter,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20.h),
+                          padding: EdgeInsets.symmetric(
+                            vertical: 20.h,
+                          ),
                           child: CustomButton(
                             height: 50.h,
                             width: 300.w,
@@ -403,130 +398,140 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
                                   controller: scrollController,
                                   child: Column(
                                     children: [
-                                      Padding(
-                                        padding: EdgeInsets.all(
-                                          15.r,
-                                        ),
-                                        child: Container(
-                                          color: Colors.white,
-                                          child: Column(children: [
-                                            Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.bookmark,
-                                                  color:
-                                                      ColorUtils.primaryColor,
-                                                ),
-                                                SizedBox(
-                                                  width: 10.w,
-                                                ),
-                                                const Text(
-                                                  'ĐỊA ĐIỂM ĐÃ LƯU',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                      vm.listPredictions.isEmpty &&
+                                              vm.onSearchPlace != true
+                                          ? Padding(
+                                              padding: EdgeInsets.all(
+                                                15.r,
+                                              ),
+                                              child: Container(
+                                                color: Colors.white,
+                                                child: Column(children: [
+                                                  Row(
+                                                    children: [
+                                                      const Icon(
+                                                        Icons.bookmark,
+                                                        color: ColorUtils
+                                                            .primaryColor,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10.w,
+                                                      ),
+                                                      const Text(
+                                                        'ĐỊA ĐIỂM ĐÃ LƯU',
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 15.h,
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10.w),
-                                              child: SingleChildScrollView(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                child: Row(
-                                                  children: [
-                                                    SavePlaceItem(
-                                                      type: 0,
-                                                      isExist: false,
+                                                  SizedBox(
+                                                    height: 15.h,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10.w),
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      child: Row(
+                                                        children: [
+                                                          SavePlaceItem(
+                                                            type: 0,
+                                                            isExist: false,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 20.w,
+                                                          ),
+                                                          SavePlaceItem(
+                                                            type: 1,
+                                                            isExist: false,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 20.w,
+                                                          ),
+                                                          SavePlaceItem(
+                                                            type: 2,
+                                                            isExist: false,
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                    SizedBox(
-                                                      width: 20.w,
-                                                    ),
-                                                    SavePlaceItem(
-                                                      type: 1,
-                                                      isExist: false,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 20.w,
-                                                    ),
-                                                    SavePlaceItem(
-                                                      type: 2,
-                                                      isExist: false,
-                                                    ),
-                                                  ],
-                                                ),
+                                                  )
+                                                ]),
                                               ),
                                             )
-                                          ]),
-                                        ),
-                                      ),
-                                      Container(
-                                        child: vm.onSearchPlace == true
-                                            ? Container(
-                                                height: 300.h,
-                                                color: Colors.white,
-                                                child: Center(
-                                                  child: lottie.Lottie.asset(
-                                                      "assets/lottie/loading_location.json",
-                                                      repeat: true,
-                                                      height: 300.h),
-                                                ),
-                                              )
-                                            : vm.listPredictions.isNotEmpty &&
-                                                    (locationController.text !=
-                                                            '' ||
-                                                        destinationController
-                                                                .text !=
-                                                            '') &&
-                                                    (locationFocusNode
-                                                            .hasFocus ||
-                                                        destinationFocusNode
-                                                            .hasFocus)
-                                                ? Container(
-                                                    color: Colors.white,
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: vm
-                                                          .listPredictions
-                                                          .map((e) {
-                                                        return InkWell(
-                                                          onTap: () async {
-                                                            if (locationFocusNode
-                                                                .hasFocus) {
-                                                              locationFocusNode
-                                                                  .unfocus();
-                                                              locationController
-                                                                      .text =
-                                                                  e.description!;
-                                                              currentLocation =
-                                                                  e;
-                                                            } else {
-                                                              destinationFocusNode
-                                                                  .unfocus();
+                                          : Container(
+                                              child: vm.onSearchPlace == true
+                                                  ? Container(
+                                                      height: 300.h,
+                                                      color: Colors.white,
+                                                      child: Center(
+                                                        child: lottie.Lottie.asset(
+                                                            "assets/lottie/loading_location.json",
+                                                            repeat: true,
+                                                            height: 300.h),
+                                                      ),
+                                                    )
+                                                  : vm.listPredictions
+                                                              .isNotEmpty &&
+                                                          (locationController
+                                                                      .text !=
+                                                                  '' ||
                                                               destinationController
-                                                                      .text =
-                                                                  e.description!
-                                                                      .split(
-                                                                          ',')[0];
-                                                              currentDestination =
-                                                                  e;
-                                                            }
-                                                            setState(() {});
-                                                          },
-                                                          child:
-                                                              BookingSearchItem(
-                                                            predictions: e,
-                                                          ),
-                                                        );
-                                                      }).toList(),
-                                                    ))
-                                                : const SizedBox.shrink(),
-                                      )
+                                                                      .text !=
+                                                                  '') &&
+                                                          (locationFocusNode
+                                                                  .hasFocus ||
+                                                              destinationFocusNode
+                                                                  .hasFocus)
+                                                      ? Container(
+                                                          color: Colors.white,
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: vm
+                                                                .listPredictions
+                                                                .map((e) {
+                                                              return InkWell(
+                                                                onTap:
+                                                                    () async {
+                                                                  if (locationFocusNode
+                                                                      .hasFocus) {
+                                                                    locationFocusNode
+                                                                        .unfocus();
+                                                                    locationController
+                                                                            .text =
+                                                                        e.description!;
+                                                                    currentLocation =
+                                                                        e;
+                                                                  } else {
+                                                                    destinationFocusNode
+                                                                        .unfocus();
+                                                                    destinationController.text = e
+                                                                        .description!
+                                                                        .split(
+                                                                            ',')[0];
+                                                                    currentDestination =
+                                                                        e;
+                                                                  }
+                                                                  setState(
+                                                                      () {});
+                                                                },
+                                                                child:
+                                                                    BookingSearchItem(
+                                                                  predictions:
+                                                                      e,
+                                                                ),
+                                                              );
+                                                            }).toList(),
+                                                          ))
+                                                      : const SizedBox.shrink(),
+                                            )
                                     ],
                                   ),
                                 ),

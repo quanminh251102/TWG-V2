@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:lottie/lottie.dart' as lottie;
 import 'package:provider/provider.dart';
@@ -75,20 +77,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       () async {
         await _iHomeViewModel.initHome().then((value) {
           if (locator<GlobalData>().currentPosition != null) {
-            customMarkers.add(
-              buildPin(
-                LatLng(
-                  locator<GlobalData>().currentPosition!.latitude,
-                  locator<GlobalData>().currentPosition!.longitude,
-                ),
-              ),
-            );
             _animatedMapMove(
               LatLng(
                 locator<GlobalData>().currentPosition!.latitude,
                 locator<GlobalData>().currentPosition!.longitude,
               ),
-              16,
+              19,
             );
           }
         });
@@ -157,11 +151,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: const CustomFloatingButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: const Text(
+          'Trang chủ',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.notifications_none_outlined,
+              color: Colors.black,
+            ),
+            onPressed: () {},
+          )
+        ],
+      ),
       bottomNavigationBar: const CustomBottomNavigationBar(
         value: CustomNavigationBar.home,
       ),
+      extendBody: true,
       body: Consumer<IHomeViewModel>(
         builder: (context, vm, child) {
           return Stack(
@@ -188,23 +202,51 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         'https://api.mapbox.com/styles/v1/minhquan2511/cloeed6yc000e01qu0iukbk6l/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibWluaHF1YW4yNTExIiwiYSI6ImNsaGVpNGNrbTB4ZHozZXA0NWN4NHAydWsifQ.eFaaP1FOzhDovmTSXS6Lsw',
                     userAgentPackageName: 'dev.fleaflet.flutter_map.example',
                   ),
-                  ZoomButtons(
-                    alignment: Alignment.bottomRight,
-                    zoomInColor: ColorUtils.white,
-                    zoomOutColor: ColorUtils.white,
-                    zoomInColorIcon: ColorUtils.primaryColor,
-                    zoomOutColorIcon: ColorUtils.primaryColor,
-                    myLocationColor: ColorUtils.primaryColor,
-                    myLocationColorIcon: Colors.white,
-                    onPressed: () {
-                      _animatedMapMove(
-                        LatLng(
-                          locator<GlobalData>().currentPosition!.latitude,
-                          locator<GlobalData>().currentPosition!.longitude,
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 100.h,
+                    ),
+                    child: ZoomButtons(
+                      alignment: Alignment.bottomRight,
+                      zoomInColor: ColorUtils.white,
+                      zoomOutColor: ColorUtils.white,
+                      zoomInColorIcon: ColorUtils.primaryColor,
+                      zoomOutColorIcon: ColorUtils.primaryColor,
+                      myLocationColor: ColorUtils.white,
+                      myLocationColorIcon: ColorUtils.primaryColor,
+                      onPressed: () {
+                        _animatedMapMove(
+                          LatLng(
+                            locator<GlobalData>().currentPosition!.latitude,
+                            locator<GlobalData>().currentPosition!.longitude,
+                          ),
+                          19,
+                        );
+                      },
+                    ),
+                  ),
+                  CurrentLocationLayer(
+                    style: LocationMarkerStyle(
+                      marker: const DefaultLocationMarker(
+                        color: ColorUtils.primaryColor,
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white,
                         ),
-                        16,
-                      );
-                    },
+                      ),
+                      markerSize: const Size.square(
+                        40,
+                      ),
+                      accuracyCircleColor: ColorUtils.primaryColor.withOpacity(
+                        0.1,
+                      ),
+                      headingSectorColor: ColorUtils.primaryColor.withOpacity(
+                        0.8,
+                      ),
+                      showAccuracyCircle: true,
+                      headingSectorRadius: 120,
+                    ),
+                    moveAnimationDuration: Duration.zero, // disable animation
                   ),
                   MarkerLayer(
                     markers: customMarkers,
@@ -292,7 +334,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     searchPlace.geometry!
                                                         .location!.lng!,
                                                   ),
-                                                  16,
+                                                  19,
                                                 );
                                               }
                                             },

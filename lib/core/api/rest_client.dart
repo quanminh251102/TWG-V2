@@ -10,6 +10,7 @@ import 'package:twg/core/dtos/base_api_dto.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
+import 'package:twg/core/dtos/goongs/save_place_dto.dart';
 import 'package:twg/core/dtos/message/message_dto.dart';
 import 'package:twg/core/dtos/message/send_message_dto.dart';
 import 'package:twg/core/dtos/pagination/pagination_dto.dart';
@@ -127,6 +128,7 @@ abstract class RestClient {
     @Header('api_key') String token,
     @Body() CreateReviewDto model,
   );
+
   @GET('/api/review')
   Future<BaseApiDto<List<ReviewDto>>> getReviews({
     @Header('api_key') String? token,
@@ -134,6 +136,12 @@ abstract class RestClient {
     @Query('pageSize') int? pageSize,
     @Query('sortCreatedAt') int? sortCreatedAt,
     @Query('sortUpdatedAt') int? sortUpdatedAt,
+  });
+
+  @POST("/api/location-saved")
+  Future<BaseApiDto<SavePlaceDto>> saveLocation({
+    @Header('api_key') required String token,
+    @Body() required SavePlaceDto model,
   });
 
   ///account

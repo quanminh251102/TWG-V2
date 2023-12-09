@@ -1,12 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-// import 'package:hoangduc/translation/strings.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
+import 'package:twg/core/utils/theme_utils.dart';
 import 'package:twg/ui/utils/navigation_utils.dart';
 import 'package:twg/ui/utils/notification_utils.dart';
 import 'core/utils/color_utils.dart';
@@ -26,7 +31,14 @@ Future<void> main() async {
   configLoading();
   await setupLocator();
   NotifiationUtils().initNotification();
-  runApp(const MyApp());
+  final themeStr = await rootBundle.loadString('assets/appainter_theme.json');
+  final themeJson = jsonDecode(themeStr);
+  final theme = ThemeDecoder.decodeThemeData(themeJson)!;
+  runApp(
+    MyApp(
+      theme: theme,
+    ),
+  );
 }
 
 Future<void> mainDelegate() async {}
@@ -49,8 +61,11 @@ void configLoading() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  const MyApp({
+    Key? key,
+    required this.theme,
+  }) : super(key: key);
+  final ThemeData theme;
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -63,10 +78,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_const_constructors
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.white,
+      ),
+    );
     return MultiProvider(
       providers: [...viewModelProviders],
       child: ScreenUtilInit(
@@ -75,47 +91,22 @@ class _MyAppState extends State<MyApp> {
         splitScreenMode: true,
         builder: (_, __) {
           return GetMaterialApp(
-              builder: EasyLoading.init(),
-              title: 'TWG',
-              navigatorKey: NavigationUtils.navigatorKey,
-              onGenerateRoute: (settings) => MyRouter.generateRoute(settings),
-              initialRoute: MyRouter.splash,
-              locale: const Locale('vi', 'VN'), // Set the locale to Vietnamese
-              localizationsDelegates: const [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: const [
-                Locale('vi', 'VN'), // Include the Vietnamese locale
-              ],
-              theme: ThemeData(
-                appBarTheme: const AppBarTheme(
-                  backgroundColor: ColorUtils.white,
-                  iconTheme: IconThemeData(color: Colors.black),
-                  foregroundColor: Colors.black,
-                ),
-                scaffoldBackgroundColor: Colors.white,
-                textTheme: const TextTheme(
-                  displayLarge: TextStyle(color: Colors.black),
-                  displayMedium: TextStyle(color: Colors.black),
-                  bodyMedium: TextStyle(color: Colors.black),
-                  titleMedium: TextStyle(color: Colors.black),
-                ),
-                primaryColor: ColorUtils.primaryColor,
-                splashColor: Colors.transparent,
-                fontFamily: 'AvertaStd',
-                timePickerTheme: const TimePickerThemeData(
-                  backgroundColor: Colors.white,
-                  dayPeriodTextColor: Colors.white,
-                  dayPeriodColor: ColorUtils.primaryColor,
-                  dialHandColor: ColorUtils.primaryColor,
-                  dialTextColor: ColorUtils.primaryColor,
-                ),
-                colorScheme: ThemeData()
-                    .colorScheme
-                    .copyWith(primary: ColorUtils.primaryColor),
-              ));
+            builder: EasyLoading.init(),
+            title: 'TWG',
+            navigatorKey: NavigationUtils.navigatorKey,
+            onGenerateRoute: (settings) => MyRouter.generateRoute(settings),
+            initialRoute: MyRouter.splash,
+            locale: const Locale('vi', 'VN'), // Set the locale to Vietnamese
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('vi', 'VN'), // Include the Vietnamese locale
+            ],
+            theme: widget.theme,
+          );
         },
       ),
     );

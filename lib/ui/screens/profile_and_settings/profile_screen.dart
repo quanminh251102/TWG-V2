@@ -296,8 +296,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: CustomHomeAppBar(),
-      floatingActionButton: const CustomFloatingButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
       bottomNavigationBar: const CustomBottomNavigationBar(
         value: CustomNavigationBar.account,
       ),
@@ -308,45 +307,42 @@ class _ProfileScreenState extends State<ProfileScreen>
               vertical: MediaQuery.of(context).size.height * 0.05),
           child: Column(children: [
             const Align(
+              alignment: Alignment.topLeft,
               child: Text(
                 'Thông tin tài khoản',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              alignment: Alignment.topLeft,
             ),
             const SizedBox(height: 8),
             Consumer<IProfileViewModel>(
               builder: (context, vm, child) {
                 return Column(
                   children: [
-                    CachedNetworkImage(
-                      imageUrl: vm.accountDto.avatarUrl.toString(),
-                      imageBuilder: (context, imageProvider) => Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(
-                                  60.0) //                 <--- border radius here
-                              ),
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                    Visibility(
-                        visible: _isLoadingImage,
-                        child: const CircularProgressIndicator()),
-                    ElevatedButton(
-                      onPressed: () {
+                    InkWell(
+                      onTap: () {
                         openMediaDialog();
                       },
-                      child: const Text('Đổi ảnh đại diện'),
+                      child: CachedNetworkImage(
+                        imageUrl: vm.accountDto.avatarUrl.toString(),
+                        imageBuilder: (context, imageProvider) => Container(
+                          width: 120,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(
+                                Radius.circular(
+                                    60.0) //                 <--- border radius here
+                                ),
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(vm.accountDto.firstName.toString()),

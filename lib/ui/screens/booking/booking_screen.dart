@@ -59,8 +59,7 @@ class _BookingScreenState extends State<BookingScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: CustomHomeAppBar(),
-      floatingActionButton: const CustomFloatingButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
       bottomNavigationBar: const CustomBottomNavigationBar(
         value: CustomNavigationBar.booking,
       ),
@@ -68,7 +67,7 @@ class _BookingScreenState extends State<BookingScreen>
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text(
-          'CHUYẾN ĐI',
+          'Bài đăng',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -101,7 +100,7 @@ class _BookingScreenState extends State<BookingScreen>
           )
         ],
       ),
-      // body: const PlaceTextField(),
+      body: _AvailableBookingTab(),
     );
   }
 }
