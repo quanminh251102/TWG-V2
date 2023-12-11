@@ -94,4 +94,27 @@ class BookingService implements IBookingService {
     }
     return false;
   }
+
+  @override
+  Future<bool> createBooking(BookingDto bookingDto) async {
+    var token = await TokenUtils.getToken();
+    if (token != null) {
+      print(bookingDto.toJson().toString());
+      LoadingDialogUtils.showLoading();
+      try {
+        var result = await getRestClient().createBooking(
+          token: token,
+          model: bookingDto,
+        );
+        if (result.success) {
+          return true;
+        }
+      } catch (e) {
+        print(e);
+      } finally {
+        LoadingDialogUtils.hideLoading();
+      }
+    }
+    return false;
+  }
 }

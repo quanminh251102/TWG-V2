@@ -228,9 +228,11 @@ class _PlaceTextFieldState extends State<PlaceTextField>
                                                       ? ColorUtils.primaryColor
                                                       : Colors.black),
                                               onPressed: () {
-                                                widget
-                                                    .locationTextEditingController
-                                                    .clear();
+                                                setState(() {
+                                                  widget
+                                                      .locationTextEditingController
+                                                      .clear();
+                                                });
                                               },
                                             )
                                           : null,
@@ -333,9 +335,11 @@ class _PlaceTextFieldState extends State<PlaceTextField>
                                                       ? ColorUtils.primaryColor
                                                       : Colors.black),
                                               onPressed: () {
-                                                widget
-                                                    .destinationTextEditingController
-                                                    .clear();
+                                                setState(() {
+                                                  widget
+                                                      .destinationTextEditingController
+                                                      .clear();
+                                                });
                                               },
                                             )
                                           : null,

@@ -20,4 +20,5 @@ abstract class IBookingService {
     int? sortUpdatedAt,
   });
   Future<bool> saveLocation(Predictions location);
+  Future<bool> createBooking(BookingDto bookingDto);
 }

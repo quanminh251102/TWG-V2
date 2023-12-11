@@ -7,6 +7,7 @@ import 'package:twg/ui/screens/apply/create_apply_page.dart';
 import 'package:twg/ui/screens/apply/my_apply_page.dart';
 import 'package:twg/ui/screens/booking/add_booking.dart';
 import 'package:twg/ui/screens/booking/booking_screen.dart';
+import 'package:twg/ui/screens/booking/confirm_location_screen.dart';
 import 'package:twg/ui/screens/booking/my_booking_page.dart';
 import 'package:twg/ui/screens/booking/pick_place_screen.dart';
 import 'package:twg/ui/screens/call/call.dart';
@@ -43,6 +44,7 @@ class MyRouter {
   static const String myBooking = '/myBooking';
   static const String myReview = '/myReview';
   static const String pickPlaceMap = '/pickPlaceMap';
+  static const String confirmPlaceMap = '/confirmPlaceMap';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -95,9 +97,7 @@ class MyRouter {
       case addBooking:
         return _buildRouteNavigationWithoutEffect(
           settings,
-          AddBookingScreen(
-            bookingType: settings.arguments as BookingType,
-          ),
+          const AddBookingScreen(),
         );
       case message:
         return _buildRouteNavigationWithoutEffect(
@@ -161,6 +161,12 @@ class MyRouter {
           settings,
           const PickPlaceScreen(),
         );
+      case confirmPlaceMap:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const ConfirmPlaceScreen(),
+        );
+
       default:
         return _buildRouteNavigationWithoutEffect(
           settings,
