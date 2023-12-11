@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/goongs/place_detail_dto.dart';
@@ -15,6 +16,7 @@ import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
 import 'package:lottie/lottie.dart' as lottie;
+import 'package:twg/global/router.dart';
 import 'package:twg/ui/common_widgets/custom_button.dart';
 import 'package:twg/ui/screens/booking/widget/booking_search_item.dart';
 import 'package:twg/ui/screens/booking/widget/place_text_field.dart';
@@ -365,7 +367,7 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
                             width: 300.w,
                             text: 'Xác nhận',
                             textStyle: TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 16.sp,
                             ),
@@ -512,12 +514,89 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
                                                                   } else {
                                                                     destinationFocusNode
                                                                         .unfocus();
-                                                                    destinationController.text = e
-                                                                        .description!
-                                                                        .split(
-                                                                            ',')[0];
+                                                                    destinationController
+                                                                            .text =
+                                                                        e.description!;
                                                                     currentDestination =
                                                                         e;
+                                                                  }
+                                                                  if (locationController
+                                                                              .text !=
+                                                                          '' &&
+                                                                      destinationController
+                                                                              .text !=
+                                                                          '') {
+                                                                    PlaceDto?
+                                                                        searchLocation =
+                                                                        await _iBookingViewModel
+                                                                            .getPlaceById(currentLocation!.placeId!);
+                                                                    vm.currentLocation =
+                                                                        LatLng(
+                                                                      searchLocation!
+                                                                          .geometry!
+                                                                          .location!
+                                                                          .lat!,
+                                                                      searchLocation
+                                                                          .geometry!
+                                                                          .location!
+                                                                          .lng!,
+                                                                    );
+                                                                    PlaceDto?
+                                                                        searchDestination =
+                                                                        await _iBookingViewModel
+                                                                            .getPlaceById(currentDestination!.placeId!);
+                                                                    vm.currentDestination =
+                                                                        LatLng(
+                                                                      searchDestination!
+                                                                          .geometry!
+                                                                          .location!
+                                                                          .lat!,
+                                                                      searchDestination
+                                                                          .geometry!
+                                                                          .location!
+                                                                          .lng!,
+                                                                    );
+
+                                                                    vm.updateBookingLocation(
+                                                                      startPointId:
+                                                                          currentLocation!
+                                                                              .placeId,
+                                                                      startPointMainText: locationController
+                                                                          .text
+                                                                          .split(
+                                                                              ',')[0],
+                                                                      startPointAddress: locationController
+                                                                          .text
+                                                                          .split(
+                                                                              ',')
+                                                                          .sublist(
+                                                                              1)
+                                                                          .map((part) => part
+                                                                              .trim())
+                                                                          .join(
+                                                                              ', '),
+                                                                      endPointId:
+                                                                          currentDestination!
+                                                                              .placeId,
+                                                                      endPointMainText: destinationController
+                                                                          .text
+                                                                          .split(
+                                                                              ',')[0],
+                                                                      endPointAddress: destinationController
+                                                                          .text
+                                                                          .split(
+                                                                              ',')
+                                                                          .sublist(
+                                                                              1)
+                                                                          .map((part) => part
+                                                                              .trim())
+                                                                          .join(
+                                                                              ', '),
+                                                                    );
+                                                                    Get.toNamed(
+                                                                      MyRouter
+                                                                          .confirmPlaceMap,
+                                                                    );
                                                                   }
                                                                   setState(
                                                                       () {});

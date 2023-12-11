@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/animation/ani_bottom_sheet.dart';
 import 'package:twg/ui/common_widgets/custom_button.dart';
@@ -121,11 +123,11 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
                 ),
                 child: CustomButton(
                   onTap: () {
+                    context.read<IBookingViewModel>().updateBookingType(
+                          selectedIndex == 0 ? 'Tìm tài xế' : 'Tìm hành khách',
+                        );
                     Get.toNamed(
-                      MyRouter.addBooking,
-                      arguments: selectedIndex == 0
-                          ? BookingType.findDriver
-                          : BookingType.findPassenger,
+                      MyRouter.pickPlaceMap,
                     );
                   },
                   height: 40.h,

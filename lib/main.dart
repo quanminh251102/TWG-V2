@@ -34,6 +34,7 @@ Future<void> main() async {
   final themeStr = await rootBundle.loadString('assets/appainter_theme.json');
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
+
   runApp(
     MyApp(
       theme: theme,
@@ -50,7 +51,7 @@ void configLoading() {
     ..indicatorSize = 45.0
     ..radius = 10.0
     ..progressColor = Colors.black
-    ..backgroundColor = Colors.white
+    ..backgroundColor = Colors.transparent
     ..indicatorColor = Colors.black
     ..textColor = Colors.black
     ..maskColor = Colors.blue.withOpacity(0.5)
@@ -103,8 +104,12 @@ class _MyAppState extends State<MyApp> {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: const [
-              Locale('vi', 'VN'), // Include the Vietnamese locale
+              Locale(
+                'vi',
+                'VN',
+              ), // Include the Vietnamese locale
             ],
+
             theme: widget.theme,
           );
         },

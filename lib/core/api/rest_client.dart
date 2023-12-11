@@ -53,12 +53,6 @@ abstract class RestClient {
     @Query('sortUpdatedAt') int? sortUpdatedAt,
   });
 
-  @POST("/api/auth/login")
-  Future<BaseApiDto<BookingDto>> createBooking({
-    @Header('api_key') required String token,
-    @Body() required BookingDto model,
-  });
-
   //chat_room
   @POST("/api/chat_room")
   Future<BaseApiDto<ChatRoomDto>> createChatRoom(
@@ -142,6 +136,12 @@ abstract class RestClient {
   Future<BaseApiDto<SavePlaceDto>> saveLocation({
     @Header('api_key') required String token,
     @Body() required SavePlaceDto model,
+  });
+
+  @POST("/api/booking")
+  Future<BaseApiDto<dynamic>> createBooking({
+    @Header('api_key') required String token,
+    @Body() required BookingDto model,
   });
 
   ///account

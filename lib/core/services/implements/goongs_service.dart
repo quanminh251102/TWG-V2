@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:twg/constants.dart';
@@ -9,6 +10,7 @@ import 'package:twg/core/dtos/goongs/search_response_dto.dart';
 import 'package:twg/core/services/interfaces/igoong_service.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
+import 'package:twg/ui/utils/loading_dialog_utils.dart';
 
 class GoongService implements IGoongService {
   @override
@@ -30,13 +32,14 @@ class GoongService implements IGoongService {
 
   @override
   Future<PlaceDto?> getPlaceById(String locationId) async {
+    LoadingDialogUtils.showLoading();
     try {
       var result = await Dio().get(
         '$baseGoongsUrl/Place/Detail?place_id=$locationId&api_key=$goongKey',
       );
-
       if (result.statusCode == 200) {
         PlaceDto placeDto = PlaceDto.fromJson(result.data['result']);
+        LoadingDialogUtils.hideLoading();
         return placeDto;
       }
     } on Exception catch (e) {

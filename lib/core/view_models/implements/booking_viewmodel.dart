@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/goongs/place_detail_dto.dart';
 import 'package:twg/core/dtos/goongs/place_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
+import 'package:twg/core/dtos/osrm/osrm_response_dto.dart';
 import 'package:twg/core/services/interfaces/ibooking_service.dart';
 import 'package:twg/core/services/interfaces/igoong_service.dart';
+import 'package:twg/core/services/interfaces/iors_service.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/global/locator.dart';
+import 'package:twg/global/router.dart';
 
 class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   List<BookingDto> _bookings = [];
@@ -18,6 +24,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
 
   final IBookingService _iBookingService = locator<IBookingService>();
   final IGoongService _iGoongService = locator<IGoongService>();
+  final IOrsService _iOrsService = locator<IOrsService>();
 
   BookingDto? _bookingDto;
   bool _onChangePlace = false;
@@ -25,6 +32,40 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   List<Predictions> _listPredictions = [];
 
   bool _loadingFromMap = false;
+
+  LatLng? _currentLocation;
+  LatLng? _currentDestination;
+  DirectionDto? _currentDirection;
+  LatLngBounds? _boundConfirmScreen;
+  BookingDto? _currentBooking;
+
+  @override
+  BookingDto? get currentBooking => _currentBooking;
+
+  @override
+  LatLngBounds? get boundConfirmScreen => _boundConfirmScreen;
+
+  @override
+  DirectionDto? get currentDirection => _currentDirection;
+
+  @override
+  LatLng? get currentLocation => _currentLocation;
+
+  @override
+  LatLng? get currentDestination => _currentDestination;
+
+  @override
+  set currentLocation(LatLng? location) {
+    _currentLocation = location;
+    notifyListeners();
+  }
+
+  @override
+  set currentDestination(LatLng? destination) {
+    _currentDestination = destination;
+    notifyListeners();
+  }
+
   @override
   bool get loadingFromMap => _loadingFromMap;
 
@@ -74,10 +115,92 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     notifyListeners();
   }
 
+  String getNum(String mess) {
+    // Tìm và lấy số đầu tiên trong chuỗi
+    RegExp regExp = RegExp(r'(\d+)');
+    var match = regExp.firstMatch(mess);
+
+    if (match != null) {
+      String soDauTien = match.group(0)!;
+      return soDauTien; // Kết quả: 15
+    } else {
+      return '0';
+    }
+  }
+
+  @override
+  Future<void> initConfirmLocation() async {
+    if (currentLocation != null && currentDestination != null) {
+      _currentDirection = await _iOrsService.getCoordinates(
+        currentLocation!,
+        currentDestination!,
+      );
+      _currentBooking!.distance = currentDirection!.distance;
+      _currentBooking!.duration = currentDirection!.duration;
+
+      _boundConfirmScreen =
+          LatLngBounds.fromPoints(_currentDirection!.coordinates!
+              .map(
+                (location) => LatLng(
+                  location.latitude,
+                  location.longitude,
+                ),
+              )
+              .toList());
+    }
+    notifyListeners();
+  }
+
   @override
   void initData() async {
     _listPredictions.clear();
+  }
+
+  @override
+  void updateBookingType(String bookingType) {
+    _currentBooking = BookingDto(status: 'available');
+    _currentBooking!.bookingType = bookingType;
     notifyListeners();
+  }
+
+  @override
+  void updateBookingLocation({
+    String? startPointId,
+    String? startPointMainText,
+    String? startPointAddress,
+    String? endPointId,
+    String? endPointMainText,
+    String? endPointAddress,
+  }) {
+    _currentBooking!.startPointLat = currentLocation!.latitude.toString();
+    _currentBooking!.startPointLong = currentLocation!.longitude.toString();
+    _currentBooking!.endPointLat = currentLocation!.latitude.toString();
+    _currentBooking!.endPointLong = currentLocation!.longitude.toString();
+    _currentBooking!.startPointId = startPointId;
+    _currentBooking!.startPointAddress = startPointAddress;
+    _currentBooking!.startPointMainText = startPointMainText;
+    _currentBooking!.endPointId = endPointId;
+    _currentBooking!.endPointAddress = endPointAddress;
+    _currentBooking!.endPointMainText = endPointMainText;
+
+    notifyListeners();
+  }
+
+  @override
+  Future<void> createBooking(
+      {String? time, String? price, String? content}) async {
+    _currentBooking!.time = time;
+    _currentBooking!.price = int.parse(
+      price!.replaceAll(RegExp(r'[^0-9]'), '').trim(),
+    );
+    _currentBooking!.content = content;
+    final isCreateSuccess =
+        await _iBookingService.createBooking(_currentBooking!);
+    if (isCreateSuccess) {
+      Get.toNamed(MyRouter.home);
+    } else {
+      EasyLoading.showError('Đăng bài thất bại');
+    }
   }
 
   @override
