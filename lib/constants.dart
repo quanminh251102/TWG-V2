@@ -9,3 +9,5 @@ const goongKey = "W58VBTcAl1Wg8qcZy6Y4JUvaeDHmf7MEbFZ6WCbR";
 
 // local  
 // http://localhost:8080
+// deploy
+// https://togerther-we-go-api.onrender.com
