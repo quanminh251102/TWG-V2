@@ -25,7 +25,7 @@ class _ListNotificationItemState extends State<ListNotificationItem> {
 
     return CustomCard(
       elevation: 0,
-      height: 80,
+      // height: 80,
       childPadding: 10,
       onTap: () {},
       borderRadius: 12,
@@ -33,77 +33,70 @@ class _ListNotificationItemState extends State<ListNotificationItem> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              CachedNetworkImage(
-                imageUrl: widget.notification.author!.avatarUrl as String,
-                imageBuilder: (context, imageProvider) => Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(
-                            60.0) //                 <--- border radius here
-                        ),
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
+          CachedNetworkImage(
+            imageUrl: widget.notification.author!.avatarUrl as String,
+            imageBuilder: (context, imageProvider) => Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(
+                        60.0) //                 <--- border radius here
                     ),
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
+          const SizedBox(width: 24),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RichText(
+                  // Controls visual overflow
+                  overflow: TextOverflow.clip,
+
+                  // Controls how the text should be aligned horizontally
+                  textAlign: TextAlign.end,
+
+                  // Control the text direction
+                  textDirection: TextDirection.rtl,
+
+                  // Whether the text should break at soft line breaks
+                  softWrap: true,
+
+                  // Maximum number of lines for the text to span
+                  //maxLines: 1,
+
+                  // The number of font pixels for each logical pixel
+                  textScaleFactor: 1,
+                  text: TextSpan(
+                    style: DefaultTextStyle.of(context).style,
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: widget.notification.author!.firstName as String,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
+                      const TextSpan(text: ' '),
+                      TextSpan(
+                        text: widget.notification.text,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ],
                   ),
                 ),
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
-              ),
-              const SizedBox(width: 24),
-              SizedBox(
-                // width: 200,
-                height: 50,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    RichText(
-                      // Controls visual overflow
-                      overflow: TextOverflow.clip,
-
-                      // Controls how the text should be aligned horizontally
-                      textAlign: TextAlign.end,
-
-                      // Control the text direction
-                      textDirection: TextDirection.rtl,
-
-                      // Whether the text should break at soft line breaks
-                      softWrap: true,
-
-                      // Maximum number of lines for the text to span
-                      maxLines: 1,
-
-                      // The number of font pixels for each logical pixel
-                      textScaleFactor: 1,
-                      text: TextSpan(
-                        style: DefaultTextStyle.of(context).style,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text:
-                                widget.notification.author!.firstName as String,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                          const TextSpan(text: ' '),
-                          TextSpan(
-                            text: widget.notification.text,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      customStartTime,
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                  ],
+                Text(
+                  customStartTime,
+                  style: const TextStyle(color: Colors.grey),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

@@ -47,26 +47,30 @@ class NotificationViewModel
   @override
   void initSocketEventForNotification() {
     _iSocketService.socket!.on("receive_notification", (jsonData) async {
-      final jsonValue = json.encode(jsonData);
-      final data = json.decode(jsonValue) as Map<String, dynamic>;
-      _numUnWatched++;
-      notifyListeners();
+      try {
+        final jsonValue = json.encode(jsonData);
+        final data = json.decode(jsonValue) as Map<String, dynamic>;
+        _numUnWatched++;
+        notifyListeners();
 
-      if (Platform.isWindows) {
-        // create new NotificationMessage instance with id, title, body, and images
-        NotificationMessage message = NotificationMessage.fromPluginTemplate(
-          "test1",
-          "Thông báo",
-          data["notification_body"],
-        );
+        if (Platform.isWindows) {
+          // create new NotificationMessage instance with id, title, body, and images
+          NotificationMessage message = NotificationMessage.fromPluginTemplate(
+            "test1",
+            "Thông báo",
+            data["notification_body"],
+          );
 
 // show notification
-        _winNotifyPlugin.showNotificationPluginTemplate(message);
-      } else {
-        NotifiationUtils().showNotification(
-          title: "Thông báo",
-          body: data["notification_body"],
-        );
+          _winNotifyPlugin.showNotificationPluginTemplate(message);
+        } else {
+          NotifiationUtils().showNotification(
+            title: "Thông báo",
+            body: data["notification_body"],
+          );
+        }
+      } catch (e) {
+        print(e);
       }
     });
 
