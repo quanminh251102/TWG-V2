@@ -337,7 +337,9 @@ class _AccountScreenState extends State<AccountScreen>
                   ProfileMenuWidget(
                       title: "Yêu cầu của tôi",
                       icon: LineAwesomeIcons.react,
-                      onPress: () {}),
+                      onPress: () {
+                        Get.offNamed(MyRouter.myApply);
+                      }),
                   SizedBox(height: 10.h),
                   Padding(
                     padding: EdgeInsets.symmetric(
