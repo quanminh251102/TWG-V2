@@ -32,10 +32,6 @@ class BookingScreen extends StatefulWidget {
 class _BookingScreenState extends State<BookingScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  // late IChatRoomViewModel _iChatRoomViewModel;
-  // late ICallViewModel _iCallViewModel;
-  // final ISocketService _iSocketService = locator<ISocketService>();
-  // late IApplyViewModel _iApplyViewModel;
 
   @override
   void initState() {
@@ -43,15 +39,6 @@ class _BookingScreenState extends State<BookingScreen>
       length: 3,
       vsync: this,
     );
-    // _iChatRoomViewModel = context.read<IChatRoomViewModel>();
-    // _iChatRoomViewModel.initSocketEventForChatRoom();
-
-    // _iApplyViewModel = context.read<IApplyViewModel>();
-    // _iApplyViewModel.initSocketEventForApply();
-
-    // _iCallViewModel = context.read<ICallViewModel>();
-    // _iCallViewModel.initSocketEventForCall();
-    // _iCallViewModel.setSocket(_iSocketService.socket as IO.Socket);
     super.initState();
   }
 
