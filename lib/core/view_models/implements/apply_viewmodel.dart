@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -11,6 +13,7 @@ import 'package:twg/core/services/interfaces/isocket_service.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/global/locator.dart';
 import 'package:twg/global/router.dart';
+import 'package:twg/ui/common_widgets/coming_apply_dialog.dart';
 
 class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
   List<ApplyDto> _applys = [];
@@ -82,6 +85,17 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
     _iSocketService.socket!.on("reload_apply", (jsonData) async {
       init('');
       print('reload_apply');
+    });
+
+    _iSocketService.socket!.on("receive_apply", (jsonData) async {
+      print('receive_apply');
+      final jsonValue = json.encode(jsonData);
+      final data = json.decode(jsonValue) as Map<String, dynamic>;
+      var value = ApplyDto.fromJson(data);
+      Get.dialog(ComingApplyDialog(
+        apply: value,
+        setBooking: setBookingDto,
+      ));
     });
   }
 

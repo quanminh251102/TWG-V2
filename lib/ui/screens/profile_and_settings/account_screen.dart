@@ -10,6 +10,7 @@ import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/iprofile_viewmodel.dart';
 import 'package:twg/global/router.dart';
+import 'package:twg/ui/common_widgets/confirm_login_dialog.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
 import 'package:twg/ui/screens/profile_and_settings/widget/profile_menu_widget.dart';
 
@@ -237,7 +238,11 @@ class _AccountScreenState extends State<AccountScreen>
             )),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.dialog(
+                  const ConfirmLoginDialog(),
+                );
+              },
               icon: Icon(isDark ? LineAwesomeIcons.sun : LineAwesomeIcons.moon))
         ],
       ),
