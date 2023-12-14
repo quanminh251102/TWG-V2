@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_cards/flutter_custom_cards.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,9 +17,11 @@ import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/icall_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ihome_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/inotification_viewmodal.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
 import 'package:twg/ui/common_widgets/custom_text_field.dart';
+import 'package:twg/ui/common_widgets/notification_widget.dart';
 import 'package:twg/ui/screens/home/widget/search_response_item.dart';
 import 'package:twg/ui/screens/home/widget/zoom_button.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -50,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late ICallViewModel _iCallViewModel;
   final ISocketService _iSocketService = locator<ISocketService>();
   late IApplyViewModel _iApplyViewModel;
+  late INotificationViewModel _iNotificationViewModel;
 
   @override
   void dispose() {
@@ -67,6 +71,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     _iApplyViewModel = context.read<IApplyViewModel>();
     _iApplyViewModel.initSocketEventForApply();
+
+    _iNotificationViewModel = context.read<INotificationViewModel>();
+    _iNotificationViewModel.initSocketEventForNotification();
 
     _iCallViewModel = context.read<ICallViewModel>();
     _iCallViewModel.initSocketEventForCall();
@@ -163,13 +170,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.notifications_none_outlined,
-              color: Colors.black,
-            ),
-            onPressed: () {},
-          )
+          NotificationWidget(),
         ],
       ),
       bottomNavigationBar: const CustomBottomNavigationBar(

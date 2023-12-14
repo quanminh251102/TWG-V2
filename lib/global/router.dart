@@ -15,6 +15,7 @@ import 'package:twg/ui/screens/call/incoming_call.dart';
 import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
 import 'package:twg/ui/screens/chat_room/chat_screen.dart';
 import 'package:twg/ui/screens/home/home_screen.dart';
+import 'package:twg/ui/screens/notification/notification_screen.dart';
 import 'package:twg/ui/screens/profile_and_settings/account_screen.dart';
 import 'package:twg/ui/screens/profile_and_settings/my_reviews/my_reviews_page.dart';
 import 'package:twg/ui/screens/profile_and_settings/privacy_policy/privacy_policy_page.dart';
@@ -45,6 +46,7 @@ class MyRouter {
   static const String myReview = '/myReview';
   static const String pickPlaceMap = '/pickPlaceMap';
   static const String confirmPlaceMap = '/confirmPlaceMap';
+  static const String notification = '/notification';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -166,7 +168,11 @@ class MyRouter {
           settings,
           const ConfirmPlaceScreen(),
         );
-
+      case notification:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const NotificationScreen(),
+        );
       default:
         return _buildRouteNavigationWithoutEffect(
           settings,

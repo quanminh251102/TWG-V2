@@ -664,6 +664,54 @@ class _RestClient implements RestClient {
     return value;
   }
 
+  @override
+  Future<BaseApiDto<List<NotificationDto>>> getNotifications({
+    String? token,
+    int? page,
+    int? pageSize,
+    int? sortCreatedAt,
+    int? sortUpdatedAt,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+      r'sortCreatedAt': sortCreatedAt,
+      r'sortUpdatedAt': sortUpdatedAt,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{r'api_key': token};
+    _headers.removeWhere((k, v) => v == null);
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseApiDto<List<NotificationDto>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/notification',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = BaseApiDto<List<NotificationDto>>.fromJson(
+      _result.data!,
+      (json) => json is List<dynamic>
+          ? json
+              .map<NotificationDto>(
+                  (i) => NotificationDto.fromJson(i as Map<String, dynamic>))
+              .toList()
+          : List.empty(),
+    );
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

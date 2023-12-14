@@ -7,6 +7,7 @@ import 'package:twg/core/services/implements/cloudinary_service.dart';
 import 'package:twg/core/services/implements/goongs_service.dart';
 import 'package:twg/core/services/implements/map_service.dart';
 import 'package:twg/core/services/implements/message_service.dart';
+import 'package:twg/core/services/implements/notification_service.dart';
 import 'package:twg/core/services/implements/ors_service.dart';
 import 'package:twg/core/services/implements/profile_service.dart';
 import 'package:twg/core/services/implements/review_service.dart';
@@ -20,6 +21,7 @@ import 'package:twg/core/services/interfaces/icloudinary_service.dart';
 import 'package:twg/core/services/interfaces/igoong_service.dart';
 import 'package:twg/core/services/interfaces/imap_service.dart';
 import 'package:twg/core/services/interfaces/imessage_service.dart';
+import 'package:twg/core/services/interfaces/inotification_service.dart';
 import 'package:twg/core/services/interfaces/iors_service.dart';
 import 'package:twg/core/services/interfaces/iprofile_service.dart';
 import 'package:twg/core/services/interfaces/ireview_service.dart';
@@ -38,6 +40,8 @@ void registerServiceSingletons(GetIt locator) {
   locator.registerLazySingleton<IApplyService>(() => ApplyService());
   locator.registerLazySingleton<IReviewService>(() => ReviewService());
   locator.registerLazySingleton<IOrsService>(() => OrsService());
+  locator
+      .registerLazySingleton<INotificationService>(() => NotificationService());
   // locator.registerLazySingleton<ICategoryService>(() => CategoryService());
   // locator
   //     .registerLazySingleton<IManufactureService>(() => ManufactureService());
