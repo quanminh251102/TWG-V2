@@ -63,21 +63,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    if (!locator<GlobalData>().isInitSocket) {
+      _iChatRoomViewModel = context.read<IChatRoomViewModel>();
+      _iChatRoomViewModel.initSocketEventForChatRoom();
+
+      _iApplyViewModel = context.read<IApplyViewModel>();
+      _iApplyViewModel.initSocketEventForApply();
+
+      _iNotificationViewModel = context.read<INotificationViewModel>();
+      _iNotificationViewModel.initSocketEventForNotification();
+
+      _iCallViewModel = context.read<ICallViewModel>();
+      _iCallViewModel.initSocketEventForCall();
+      _iCallViewModel.setSocket(_iSocketService.socket as IO.Socket);
+
+      locator<GlobalData>().isInitSocket = true;
+    }
+
     mapController = MapController();
     _iHomeViewModel = context.read<IHomeViewModel>();
-
-    _iChatRoomViewModel = context.read<IChatRoomViewModel>();
-    _iChatRoomViewModel.initSocketEventForChatRoom();
-
-    _iApplyViewModel = context.read<IApplyViewModel>();
-    _iApplyViewModel.initSocketEventForApply();
-
-    _iNotificationViewModel = context.read<INotificationViewModel>();
-    _iNotificationViewModel.initSocketEventForNotification();
-
-    _iCallViewModel = context.read<ICallViewModel>();
-    _iCallViewModel.initSocketEventForCall();
-    _iCallViewModel.setSocket(_iSocketService.socket as IO.Socket);
 
     Future.delayed(
       Duration.zero,

@@ -14,6 +14,7 @@ class GlobalData {
   AccountDto? currentUser;
   Position? currentPosition;
   String goongsRestToken = 'W58VBTcAl1Wg8qcZy6Y4JUvaeDHmf7MEbFZ6WCbR';
+  bool isInitSocket = false;
   // AccessToken? token;
 }
 

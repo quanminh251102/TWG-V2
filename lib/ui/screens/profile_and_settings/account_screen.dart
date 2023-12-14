@@ -212,6 +212,15 @@ class _AccountScreenState extends State<AccountScreen>
   }
 
   @override
+  void initState() {
+    _iProfileViewModel = context.read<IProfileViewModel>();
+    Future.delayed(Duration.zero, () async {
+      await _iProfileViewModel.getProfile();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(

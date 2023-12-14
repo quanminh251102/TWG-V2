@@ -27,10 +27,10 @@ class NotificationWidget extends StatelessWidget {
             if (vm.numUnWatched > 0)
               Positioned(
                 right: 0,
-                top: 8,
+                top: -4,
                 child: CustomCard(
-                  width: 26,
-                  height: 26,
+                  width: 20,
+                  height: 20,
                   child: Center(
                     child: Text(
                       vm.numUnWatched.toString(),
