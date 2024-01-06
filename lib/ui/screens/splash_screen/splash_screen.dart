@@ -22,37 +22,22 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void initialization() async {
     await Future.delayed(const Duration(seconds: 2));
-
     await _viewModel.goToNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Lottie.asset(
-              "assets/lottie/splash.json",
-              height: 200.h,
-              repeat: false,
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Text(
-              'WE GO',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 45.sp,
+        backgroundColor: Colors.white,
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage(
+                'assets/images/splash.png',
               ),
-            )
-          ],
-        ),
-      ),
-    );
+            ),
+          ),
+        ));
   }
 }

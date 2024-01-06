@@ -42,6 +42,7 @@ class _BookingScreenState extends State<BookingScreen>
         value: CustomNavigationBar.booking,
       ),
       appBar: AppBar(
+        elevation: 0,
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text(

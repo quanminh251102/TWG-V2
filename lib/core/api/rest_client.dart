@@ -18,6 +18,8 @@ import 'package:twg/core/dtos/pagination/pagination_dto.dart';
 import 'package:twg/core/dtos/review/create_review_dto.dart';
 import 'package:twg/core/dtos/review/review_dto.dart';
 
+import '../dtos/auth/register_dto.dart';
+
 part 'rest_client.g.dart';
 
 @RestApi()
@@ -28,6 +30,10 @@ abstract class RestClient {
   @POST("/api/auth/login")
   Future<BaseApiDto<AccessTokenDto>> getToken(
     @Body() LoginDto model,
+  );
+  @POST("/api/account/register")
+  Future<BaseApiDto<AccountDto>> register(
+    @Body() RegisterDto model,
   );
   @GET("/api/user/profile")
   Future<BaseApiDto<AccountDto>> getProfile({
@@ -154,6 +160,13 @@ abstract class RestClient {
     @Query('sortCreatedAt') int? sortCreatedAt,
     @Query('sortUpdatedAt') int? sortUpdatedAt,
   });
+
+  // @GET("/api/booking/getMyCompleteBooking/{id}")
+  // Future<BaseApiDto<AccountDto>> getMyCompleteBooking(
+  //   @Path("id") String id,
+  //   @Header('api_key') String token,
+  //   @Body() UpdateApplyDto model,
+  // );
 
   ///account
   // @GET("/api/account/profile")

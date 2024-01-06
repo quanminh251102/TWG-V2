@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:twg/core/dtos/call/call_info_dto.dart';
 import 'package:twg/core/services/interfaces/isocket_service.dart';

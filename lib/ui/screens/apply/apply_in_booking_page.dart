@@ -42,7 +42,6 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage>
   Widget build(BuildContext context) {
     search_bar() {
       return [
-        const Text('Search theo tên : '),
         TextFormField(
           style: const TextStyle(fontWeight: FontWeight.w600),
           focusNode: nameFocus,
@@ -68,7 +67,7 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage>
             ),
             hintText: 'Tìm kiếm',
             prefixIcon: Icon(
-              Icons.email_outlined,
+              Icons.book_outlined,
               color:
                   nameFocus.hasFocus ? ColorUtils.primaryColor : Colors.black,
             ),
@@ -82,14 +81,22 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Danh sách tham gia'),
+        title: const Text(
+          'Danh sách tham gia',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
         centerTitle: true,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
             Get.offNamed(MyRouter.profile);
           },
-          child: const Icon(Icons.arrow_back_ios),
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
         ),
       ),
       body: SingleChildScrollView(

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
+import 'package:twg/global/router.dart';
 import 'package:twg/ui/screens/booking/widget/list_booking.dart';
 import 'package:twg/ui/screens/booking/widget/list_booking_item.dart';
 
@@ -50,17 +53,17 @@ class _MyBookPageState extends State<MyBookPage> {
     setState(() {
       print("do filter");
       bookings_selected = bookings.where((booking) {
-        String booking_startPoint =
+        String bookingStartpoint =
             booking.startPointMainText.toString().toLowerCase() +
                 booking.startPointAddress.toString().toLowerCase();
-        String booking_endPoint =
+        String bookingEndpoint =
             booking.endPointMainText.toString().toLowerCase() +
                 booking.endPointAddress.toString().toLowerCase();
-        String search_startPoint = _startPoint.text.trim().toLowerCase();
-        String search_endPoint = _endPoint.text.trim().toLowerCase();
+        String searchStartpoint = _startPoint.text.trim().toLowerCase();
+        String searchEndpoint = _endPoint.text.trim().toLowerCase();
 
-        if (booking_startPoint.contains(search_startPoint) &&
-            booking_endPoint.contains(search_endPoint)) {
+        if (bookingStartpoint.contains(searchStartpoint) &&
+            bookingEndpoint.contains(searchEndpoint)) {
           return true;
         }
         return false;
@@ -153,9 +156,25 @@ class _MyBookPageState extends State<MyBookPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Các chuyến đi đã đăng'),
+        title: Text(
+          'Các chuyến đi đã đăng',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.sp,
+            color: Colors.black,
+          ),
+        ),
         elevation: 0.0,
         centerTitle: true,
+        leading: InkWell(
+          onTap: () {
+            Get.offNamed(MyRouter.profile);
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
       ),
       body: isLoading_getMyBook
           ? const Center(

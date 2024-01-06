@@ -45,12 +45,24 @@ class AuthViewModel with ChangeNotifier implements IAuthViewModel {
 
   @override
   Future<void> logout() async {
-    // _iAuthService.logOut();
-    // _profile = null;
-    // locator<GlobalData>().currentUser = null;
-    // _provinces.clear();
+    locator<GlobalData>().currentUser = null;
+
+    await _iAuthService.logOut();
+    notifyListeners();
   }
 
+  @override
+  Future<void> signUp(String email, String name, String password) async {
+    final result = await _iAuthService.register(
+      name,
+      email,
+      password,
+    );
+    if (result) {
+      Get.offNamed(MyRouter.signIn);
+    }
+    notifyListeners();
+  }
   // @override
   // Future<void> init() async {
   //   var logined = await _iAuthService.checkLogin();

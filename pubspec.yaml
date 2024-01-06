@@ -109,6 +109,7 @@ dependencies:
   flutter_map_location_marker: ^8.0.2
   line_awesome_flutter: ^2.0.0
   json_theme: ^6.4.0
+  linear_timer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

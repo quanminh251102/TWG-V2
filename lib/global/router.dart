@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:twg/core/dtos/auth/account_dto.dart';
+import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/ui/screens/apply/apply_in_booking_page.dart';
 import 'package:twg/ui/screens/apply/create_apply_page.dart';
 import 'package:twg/ui/screens/apply/my_apply_page.dart';
@@ -25,6 +27,9 @@ import 'package:twg/ui/screens/signin/signin.dart';
 import 'package:twg/ui/screens/signup/signup.dart';
 import 'package:twg/ui/screens/splash_screen/splash_screen.dart';
 
+import '../ui/screens/navigation/navigation_screen.dart';
+import '../ui/screens/profile_and_settings/driver_profile_screen.dart';
+
 class MyRouter {
   static const String splash = 'splash';
   static const String signIn = '/signIn';
@@ -47,6 +52,8 @@ class MyRouter {
   static const String pickPlaceMap = '/pickPlaceMap';
   static const String confirmPlaceMap = '/confirmPlaceMap';
   static const String notification = '/notification';
+  static const String driverProfile = '/driverProfile';
+  static const String navigation = '/navigation';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -172,6 +179,20 @@ class MyRouter {
         return _buildRouteNavigationWithoutEffect(
           settings,
           const NotificationScreen(),
+        );
+      case driverProfile:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          DriverProfileScreen(
+            accountDto: settings.arguments as AccountDto,
+          ),
+        );
+      case navigation:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          NavigationScreen(
+            bookingDto: settings.arguments as BookingDto,
+          ),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

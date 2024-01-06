@@ -41,7 +41,7 @@ class ColorUtils {
     }
   }
 
-  static const Color primaryColor = Color(0xff00629F);
+  static const Color primaryColor = Color(0xfffa6a01);
   static const Color lightPrimaryColor = Color.fromARGB(255, 241, 250, 255);
   static const Color darkPrimaryColor = Color.fromARGB(255, 12, 62, 0);
   static Color subTileButtonColor = const Color(0xFF000000).withOpacity(0.6);

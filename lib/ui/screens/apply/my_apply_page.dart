@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
@@ -120,14 +121,22 @@ class _MyApplyPageState extends State<MyApplyPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Các chuyến đi đã gửi yêu cầu'),
+        title: const Text(
+          'Các chuyến đi đã gửi yêu cầu',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
         centerTitle: true,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
             Get.offNamed(MyRouter.profile);
           },
-          child: const Icon(Icons.arrow_back_ios),
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
         ),
       ),
       body: Padding(
@@ -139,20 +148,23 @@ class _MyApplyPageState extends State<MyApplyPage>
               ...search_bar(),
               Consumer<IApplyViewModel>(
                 builder: (context, vm, child) {
-                  return Column(
-                    children: [
-                      if (vm.applysAfterFilter.isEmpty)
-                        const Text('Danh sách rỗng'),
-                      if (vm.applysAfterFilter.isNotEmpty)
-                        for (var _apply in vm.applysAfterFilter) ...[
-                          ApplyItem(
-                            apply: _apply,
-                            vm: _iApplyViewModel,
-                          ),
-                          const SizedBox(height: 12),
-                        ],
-                    ],
-                  );
+                  return vm.applysAfterFilter.isEmpty
+                      ? const Center(child: Text('Danh sách rỗng'))
+                      : Column(
+                          children: vm.applysAfterFilter
+                              .map(
+                                (e) => Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: 12.h,
+                                  ),
+                                  child: ApplyItem(
+                                    apply: e,
+                                    vm: _iApplyViewModel,
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        );
 
                   // return ListView.builder(
                   //   itemBuilder: (ctx, index) {

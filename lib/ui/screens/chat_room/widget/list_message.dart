@@ -32,7 +32,6 @@ class _ListMessageState extends State<ListMessage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _iMessageViewModel.jumbToLastMessage();
     });
-
     return ListView.builder(
       controller: _iMessageViewModel.scrollController,
       itemBuilder: (ctx, index) {

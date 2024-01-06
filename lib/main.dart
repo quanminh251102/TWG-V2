@@ -31,14 +31,8 @@ Future<void> main() async {
   configLoading();
   await setupLocator();
   NotifiationUtils().initNotification();
-  final themeStr = await rootBundle.loadString('assets/appainter_theme.json');
-  final themeJson = jsonDecode(themeStr);
-  final theme = ThemeDecoder.decodeThemeData(themeJson)!;
-
   runApp(
-    MyApp(
-      theme: theme,
-    ),
+    const MyApp(),
   );
 }
 
@@ -51,7 +45,7 @@ void configLoading() {
     ..indicatorSize = 45.0
     ..radius = 10.0
     ..progressColor = Colors.black
-    ..backgroundColor = Colors.transparent
+    ..backgroundColor = Colors.white
     ..indicatorColor = Colors.black
     ..textColor = Colors.black
     ..maskColor = Colors.blue.withOpacity(0.5)
@@ -63,10 +57,8 @@ void configLoading() {
 
 class MyApp extends StatefulWidget {
   const MyApp({
-    Key? key,
-    required this.theme,
-  }) : super(key: key);
-  final ThemeData theme;
+    super.key,
+  });
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -109,8 +101,9 @@ class _MyAppState extends State<MyApp> {
                 'VN',
               ), // Include the Vietnamese locale
             ],
-
-            theme: widget.theme,
+            darkTheme: ThemeUtils.darkTheme,
+            theme: ThemeUtils.lightTheme,
+            themeMode: ThemeMode.light,
           );
         },
       ),

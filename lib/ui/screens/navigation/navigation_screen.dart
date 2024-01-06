@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:math' show atan2, cos, log, sin, sqrt;
 
@@ -5,35 +6,46 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
+import 'package:lottie/lottie.dart' as lottie;
 import 'package:provider/provider.dart';
+
+import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
-import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
-import 'package:lottie/lottie.dart' as lottie;
 import 'package:twg/global/router.dart';
 
-class ConfirmPlaceScreen extends StatefulWidget {
-  const ConfirmPlaceScreen({super.key});
+class NavigationScreen extends StatefulWidget {
+  const NavigationScreen({
+    Key? key,
+    required this.bookingDto,
+  }) : super(key: key);
+  final BookingDto bookingDto;
 
   @override
-  State<ConfirmPlaceScreen> createState() => _ConfirmPlaceScreenState();
+  State<NavigationScreen> createState() => _NavigationScreenState();
 }
 
-class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
+class _NavigationScreenState extends State<NavigationScreen>
     with TickerProviderStateMixin {
+  final Location _location = Location();
+  late Stream<LocationData> _locationStream;
+  late final StreamController<LocationMarkerPosition> _positionStreamController;
   late final MapController mapController;
   final pinMarkers = <Marker>[];
   final placeMarkers = <Marker>[];
   LatLng? latLng;
   bool isPickFromMap = false;
 
-  late IBookingViewModel _iBookingViewModel;
+  late IApplyViewModel _iApplyViewModel;
 
   Predictions? currentLocation;
   Predictions? currentDestination;
@@ -46,17 +58,33 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
   @override
   void initState() {
     mapController = MapController();
-
-    _iBookingViewModel = context.read<IBookingViewModel>();
+    _locationStream = _location.onLocationChanged;
+    _iApplyViewModel = context.read<IApplyViewModel>();
+    _positionStreamController = StreamController(
+      onListen: () async {},
+    );
 
     Future.delayed(
       Duration.zero,
       () async {
-        await _iBookingViewModel.initConfirmLocation();
+        await _iApplyViewModel.initNavigation(
+          widget.bookingDto,
+        );
       },
     );
-
+    _subscribeToLocationChanges();
     super.initState();
+  }
+
+  void _subscribeToLocationChanges() {
+    _location.onLocationChanged.listen((LocationData currentLocation) async {
+      await _iApplyViewModel.updateRoute(
+        LatLng(
+          currentLocation.latitude!,
+          currentLocation.longitude!,
+        ),
+      );
+    });
   }
 
   Marker buildPin(LatLng point, String description) => Marker(
@@ -115,57 +143,16 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
           ),
         ),
       ),
-      body: SafeArea(child: Consumer<IBookingViewModel>(
+      body: SafeArea(child: Consumer<IApplyViewModel>(
         builder: (context, vm, child) {
-          LatLng center;
-          if (vm.boundConfirmScreen != null) {
-            center = LatLng(
-              (vm.boundConfirmScreen!.north + vm.boundConfirmScreen!.south) / 2,
-              (vm.boundConfirmScreen!.east + vm.boundConfirmScreen!.west) / 2,
-            );
-          } else {
-            center = LatLng(
-              (LatLngBounds.fromPoints(
-                        [
-                          vm.currentLocation!,
-                          vm.currentDestination!,
-                        ],
-                      ).north +
-                      LatLngBounds.fromPoints(
-                        [
-                          vm.currentLocation!,
-                          vm.currentDestination!,
-                        ],
-                      ).south) /
-                  2,
-              (LatLngBounds.fromPoints(
-                        [
-                          vm.currentLocation!,
-                          vm.currentDestination!,
-                        ],
-                      ).east +
-                      LatLngBounds.fromPoints(
-                        [
-                          vm.currentLocation!,
-                          vm.currentDestination!,
-                        ],
-                      ).west) /
-                  2,
-            );
-          }
-          double zoomLevel = calculateZoomLevel(
-                vm.currentLocation!.latitude,
-                vm.currentLocation!.longitude,
-                vm.currentDestination!.latitude,
-                vm.currentDestination!.longitude,
-                MediaQuery.of(context).size.width,
-              ) -
-              1;
           return Stack(
             children: [
               FlutterMap(
                 mapController: mapController,
                 options: MapOptions(
+                  onPositionChanged: (position, hasGesture) async {
+                    await vm.delayedFunctionCaller();
+                  },
                   initialCameraFit: CameraFit.bounds(
                     padding: EdgeInsets.only(
                       left: 100.w,
@@ -175,11 +162,24 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                     ),
                     bounds: vm.boundConfirmScreen ??
                         LatLngBounds.fromPoints(
-                          [vm.currentLocation!, vm.currentDestination!],
+                          [
+                            LatLng(
+                              double.parse(widget.bookingDto.startPointLat!),
+                              double.parse(widget.bookingDto.startPointLong!),
+                            ),
+                            LatLng(
+                              double.parse(widget.bookingDto.endPointLat!),
+                              double.parse(widget.bookingDto.endPointLong!),
+                            )
+                          ],
                         ),
                   ),
-                  initialCenter: center,
-                  initialZoom: zoomLevel,
+                  initialCenter: vm.center ??
+                      const LatLng(
+                        10.870,
+                        106.803,
+                      ),
+                  initialZoom: vm.zoomLevel ?? 16,
                   maxZoom: 18,
                 ),
                 children: [
@@ -202,16 +202,10 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                   MarkerLayer(
                     markers: [
                       Marker(
-                        point: vm.currentLocation!,
-                        child: lottie.Lottie.asset(
-                          "assets/lottie/location.json",
-                          repeat: true,
+                        point: LatLng(
+                          double.parse(widget.bookingDto.endPointLat!),
+                          double.parse(widget.bookingDto.endPointLong!),
                         ),
-                        width: 60.w,
-                        height: 60.h,
-                      ),
-                      Marker(
-                        point: vm.currentDestination!,
                         child: lottie.Lottie.asset(
                           "assets/lottie/location.json",
                           repeat: true,
@@ -224,7 +218,36 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                   ),
                   MarkerLayer(
                     markers: placeMarkers,
-                  )
+                  ),
+                  CurrentLocationLayer(
+                    positionStream: _locationStream
+                        .map((locationData) => LocationMarkerPosition(
+                              latitude: locationData.latitude!,
+                              longitude: locationData.longitude!,
+                              accuracy: locationData.accuracy!,
+                            )),
+                    style: LocationMarkerStyle(
+                      marker: const DefaultLocationMarker(
+                        color: ColorUtils.primaryColor,
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                      ),
+                      markerSize: const Size.square(
+                        40,
+                      ),
+                      accuracyCircleColor: ColorUtils.primaryColor.withOpacity(
+                        0.1,
+                      ),
+                      headingSectorColor: ColorUtils.primaryColor.withOpacity(
+                        0.8,
+                      ),
+                      showAccuracyCircle: true,
+                      headingSectorRadius: 120,
+                    ),
+                    moveAnimationDuration: Duration.zero, // disable animation
+                  ),
                 ],
               ),
               Align(
@@ -234,7 +257,6 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                     vertical: 10.h,
                     horizontal: 20.w,
                   ),
-                  height: 410.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.r),
@@ -247,6 +269,7 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           'Thông tin chuyến đi',
@@ -263,9 +286,7 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                           child: Row(
                             children: [
                               CachedNetworkImage(
-                                imageUrl: locator<GlobalData>()
-                                    .currentUser!
-                                    .avatarUrl
+                                imageUrl: widget.bookingDto.authorId!.avatarUrl
                                     .toString(),
                                 imageBuilder: (context, imageProvider) =>
                                     Container(
@@ -318,8 +339,9 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                                   SizedBox(
                                     height: 5.h,
                                   ),
-                                  if (vm.currentBooking != null)
-                                    Text(vm.currentBooking!.bookingType ?? "")
+                                  Text(
+                                    widget.bookingDto.bookingType ?? "",
+                                  )
                                 ],
                               ),
                             ],
@@ -419,7 +441,7 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                                     SizedBox(
                                       width: 300.w,
                                       child: Text(
-                                        '${vm.currentBooking!.startPointMainText}, ${vm.currentBooking!.startPointAddress}',
+                                        '${widget.bookingDto.startPointMainText}, ${widget.bookingDto.startPointAddress}',
                                         style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.bold,
@@ -473,7 +495,7 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                                     SizedBox(
                                       width: 300.w,
                                       child: Text(
-                                        '${vm.currentBooking!.endPointMainText}, ${vm.currentBooking!.endPointAddress}',
+                                        '${widget.bookingDto.endPointMainText}, ${widget.bookingDto.endPointAddress}',
                                         style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.bold,
@@ -491,35 +513,6 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                         SizedBox(
                           height: 10.h,
                         ),
-                        InkWell(
-                          onTap: () {
-                            Get.toNamed(
-                              MyRouter.addBooking,
-                            );
-                          },
-                          child: Center(
-                            child: Container(
-                              width: 200.w,
-                              height: 60.h,
-                              decoration: BoxDecoration(
-                                color: ColorUtils.primaryColor,
-                                borderRadius: BorderRadius.circular(
-                                  10.r,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Xác nhận',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.sp,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
                       ],
                     ),
                   ),

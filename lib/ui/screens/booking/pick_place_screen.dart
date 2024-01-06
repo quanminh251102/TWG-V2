@@ -122,7 +122,7 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
     super.dispose();
   }
 
-  void _toggleDraggableScrollableSheet() {
+  Future<void> _toggleDraggableScrollableSheet() async {
     isLocationFocus = locationFocusNode.hasFocus;
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     setState(() {
@@ -131,22 +131,33 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
     DraggableScrollableActuator.reset(
       draggableSheetContext,
     );
+    await gotoPoint();
   }
 
   Future<void> gotoPoint() async {
-    String currentPlaceId = '';
-    if (isLocationFocus) {
-      currentPlaceId = currentLocation!.placeId!;
+    if (currentDestination != null) {
+      String currentPlaceId = '';
+      if (isLocationFocus) {
+        currentPlaceId = currentLocation!.placeId!;
+      } else {
+        currentPlaceId = currentDestination!.placeId!;
+      }
+      PlaceDto? searchPlace =
+          await _iBookingViewModel.getPlaceById(currentPlaceId);
+      if (searchPlace != null) {
+        _animatedMapMove(
+          LatLng(
+            searchPlace.geometry!.location!.lat!,
+            searchPlace.geometry!.location!.lng!,
+          ),
+          19,
+        );
+      }
     } else {
-      currentPlaceId = currentDestination!.placeId!;
-    }
-    PlaceDto? searchPlace =
-        await _iBookingViewModel.getPlaceById(currentPlaceId);
-    if (searchPlace != null) {
       _animatedMapMove(
         LatLng(
-          searchPlace.geometry!.location!.lat!,
-          searchPlace.geometry!.location!.lng!,
+          locator<GlobalData>().currentPosition!.latitude,
+          locator<GlobalData>().currentPosition!.longitude,
         ),
         19,
       );
@@ -251,8 +262,7 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
                 (locationFocusNode.hasFocus || destinationFocusNode.hasFocus),
             child: InkWell(
               onTap: () async {
-                await gotoPoint();
-                _toggleDraggableScrollableSheet();
+                await _toggleDraggableScrollableSheet();
               },
               child: Padding(
                 padding: EdgeInsets.only(right: 10.w),
@@ -371,7 +381,7 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
                               fontWeight: FontWeight.bold,
                               fontSize: 16.sp,
                             ),
-                            onTap: () {
+                            onTap: () async {
                               setState(() {
                                 initialExtent = maxExtent;
                                 hideSuggestLocations = false;
@@ -379,6 +389,45 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
                               FocusManager.instance.primaryFocus?.unfocus();
                               DraggableScrollableActuator.reset(
                                   draggableSheetContext);
+                              if (locationController.text != '' &&
+                                  destinationController.text != '') {
+                                PlaceDto? searchLocation =
+                                    await _iBookingViewModel.getPlaceById(
+                                        currentLocation!.placeId!);
+                                _iBookingViewModel.currentLocation = LatLng(
+                                  searchLocation!.geometry!.location!.lat!,
+                                  searchLocation.geometry!.location!.lng!,
+                                );
+                                PlaceDto? searchDestination =
+                                    await _iBookingViewModel.getPlaceById(
+                                        currentDestination!.placeId!);
+                                _iBookingViewModel.currentDestination = LatLng(
+                                  searchDestination!.geometry!.location!.lat!,
+                                  searchDestination.geometry!.location!.lng!,
+                                );
+
+                                _iBookingViewModel.updateBookingLocation(
+                                  startPointId: currentLocation!.placeId,
+                                  startPointMainText:
+                                      locationController.text.split(',')[0],
+                                  startPointAddress: locationController.text
+                                      .split(',')
+                                      .sublist(1)
+                                      .map((part) => part.trim())
+                                      .join(', '),
+                                  endPointId: currentDestination!.placeId,
+                                  endPointMainText:
+                                      destinationController.text.split(',')[0],
+                                  endPointAddress: destinationController.text
+                                      .split(',')
+                                      .sublist(1)
+                                      .map((part) => part.trim())
+                                      .join(', '),
+                                );
+                                Get.toNamed(
+                                  MyRouter.confirmPlaceMap,
+                                );
+                              }
                             },
                           ),
                         ),

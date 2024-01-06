@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:twg/global/router.dart';
@@ -75,19 +76,30 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chính sách quyên riêng tư'),
-        centerTitle: false,
-        elevation: 0.0,
+        title: Text(
+          'Chính sách quyền riêng tư',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.sp,
+            color: Colors.black,
+          ),
+        ),
+        centerTitle: true,
         leading: InkWell(
-            onTap: () {
-              Get.offNamed(MyRouter.profile);
-            },
-            child: const Icon(Icons.arrow_back_ios)),
+          onTap: () {
+            Get.offNamed(MyRouter.profile);
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
+        elevation: 0.0,
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
-          child: this.content,
+          child: content,
         ),
       ),
     );

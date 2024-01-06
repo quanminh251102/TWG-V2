@@ -43,10 +43,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
           leading: InkWell(
             onTap: () {
               Get.back();
-              // Navigator.of(context).pop();
-              print('back');
             },
-            child: const Icon(Icons.arrow_back_ios),
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
           ),
         ),
         body: Column(

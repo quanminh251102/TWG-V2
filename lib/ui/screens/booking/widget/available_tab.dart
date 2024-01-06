@@ -21,7 +21,6 @@ class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
           BookingStatusType.available,
         ),
       );
-      print('booking length :${_iBookingViewModel.bookings.length}');
     });
     scrollController.addListener(() async {
       if (scrollController.position.atEdge) {

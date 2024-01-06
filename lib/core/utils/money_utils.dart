@@ -41,4 +41,15 @@ class VietnameseMoneyFormatter extends TextInputFormatter {
     int parsedValue = int.tryParse(cleanValue) ?? 0;
     return parsedValue.toString();
   }
+
+  String formatToVietnameseCurrency(String numberString) {
+    // Chuyển đổi chuỗi thành số nguyên.
+    int number = int.tryParse(numberString) ?? 0;
+
+    // Sử dụng NumberFormat từ package intl để format số.
+    final formatter = NumberFormat('#,##0', 'vi_VN');
+
+    // Trả về chuỗi đã được format kèm theo đơn vị VND.
+    return '${formatter.format(number)} ₫';
+  }
 }

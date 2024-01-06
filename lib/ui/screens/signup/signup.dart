@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
 import 'package:twg/global/router.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -21,9 +23,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late TextEditingController email;
   late TextEditingController passwordConfirm;
   late GlobalKey<FormState> _formKey;
+  late IAuthViewModel _iAuthViewModel;
   @override
   void initState() {
     super.initState();
+    _iAuthViewModel = context.read<IAuthViewModel>();
     usernameFocus = FocusNode();
     emailFocus = FocusNode();
     passwordFocus = FocusNode();
@@ -270,13 +274,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   Center(
                       child: GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        // BlocProvider.of<SignupCubit>(context).SignUp(
-                        //     username.text,
-                        //     email.text,
-                        //     password.text,
-                        //     passwordConfirm.text);
+                        await _iAuthViewModel.signUp(
+                          email.text,
+                          username.text,
+                          password.text,
+                        );
                       }
                     },
                     child: Container(
@@ -289,7 +293,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Text(
                           'Đăng ký',
                           style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
+                              color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),

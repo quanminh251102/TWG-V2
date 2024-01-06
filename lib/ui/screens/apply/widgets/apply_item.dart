@@ -63,7 +63,7 @@ class ApplyItem extends StatelessWidget {
                       ),
                     if (apply.dealPrice != 0)
                       Text(
-                        'Deal giá : ${HandlingStringUtils.priceInPost_noType((apply.dealPrice.toString()).toString())}',
+                        'Giá thương lượng : ${HandlingStringUtils.priceInPost_noType((apply.dealPrice.toString()).toString())}',
                         style: const TextStyle(color: Colors.red),
                       ),
                     Text(HandlingStringUtils.timeDistanceFromNow(
@@ -116,7 +116,7 @@ class ApplyItem extends StatelessWidget {
               ),
             if (apply.dealPrice != 0)
               Text(
-                'Bạn đã deal giá : ${HandlingStringUtils.priceInPost_noType((apply.dealPrice.toString()).toString())}',
+                'Bạn đã Giá thương lượng : ${HandlingStringUtils.priceInPost_noType((apply.dealPrice.toString()).toString())}',
                 style: const TextStyle(color: Colors.red),
               ),
             const SizedBox(height: 8),

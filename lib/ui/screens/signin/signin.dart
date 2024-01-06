@@ -72,9 +72,9 @@ class _SignInScreenState extends State<SignInScreen> {
       // BlocProvider.of<NotificationCubit>(context).init_socket_notifications();
     }
 
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
+    return PopScope(
+      onPopInvoked: (didPop) {
+        didPop = false;
       },
       child: Scaffold(
           body: SafeArea(
@@ -212,7 +212,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             child: Text(
                               'Đăng nhập',
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),

@@ -1,5 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
+import 'package:twg/constants.dart';
 import 'package:twg/core/dtos/message/message_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/global/global_data.dart';
@@ -40,12 +44,14 @@ class _ListMessageItemState extends State<ListMessageItem> {
                   constraints: const BoxConstraints(maxWidth: 180),
                   child: Text(
                     message.message as String,
-                    style: const TextStyle(color: Colors.black, fontSize: 15),
+                    style: const TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
                 Text(
                   startTime,
-                  style: TextStyle(color: Colors.grey),
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
                 )
               ],
             ),
@@ -57,19 +63,46 @@ class _ListMessageItemState extends State<ListMessageItem> {
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
         child: Row(
           children: [
-            CircleAvatar(
-              radius: 25,
-              backgroundImage: NetworkImage(
-                message.userId!.avatarUrl.toString(),
-                // "https://res.cloudinary.com/dxoblxypq/image/upload/v1679984586/9843c460ff72ee89d791bffe667e451c_rzalqh.jpg"
-              ),
-            ),
-            const SizedBox(width: 10),
+            message.userId!.avatarUrl.toString() == avatarUrl
+                ? Lottie.asset(
+                    'assets/lottie/avatar.json',
+                    fit: BoxFit.fill,
+                    height: 60.h,
+                    width: 60.w,
+                  )
+                : CachedNetworkImage(
+                    imageUrl: message.userId!.avatarUrl.toString(),
+                    imageBuilder: (context, imageProvider) => Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(
+                            60.0,
+                          ),
+                        ),
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    placeholder: (context, url) => SizedBox(
+                      width: 50.w,
+                      height: 50.w,
+                      child: Lottie.asset(
+                        "assets/lottie/loading_image.json",
+                        repeat: true,
+                      ),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
             Container(
               constraints: const BoxConstraints(maxWidth: 250),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: const Color.fromARGB(94, 158, 158, 158),
+                color: ColorUtils.primaryColor.withOpacity(0.08),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -85,7 +118,7 @@ class _ListMessageItemState extends State<ListMessageItem> {
                   ),
                   Text(
                     startTime,
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   )
                 ],
               ),

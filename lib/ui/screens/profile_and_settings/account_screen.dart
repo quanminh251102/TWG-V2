@@ -8,11 +8,14 @@ import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
+import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/iprofile_viewmodel.dart';
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/common_widgets/confirm_login_dialog.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
 import 'package:twg/ui/screens/profile_and_settings/widget/profile_menu_widget.dart';
+import 'package:lottie/lottie.dart' as lottie;
+part './widget/header.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -24,35 +27,7 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen>
     with TickerProviderStateMixin {
   late IProfileViewModel _iProfileViewModel;
-
-  bool _isLoadingForUpdateProfilePage = false;
-  bool _isLoadingImage = false;
-
-  void uploadImage(XFile file) async {
-    setState(() {
-      _isLoadingImage = true;
-    });
-
-    var result = await _iProfileViewModel.uploadFile(file);
-
-    if (result != 'error') {
-      AccountDto value = _iProfileViewModel.accountDto;
-
-      value.avatarUrl = result;
-      //  this._birthday.toString(),
-      String text = await _iProfileViewModel.updateProfile(value);
-
-      Get.showSnackbar(
-        GetSnackBar(
-          title: text,
-        ),
-      );
-    }
-
-    setState(() {
-      _isLoadingImage = false;
-    });
-  }
+  late IAuthViewModel _iAuthViewModel;
 
   void _modalBottomSheetLogout(context) {
     showModalBottomSheet(
@@ -91,9 +66,8 @@ class _AccountScreenState extends State<AccountScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            // BlocProvider.of<SigninCubit>(context).Logout();
-                            // appRouter.push(const SignInViewRoute());
+                          onTap: () async {
+                            await _iAuthViewModel.logout();
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -125,8 +99,9 @@ class _AccountScreenState extends State<AccountScreen>
                               child: Text(
                                 'Hủy',
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
@@ -139,81 +114,9 @@ class _AccountScreenState extends State<AccountScreen>
         });
   }
 
-  void openMediaDialog() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            backgroundColor: Colors.white,
-            title: const Text(
-              'Chọn nguồn',
-              style: TextStyle(fontSize: 14),
-            ),
-            content: Container(
-              margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () async {
-                      final ImagePicker _picker = ImagePicker();
-                      final XFile? image =
-                          await _picker.pickImage(source: ImageSource.camera);
-                      if (image != null) {
-                        print("get successfully");
-                        uploadImage(image);
-                        Future.delayed(Duration.zero, () {
-                          Navigator.pop(context);
-                        });
-                      }
-                    },
-                    child: const Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.camera_alt,
-                          size: 30,
-                        ),
-                        Text('Máy ảnh')
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 100,
-                  ),
-                  InkWell(
-                    onTap: () async {
-                      final ImagePicker _picker = ImagePicker();
-                      final XFile? image =
-                          await _picker.pickImage(source: ImageSource.gallery);
-                      if (image != null) {
-                        uploadImage(image);
-                        Future.delayed(Duration.zero, () {
-                          Navigator.pop(context);
-                        });
-                        // image.path
-                      }
-                    },
-                    child: const Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.image,
-                          size: 30,
-                        ),
-                        Text('Thư viện')
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
   @override
   void initState() {
+    _iAuthViewModel = context.read<IAuthViewModel>();
     _iProfileViewModel = context.read<IProfileViewModel>();
     Future.delayed(Duration.zero, () async {
       await _iProfileViewModel.getProfile();
@@ -231,101 +134,37 @@ class _AccountScreenState extends State<AccountScreen>
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text('Cá nhân',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20.sp,
-            )),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Get.dialog(
-                  const ConfirmLoginDialog(),
-                );
-              },
-              icon: Icon(isDark ? LineAwesomeIcons.sun : LineAwesomeIcons.moon))
-        ],
+        title: Text(
+          'Cá nhân',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.sp,
+            color: Colors.black,
+          ),
+        ),
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(
-            20.r,
+            10.r,
           ),
           child: Consumer<IProfileViewModel>(
             builder: (context, vm, child) {
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// -- IMAGE
-                  Stack(
-                    children: [
-                      Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              openMediaDialog();
-                            },
-                            child: CachedNetworkImage(
-                              imageUrl: vm.accountDto.avatarUrl.toString(),
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                width: 120,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(
-                                          60.0) //                 <--- border radius here
-                                      ),
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              placeholder: (context, url) =>
-                                  const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: InkWell(
-                          onTap: () {
-                            openMediaDialog();
-                          },
-                          child: Container(
-                            width: 35,
-                            height: 35,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: ColorUtils.primaryColor),
-                            child: const Icon(
-                              LineAwesomeIcons.alternate_pencil,
-                              color: Colors.black,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Text(vm.accountDto.firstName.toString(),
+                  const _Header(),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 20.w,
+                      top: 15.h,
+                    ),
+                    child: Text(
+                      'Tùy chọn',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.sp,
-                      )),
-                  Text(vm.accountDto.email.toString(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 18.sp,
-                      )),
-
-                  SizedBox(
-                    height: 20.h,
+                          fontSize: 20.sp, fontWeight: FontWeight.bold),
+                    ),
                   ),
                   ProfileMenuWidget(
                     title: "Cập nhật thông tin cá nhân",
@@ -363,7 +202,7 @@ class _AccountScreenState extends State<AccountScreen>
                       color: Colors.grey.withOpacity(
                         0.1,
                       ),
-                      thickness: 1,
+                      thickness: 2,
                     ),
                   ),
                   SizedBox(height: 10.h),

@@ -21,7 +21,7 @@ class NotificationWidget extends StatelessWidget {
                 color: Colors.black,
               ),
               onPressed: () {
-                Get.offNamed(MyRouter.notification);
+                Get.toNamed(MyRouter.notification);
               },
             ),
             if (vm.numUnWatched > 0)
@@ -31,14 +31,14 @@ class NotificationWidget extends StatelessWidget {
                 child: CustomCard(
                   width: 20,
                   height: 20,
+                  color: Colors.red,
+                  borderRadius: 12,
                   child: Center(
                     child: Text(
                       vm.numUnWatched.toString(),
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
-                  color: Colors.red,
-                  borderRadius: 12,
                 ),
               ),
           ],

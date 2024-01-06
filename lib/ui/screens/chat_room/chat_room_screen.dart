@@ -57,7 +57,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
               color: Colors.black,
             ),
           ),
-          actions: [
+          elevation: 0,
+          actions: const [
             NotificationWidget(),
           ],
         ),
@@ -67,9 +68,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
         ),
         body: Column(
           children: [
-            // Text('Email : ${locator<GlobalData>().currentUser?.email}'),
-            // Text('${locator<GlobalData>().currentUser?.firstName}'),
-            // Text(TokenUtils.currentEmail),
             Expanded(
               child: Consumer<IChatRoomViewModel>(
                 builder: (context, vm, child) {

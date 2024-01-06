@@ -173,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             color: Colors.black,
           ),
         ),
-        actions: [
+        actions: const [
           NotificationWidget(),
         ],
       ),

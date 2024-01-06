@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
@@ -287,8 +288,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
                           child: Text(
                             'Cập nhật',
                             style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
@@ -299,13 +301,24 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cập nhật thông tin cá nhân'),
-        centerTitle: false,
+        title: Text(
+          'Cập nhật thông tin cá nhân',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.sp,
+            color: Colors.black,
+          ),
+        ),
+        centerTitle: true,
         leading: InkWell(
-            onTap: () {
-              Get.offNamed(MyRouter.profile);
-            },
-            child: const Icon(Icons.arrow_back_ios)),
+          onTap: () {
+            Get.offNamed(MyRouter.profile);
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
         elevation: 0.0,
       ),
       body: SingleChildScrollView(

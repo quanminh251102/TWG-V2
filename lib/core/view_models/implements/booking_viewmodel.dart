@@ -158,7 +158,9 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
 
   @override
   void updateBookingType(String bookingType) {
-    _currentBooking = BookingDto(status: 'available');
+    _currentBooking = BookingDto(
+      status: 'available',
+    );
     _currentBooking!.bookingType = bookingType;
     notifyListeners();
   }
@@ -174,15 +176,15 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   }) {
     _currentBooking!.startPointLat = currentLocation!.latitude.toString();
     _currentBooking!.startPointLong = currentLocation!.longitude.toString();
-    _currentBooking!.endPointLat = currentLocation!.latitude.toString();
-    _currentBooking!.endPointLong = currentLocation!.longitude.toString();
+    _currentBooking!.endPointLat = currentDestination!.latitude.toString();
+    _currentBooking!.endPointLong = currentDestination!.longitude.toString();
     _currentBooking!.startPointId = startPointId;
     _currentBooking!.startPointAddress = startPointAddress;
     _currentBooking!.startPointMainText = startPointMainText;
     _currentBooking!.endPointId = endPointId;
     _currentBooking!.endPointAddress = endPointAddress;
     _currentBooking!.endPointMainText = endPointMainText;
-
+    ;
     notifyListeners();
   }
 
