@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/global/router.dart';
+import 'package:twg/ui/screens/booking/widget/booking_history_item.dart';
 import 'package:twg/ui/screens/booking/widget/list_booking.dart';
 import 'package:twg/ui/screens/booking/widget/list_booking_item.dart';
 
@@ -19,7 +21,8 @@ class MyBookPage extends StatefulWidget {
   State<MyBookPage> createState() => _MyBookPageState();
 }
 
-class _MyBookPageState extends State<MyBookPage> {
+class _MyBookPageState extends State<MyBookPage>
+    with SingleTickerProviderStateMixin {
   bool isLoading_getMyBook = false;
   List<BookingDto> bookings = [];
   List<BookingDto> bookings_selected = [];
@@ -28,25 +31,34 @@ class _MyBookPageState extends State<MyBookPage> {
   late FocusNode startPointFocus;
   late FocusNode endPointFocus;
   late IBookingViewModel _iBookingViewModel;
-
+  TabController? _tabController;
   @override
   void initState() {
     _iBookingViewModel = context.read<IBookingViewModel>();
     _iBookingViewModel.setIsMyList(true);
-    // scrollController = ScrollController();
+    setState(() {
+      isLoading_getMyBook = true;
+    });
     Future.delayed(Duration.zero, () async {
       await _iBookingViewModel.initMyBookings();
       bookings = _iBookingViewModel.bookings;
       bookings_selected = bookings;
-      print('booking length :${_iBookingViewModel.bookings.length}');
-      print('select booking length :${bookings_selected.length}');
-      setState(() {});
+      setState(() {
+        isLoading_getMyBook = false;
+      });
     });
-    // TODO: implement initState
+
+    _tabController = TabController(length: 2, vsync: this);
     super.initState();
 
     startPointFocus = FocusNode();
     endPointFocus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _tabController?.dispose();
+    super.dispose();
   }
 
   void do_filter() {
@@ -60,7 +72,7 @@ class _MyBookPageState extends State<MyBookPage> {
             booking.endPointMainText.toString().toLowerCase() +
                 booking.endPointAddress.toString().toLowerCase();
         String searchStartpoint = _startPoint.text.trim().toLowerCase();
-        String searchEndpoint = _endPoint.text.trim().toLowerCase();
+        String searchEndpoint = _startPoint.text.trim().toLowerCase();
 
         if (bookingStartpoint.contains(searchStartpoint) &&
             bookingEndpoint.contains(searchEndpoint)) {
@@ -76,159 +88,201 @@ class _MyBookPageState extends State<MyBookPage> {
   Widget build(BuildContext context) {
     search_bar() {
       return [
-        Text('Điểm đi : '),
-        TextFormField(
-          style: const TextStyle(fontWeight: FontWeight.w600),
-          focusNode: startPointFocus,
-          controller: _startPoint,
-          validator: (value) {
-            return null;
-          },
-          decoration: InputDecoration(
-            filled: true, //<-- SEE HERE
-            fillColor: startPointFocus.hasFocus
-                ? ColorUtils.primaryColor.withOpacity(0.1)
-                : Colors.grey.withOpacity(0.1),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: ColorUtils.primaryColor),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: Colors.grey.withOpacity(0.1),
-                width: 2.0,
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 10.w,
+          ),
+          child: TextFormField(
+            style: const TextStyle(fontWeight: FontWeight.w600),
+            focusNode: startPointFocus,
+            controller: _startPoint,
+            validator: (value) {
+              return null;
+            },
+            decoration: InputDecoration(
+              filled: true, //<-- SEE HERE
+              fillColor: startPointFocus.hasFocus
+                  ? ColorUtils.primaryColor.withOpacity(0.1)
+                  : Colors.grey.withOpacity(0.1),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: ColorUtils.primaryColor),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: Colors.grey.withOpacity(0.1),
+                  width: 2.0,
+                ),
+              ),
+              hintText: 'Địa điểm...',
+              prefixIcon: Icon(
+                Icons.location_on,
+                color: startPointFocus.hasFocus
+                    ? ColorUtils.primaryColor
+                    : Colors.black,
               ),
             ),
-            hintText: 'Điểm đi',
-            prefixIcon: Icon(
-              Icons.location_on,
-              color: startPointFocus.hasFocus
-                  ? ColorUtils.primaryColor
-                  : Colors.black,
-            ),
+            onChanged: (text) {
+              do_filter();
+            },
           ),
-          onChanged: (text) {
-            do_filter();
-          },
-        ),
-        Text('Điểm đến : '),
-        TextFormField(
-          style: const TextStyle(fontWeight: FontWeight.w600),
-          focusNode: endPointFocus,
-          controller: _endPoint,
-          validator: (value) {
-            return null;
-          },
-          decoration: InputDecoration(
-            filled: true, //<-- SEE HERE
-            fillColor: endPointFocus.hasFocus
-                ? ColorUtils.primaryColor.withOpacity(0.1)
-                : Colors.grey.withOpacity(0.1),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: ColorUtils.primaryColor),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: Colors.grey.withOpacity(0.1),
-                width: 2.0,
-              ),
-            ),
-            hintText: 'Điểm đến',
-            prefixIcon: Icon(
-              Icons.location_on,
-              color: endPointFocus.hasFocus
-                  ? ColorUtils.primaryColor
-                  : Colors.black,
-            ),
-          ),
-          onChanged: (text) {
-            do_filter();
-          },
-        ),
-        const SizedBox(
-          height: 20,
         ),
       ];
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Các chuyến đi đã đăng',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20.sp,
-            color: Colors.black,
+        appBar: AppBar(
+          title: Text(
+            'Chuyến đi của tôi',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20.sp,
+              color: Colors.black,
+            ),
           ),
-        ),
-        elevation: 0.0,
-        centerTitle: true,
-        leading: InkWell(
-          onTap: () {
-            Get.offNamed(MyRouter.profile);
-          },
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
+          elevation: 0.0,
+          centerTitle: true,
+          leading: InkWell(
+            onTap: () {
+              Get.offNamed(MyRouter.profile);
+            },
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
           ),
-        ),
-      ),
-      body: isLoading_getMyBook
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...search_bar(),
-                    if (bookings_selected.length == 0)
-                      Center(
-                          child: Column(
-                        children: [
-                          Image.asset('assets/images/error.png'),
-                          const Text(
-                            'Danh sách trống!',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      )),
-                    if (bookings_selected.length > 0)
-                      for (var booking in bookings_selected) ...[
-                        ListBookingItem(
-                          booking: booking,
-                        ),
-                        const SizedBox(height: 12),
-                      ],
-                    // Consumer<IBookingViewModel>(
-                    //   builder: (context, vm, child) {
-                    //     return ListBooking(
-                    //       bookings: vm.bookings,
-                    //     );
-                    //   },
-                    // ),
-
-                    //  SizedBox(
-                    //     height: 400,
-                    //     child: ListView.builder(
-                    //       itemBuilder: (ctx, index) {
-                    //         return MyBookingItem(
-                    //           booking: bookings[index],
-                    //         );
-                    //       },
-                    //       itemCount: bookings.length,
-                    //     ),
-                    //   )
-                  ],
+          bottom: TabBar(
+            padding: EdgeInsets.symmetric(
+              horizontal: 10.w,
+            ),
+            controller: _tabController,
+            indicator: BoxDecoration(
+              borderRadius: BorderRadius.circular(
+                25.r,
+              ),
+              color: ColorUtils.primaryColor,
+            ),
+            labelColor: Colors.white,
+            unselectedLabelColor: ColorUtils.primaryColor,
+            tabs: [
+              Tab(
+                child: Text(
+                  'Tài xế',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                  ),
                 ),
               ),
-            ),
-    );
+              Tab(
+                child: Text(
+                  'Hành khách',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: isLoading_getMyBook
+            ? Center(
+                child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.h),
+                    child: Lottie.asset(
+                      'assets/lottie/loading_text.json',
+                      height: 100.h,
+                    )),
+              )
+            : TabBarView(
+                controller: _tabController,
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        ...search_bar(),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        if (bookings_selected.isEmpty)
+                          Center(
+                              child: Column(
+                            children: [
+                              Image.asset('assets/images/error.png'),
+                              const Text(
+                                'Danh sách trống!',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          )),
+                        if (bookings_selected.isNotEmpty)
+                          for (var booking in bookings_selected) ...[
+                            if (booking.bookingType == 'Tìm tài xế')
+                              BookingHistoryItem(
+                                booking: booking,
+                              ),
+                          ],
+                      ],
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        ...search_bar(),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        if (bookings_selected.isEmpty)
+                          Center(
+                              child: Column(
+                            children: [
+                              Image.asset('assets/images/error.png'),
+                              const Text(
+                                'Danh sách trống!',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          )),
+                        if (bookings_selected.isNotEmpty)
+                          for (var booking in bookings_selected) ...[
+                            if (booking.bookingType == 'Tìm hành khách')
+                              BookingHistoryItem(
+                                booking: booking,
+                              ),
+                          ],
+                        // Consumer<IBookingViewModel>(
+                        //   builder: (context, vm, child) {
+                        //     return ListBooking(
+                        //       bookings: vm.bookings,
+                        //     );
+                        //   },
+                        // ),
+
+                        //  SizedBox(
+                        //     height: 400,
+                        //     child: ListView.builder(
+                        //       itemBuilder: (ctx, index) {
+                        //         return MyBookingItem(
+                        //           booking: bookings[index],
+                        //         );
+                        //       },
+                        //       itemCount: bookings.length,
+                        //     ),
+                        //   )
+                      ],
+                    ),
+                  ),
+                ],
+              ));
   }
 }

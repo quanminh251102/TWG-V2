@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
@@ -21,19 +23,23 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage>
   late IReviewViewModel _iReviewViewModel;
   TextEditingController _name = TextEditingController();
   late FocusNode nameFocus;
-
+  bool isLoading = false;
   @override
   void initState() {
     _iApplyViewModel = context.read<IApplyViewModel>();
     _iApplyViewModel.setIsMyApplys(false);
 
     _iReviewViewModel = context.read<IReviewViewModel>();
-    // TODO: implement initState
-    super.initState();
-
+    setState(() {
+      isLoading = true;
+    });
     Future.delayed(Duration.zero, () async {
       await _iApplyViewModel.init('');
     });
+    setState(() {
+      isLoading = false;
+    });
+    super.initState();
 
     nameFocus = FocusNode();
   }
@@ -107,27 +113,42 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage>
             children: [
               ...search_bar(),
               const SizedBox(height: 20),
-              Consumer<IApplyViewModel>(
-                builder: (context, vm, child) {
-                  return Column(
-                    children: [
-                      if (vm.applysAfterFilter.isEmpty)
-                        const Text('Danh sách rỗng'),
-                      if (vm.applysAfterFilter.isNotEmpty)
-                        for (var _apply in vm.applysAfterFilter) ...[
-                          ApplyItem(
-                            apply: _apply,
-                            vm: _iApplyViewModel,
-                            rvm: _iReviewViewModel,
-                          ),
-                          const SizedBox(height: 12),
-                        ],
-                    ],
-                  );
-                },
-              ),
-              // if (applys_selected.length == 0)
-              //   const Text('Danh sách rỗng'),
+              isLoading
+                  ? Center(
+                      child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.h),
+                          child: Lottie.asset(
+                            'assets/lottie/loading_text.json',
+                            height: 100.h,
+                          )),
+                    )
+                  : Consumer<IApplyViewModel>(
+                      builder: (context, vm, child) {
+                        return Column(
+                          children: [
+                            if (vm.applysAfterFilter.isEmpty)
+                              Center(
+                                child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.h),
+                                    child: Lottie.asset(
+                                      'assets/lottie/empty.json',
+                                      height: 100.h,
+                                    )),
+                              ),
+                            if (vm.applysAfterFilter.isNotEmpty)
+                              for (var _apply in vm.applysAfterFilter) ...[
+                                ApplyItem(
+                                  apply: _apply,
+                                  vm: _iApplyViewModel,
+                                  rvm: _iReviewViewModel,
+                                ),
+                                const SizedBox(height: 12),
+                              ],
+                          ],
+                        );
+                      },
+                    )
               // if (applys_selected.length > 0)
               //   for (var _apply in applys_selected) ...[
               //     ApplyItem(

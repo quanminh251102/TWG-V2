@@ -247,11 +247,20 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
         title: const Text(
           'Địa điểm',
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        leading: InkWell(
+          onTap: () {
+            Get.offNamed(MyRouter.profile);
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
             color: Colors.black,
           ),
         ),

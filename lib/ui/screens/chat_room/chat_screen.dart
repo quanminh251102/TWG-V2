@@ -92,74 +92,83 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       centerTitle: false,
       backgroundColor: Colors.white,
       elevation: 0.5,
-      leading: IconButton(
-        onPressed: () {
-          // BlocProvider.of<MessageCubit>(context).leave_chat_room();
-          Get.offNamed(
-            MyRouter.chatRoom,
-          );
-        },
-        icon: const Icon(
-          Icons.arrow_back_ios,
-          color: Colors.black,
+      leadingWidth: 200.w,
+      leading: Padding(
+        padding: EdgeInsets.only(
+          left: 25.w,
         ),
-      ),
-      title: Row(
-        children: [
-          partner!.avatarUrl == avatarUrl
-              ? Lottie.asset(
-                  'assets/lottie/avatar.json',
-                  fit: BoxFit.fill,
-                  height: 60.h,
-                  width: 60.w,
-                )
-              : CachedNetworkImage(
-                  imageUrl: partner.avatarUrl.toString(),
-                  imageBuilder: (context, imageProvider) => Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(
-                          60.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            InkWell(
+              onTap: () {
+                Get.offNamed(
+                  MyRouter.home,
+                );
+              },
+              child: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),
+            ),
+            partner!.avatarUrl == avatarUrl
+                ? Lottie.asset(
+                    'assets/lottie/avatar.json',
+                    fit: BoxFit.fill,
+                    height: 60.h,
+                    width: 60.w,
+                  )
+                : CachedNetworkImage(
+                    imageUrl: partner.avatarUrl.toString(),
+                    imageBuilder: (context, imageProvider) => Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(
+                            60.0,
+                          ),
+                        ),
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.cover,
+                    ),
+                    placeholder: (context, url) => SizedBox(
+                      width: 50.w,
+                      height: 50.w,
+                      child: Lottie.asset(
+                        "assets/lottie/loading_image.json",
+                        repeat: true,
                       ),
                     ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
-                  placeholder: (context, url) => SizedBox(
-                    width: 50.w,
-                    height: 50.w,
-                    child: Lottie.asset(
-                      "assets/lottie/loading_image.json",
-                      repeat: true,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  partner.firstName.toString(),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold),
+                ),
+                const Text(
+                  'Online',
+                  style: TextStyle(
+                    color: Color(0xFF7C7C7C),
+                    fontSize: 14,
                   ),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                partner.firstName.toString(),
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold),
-              ),
-              const Text(
-                'Online',
-                style: TextStyle(
-                  color: Color(0xFF7C7C7C),
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
       actions: [
         // IconButton(

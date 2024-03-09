@@ -8,6 +8,7 @@ import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/iprofile_viewmodel.dart';
 import 'package:twg/global/router.dart';
+import 'package:twg/ui/common_widgets/action_button.dart';
 
 class UpdateProfilePage extends StatefulWidget {
   const UpdateProfilePage({super.key});
@@ -254,7 +255,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
             (this._isLoadingUpdate)
                 ? const CircularProgressIndicator()
                 : Center(
-                    child: GestureDetector(
+                    child: ActionButton(
                       onTap: () async {
                         if (_formKey.currentState!.validate() &&
                             _isLoadingUpdate == false) {

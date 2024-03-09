@@ -2,7 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_cards/flutter_custom_cards.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:twg/core/dtos/review/review_dto.dart';
+import 'package:twg/core/utils/color_utils.dart';
 
 class ReviewItem extends StatelessWidget {
   final ReviewDto review;
@@ -13,8 +16,18 @@ class ReviewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomCard(
-      childPadding: 12,
+    return Container(
+      decoration: BoxDecoration(
+        color: ColorUtils.primaryColor.withOpacity(
+          0.058,
+        ),
+        borderRadius: BorderRadius.circular(
+          15.r,
+        ),
+      ),
+      padding: const EdgeInsets.all(
+        12,
+      ),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,6 +45,7 @@ class ReviewItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   RatingBar.builder(
+                    ignoreGestures: true,
                     initialRating: review.star!.toDouble(),
                     minRating: 1,
                     direction: Axis.horizontal,
@@ -46,7 +60,13 @@ class ReviewItem extends StatelessWidget {
                       print(rating);
                     },
                   ),
-                  Text('02/06/2023'),
+                  Text(DateFormat('HH:mm | dd/MM/yyyy')
+                      .format(
+                        DateTime.parse(
+                          review.updatedAt.toString(),
+                        ),
+                      )
+                      .toString()),
                 ],
               ),
             ],

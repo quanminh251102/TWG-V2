@@ -115,6 +115,19 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     notifyListeners();
   }
 
+  @override
+  Future<void> initHome(String status) async {
+    _reset();
+    final paginationProducts = await _iBookingService.getBookings(
+      status: status,
+      page: 1,
+      pageSize: 200,
+    );
+    _bookings = paginationProducts ?? [];
+    _totalCount = _iBookingService.total;
+    notifyListeners();
+  }
+
   String getNum(String mess) {
     // Tìm và lấy số đầu tiên trong chuỗi
     RegExp regExp = RegExp(r'(\d+)');
@@ -239,7 +252,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     _resetMyBookings();
     final paginationProducts = await _iBookingService.getMyBookings(
       page: 1,
-      pageSize: 10,
+      pageSize: 100,
     );
     _bookings = paginationProducts ?? [];
     _totalCount = _iBookingService.total;

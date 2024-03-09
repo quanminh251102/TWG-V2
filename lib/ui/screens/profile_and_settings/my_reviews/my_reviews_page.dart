@@ -3,8 +3,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_custom_cards/flutter_custom_cards.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/ireview_viewmodel.dart';
@@ -19,29 +21,32 @@ class MyReViewsPage extends StatefulWidget {
 }
 
 class _MyReViewsPageState extends State<MyReViewsPage> {
-  bool isLoading = false;
   List<dynamic> reviews = [];
   List<dynamic> reviews_selected = [];
   TextEditingController _name = TextEditingController();
   late FocusNode nameFocus;
   late IReviewViewModel _iReviewViewModel;
+  bool isLoading = false;
   @override
   void initState() {
     _iReviewViewModel = context.read<IReviewViewModel>();
-    // TODO: implement initState
-    super.initState();
-
+    setState(() {
+      isLoading = true;
+    });
     Future.delayed(Duration.zero, () async {
       await _iReviewViewModel.init();
+      setState(() {
+        isLoading = false;
+      });
     });
     nameFocus = FocusNode();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     search_bar() {
       return [
-        Text('Search theo tên : '),
         TextFormField(
           style: const TextStyle(fontWeight: FontWeight.w600),
           focusNode: nameFocus,
@@ -80,19 +85,32 @@ class _MyReViewsPageState extends State<MyReViewsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Đánh giá'),
+        title: const Text(
+          'Đánh giá',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
         centerTitle: true,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
             Get.offNamed(MyRouter.profile);
           },
-          child: const Icon(Icons.arrow_back_ios),
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
         ),
       ),
       body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
+          ? Center(
+              child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.h),
+                  child: Lottie.asset(
+                    'assets/lottie/loading_text.json',
+                    height: 100.h,
+                  )),
             )
           : SingleChildScrollView(
               child: Padding(
@@ -107,7 +125,15 @@ class _MyReViewsPageState extends State<MyReViewsPage> {
                         return Column(
                           children: [
                             if (vm.reviewsAfterFilter.isEmpty)
-                              const Text('Danh sách rỗng'),
+                              Center(
+                                child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.h),
+                                    child: Lottie.asset(
+                                      'assets/lottie/empty.json',
+                                      height: 100.h,
+                                    )),
+                              ),
                             if (vm.reviewsAfterFilter.isNotEmpty)
                               for (var data in vm.reviewsAfterFilter) ...[
                                 ReviewItem(review: data),

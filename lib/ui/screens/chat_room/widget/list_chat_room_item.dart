@@ -147,34 +147,40 @@ class _ListChatRoomItemState extends State<ListChatRoomItem> {
                               height: 90.h,
                               width: 80.w,
                             )
-                          : CachedNetworkImage(
-                              imageUrl: partner.avatarUrl as String,
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                width: 60,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(
-                                      60.0,
+                          : Padding(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 10.h,
+                                horizontal: 10.w,
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl: partner.avatarUrl as String,
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(
+                                        60.0,
+                                      ),
+                                    ),
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
+                                ),
+                                placeholder: (context, url) => SizedBox(
+                                  width: 50.w,
+                                  height: 50.w,
+                                  child: lottie.Lottie.asset(
+                                    "assets/lottie/loading_image.json",
+                                    repeat: true,
                                   ),
                                 ),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
                               ),
-                              placeholder: (context, url) => SizedBox(
-                                width: 50.w,
-                                height: 50.w,
-                                child: lottie.Lottie.asset(
-                                  "assets/lottie/loading_image.json",
-                                  repeat: true,
-                                ),
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
                             ),
                       SizedBox(
                         width: 10.w,

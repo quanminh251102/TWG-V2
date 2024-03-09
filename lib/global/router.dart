@@ -12,10 +12,12 @@ import 'package:twg/ui/screens/booking/booking_screen.dart';
 import 'package:twg/ui/screens/booking/confirm_location_screen.dart';
 import 'package:twg/ui/screens/booking/my_booking_page.dart';
 import 'package:twg/ui/screens/booking/pick_place_screen.dart';
+import 'package:twg/ui/screens/booking/widget/booking_detail_screen.dart';
 import 'package:twg/ui/screens/call/call.dart';
 import 'package:twg/ui/screens/call/incoming_call.dart';
 import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
 import 'package:twg/ui/screens/chat_room/chat_screen.dart';
+import 'package:twg/ui/screens/chatbot/chat_screen.dart';
 import 'package:twg/ui/screens/home/home_screen.dart';
 import 'package:twg/ui/screens/notification/notification_screen.dart';
 import 'package:twg/ui/screens/profile_and_settings/account_screen.dart';
@@ -54,6 +56,8 @@ class MyRouter {
   static const String notification = '/notification';
   static const String driverProfile = '/driverProfile';
   static const String navigation = '/navigation';
+  static const String bookingDetail = '/bookingDetail';
+  static const String chatbotScreen = '/chatbotScreen';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -193,6 +197,18 @@ class MyRouter {
           NavigationScreen(
             bookingDto: settings.arguments as BookingDto,
           ),
+        );
+      case bookingDetail:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          BookingDetailScreen(
+            booking: settings.arguments as BookingDto,
+          ),
+        );
+      case chatbotScreen:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const ChatBotScreen(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

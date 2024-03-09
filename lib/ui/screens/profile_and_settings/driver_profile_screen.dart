@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/ui/common_widgets/action_button.dart';
 import 'package:twg/ui/screens/profile_and_settings/widget/animated_avatar.dart';
 
 class DriverProfileScreen extends StatefulWidget {
@@ -272,7 +273,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                GestureDetector(
+                ActionButton(
                   onTap: () {
                     // navigateChatRoom(context);
                   },
@@ -289,7 +290,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                 const SizedBox(
                   width: 20,
                 ),
-                GestureDetector(
+                ActionButton(
                   onTap: () {},
                   child: CircleAvatar(
                     backgroundColor: Colors.grey.withOpacity(0.1),

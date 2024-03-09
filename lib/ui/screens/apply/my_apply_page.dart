@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
@@ -22,18 +23,22 @@ class _MyApplyPageState extends State<MyApplyPage>
   final TextEditingController _endPoint = TextEditingController();
   late FocusNode startPointFocus;
   late FocusNode endPointFocus;
-
+  bool isLoading = false;
   @override
   void initState() {
     _iApplyViewModel = context.read<IApplyViewModel>();
     _iApplyViewModel.setIsMyApplys(true);
     startPointFocus = FocusNode();
     endPointFocus = FocusNode();
-
+    setState(() {
+      isLoading = true;
+    });
     Future.delayed(Duration.zero, () async {
       await _iApplyViewModel.init('');
     });
-    // TODO: implement initState
+    setState(() {
+      isLoading = false;
+    });
     super.initState();
   }
 
@@ -41,7 +46,6 @@ class _MyApplyPageState extends State<MyApplyPage>
   Widget build(BuildContext context) {
     search_bar() {
       return [
-        const Text('Điểm đi : '),
         TextFormField(
           style: const TextStyle(fontWeight: FontWeight.w600),
           focusNode: startPointFocus,
@@ -65,7 +69,7 @@ class _MyApplyPageState extends State<MyApplyPage>
                 width: 2.0,
               ),
             ),
-            hintText: 'Điểm đi',
+            hintText: 'Địa điểm...',
             prefixIcon: Icon(
               Icons.location_on,
               color: startPointFocus.hasFocus
@@ -77,52 +81,13 @@ class _MyApplyPageState extends State<MyApplyPage>
             _iApplyViewModel.setStartPoint(text.trim());
           },
         ),
-        const Text('Điểm đến : '),
-        TextFormField(
-          style: const TextStyle(fontWeight: FontWeight.w600),
-          focusNode: endPointFocus,
-          controller: _endPoint,
-          validator: (value) {
-            return null;
-          },
-          decoration: InputDecoration(
-            filled: true, //<-- SEE HERE
-            fillColor: endPointFocus.hasFocus
-                ? ColorUtils.primaryColor.withOpacity(0.1)
-                : Colors.grey.withOpacity(0.1),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: ColorUtils.primaryColor),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: Colors.grey.withOpacity(0.1),
-                width: 2.0,
-              ),
-            ),
-            hintText: 'Điểm đến',
-            prefixIcon: Icon(
-              Icons.location_on,
-              color: endPointFocus.hasFocus
-                  ? ColorUtils.primaryColor
-                  : Colors.black,
-            ),
-          ),
-          onChanged: (text) {
-            _iApplyViewModel.setEndPoint(text.trim());
-          },
-        ),
-        const SizedBox(
-          height: 20,
-        ),
       ];
     }
 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Các chuyến đi đã gửi yêu cầu',
+          'Yêu cầu',
           style: TextStyle(
             color: Colors.black,
           ),
@@ -145,38 +110,61 @@ class _MyApplyPageState extends State<MyApplyPage>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...search_bar(),
-              Consumer<IApplyViewModel>(
-                builder: (context, vm, child) {
-                  return vm.applysAfterFilter.isEmpty
-                      ? const Center(child: Text('Danh sách rỗng'))
-                      : Column(
-                          children: vm.applysAfterFilter
-                              .map(
-                                (e) => Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: 12.h,
-                                  ),
-                                  child: ApplyItem(
-                                    apply: e,
-                                    vm: _iApplyViewModel,
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        );
-
-                  // return ListView.builder(
-                  //   itemBuilder: (ctx, index) {
-                  //     return ApplyItem(
-                  //       apply: vm.applysAfterFilter[index],
-                  //       vm: _iApplyViewModel,
-                  //     );
-                  //   },
-                  //   itemCount: vm.applysAfterFilter.length,
-                  // );
-                },
+              SizedBox(
+                height: 10.h,
               ),
+              ...search_bar(),
+              SizedBox(
+                height: 10.h,
+              ),
+              isLoading
+                  ? Center(
+                      child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.h),
+                          child: Lottie.asset(
+                            'assets/lottie/loading_text.json',
+                            height: 100.h,
+                          )),
+                    )
+                  : Consumer<IApplyViewModel>(
+                      builder: (context, vm, child) {
+                        return vm.applysAfterFilter.isEmpty
+                            ? Center(
+                                child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.h),
+                                    child: Lottie.asset(
+                                      'assets/lottie/empty.json',
+                                      height: 100.h,
+                                    )),
+                              )
+                            : Column(
+                                children: vm.applysAfterFilter
+                                    .map(
+                                      (e) => Padding(
+                                        padding: EdgeInsets.only(
+                                          bottom: 12.h,
+                                        ),
+                                        child: ApplyItem(
+                                          apply: e,
+                                          vm: _iApplyViewModel,
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              );
+
+                        // return ListView.builder(
+                        //   itemBuilder: (ctx, index) {
+                        //     return ApplyItem(
+                        //       apply: vm.applysAfterFilter[index],
+                        //       vm: _iApplyViewModel,
+                        //     );
+                        //   },
+                        //   itemCount: vm.applysAfterFilter.length,
+                        // );
+                      },
+                    ),
             ],
           ),
         ),

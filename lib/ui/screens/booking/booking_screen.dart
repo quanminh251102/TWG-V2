@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/enum.dart';
@@ -8,6 +9,8 @@ import 'package:twg/global/global_data.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
 import 'package:twg/ui/common_widgets/confirm_login_dialog.dart';
 import 'package:twg/ui/screens/booking/widget/create_post_bottom_sheet.dart';
+import 'package:lottie/lottie.dart' as lottie;
+
 import 'widget/list_booking.dart';
 part './widget/available_tab.dart';
 part './widget/cancel_tab.dart';

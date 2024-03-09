@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_cards/flutter_custom_cards.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/view_models/interfaces/inotification_viewmodal.dart';
 import 'package:twg/global/router.dart';
@@ -15,15 +16,21 @@ class NotificationWidget extends StatelessWidget {
       builder: (context, vm, child) {
         return Stack(
           children: [
-            IconButton(
-              icon: const Icon(
-                Icons.notifications_none_outlined,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                Get.toNamed(MyRouter.notification);
-              },
-            ),
+            vm.numUnWatched > 0
+                ? InkWell(
+                    onTap: () {
+                      Get.toNamed(MyRouter.notification);
+                    },
+                    child: Lottie.asset('assets/lottie/notification.json'))
+                : IconButton(
+                    icon: const Icon(
+                      Icons.notifications_none_outlined,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      Get.toNamed(MyRouter.notification);
+                    },
+                  ),
             if (vm.numUnWatched > 0)
               Positioned(
                 right: 0,

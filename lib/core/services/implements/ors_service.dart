@@ -10,7 +10,6 @@ import 'package:twg/ui/utils/loading_dialog_utils.dart';
 
 class OrsService implements IOrsService {
   getRouteUrl(String startPoint, String endPoint) {
-    print('$baseOrsUrl?api_key=$apiKey&start=$startPoint&end=$endPoint');
     return '$baseOrsUrl?api_key=$apiKey&start=$startPoint&end=$endPoint';
   }
 

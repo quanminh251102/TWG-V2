@@ -25,12 +25,10 @@ class _ListNotificationItemState extends State<ListNotificationItem> {
             .toString()
             .substring(11, 16);
 
-    return CustomCard(
-      elevation: 0,
-      // height: 80,
-      childPadding: 10,
-      onTap: () {},
-      borderRadius: 12,
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.h,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

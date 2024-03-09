@@ -8,13 +8,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/theme_utils.dart';
 import 'package:twg/ui/utils/navigation_utils.dart';
 import 'package:twg/ui/utils/notification_utils.dart';
-import 'core/utils/color_utils.dart';
 import 'global/locator.dart';
 import 'global/providers.dart';
 import 'global/router.dart';
@@ -88,7 +85,7 @@ class _MyAppState extends State<MyApp> {
             title: 'TWG',
             navigatorKey: NavigationUtils.navigatorKey,
             onGenerateRoute: (settings) => MyRouter.generateRoute(settings),
-            initialRoute: MyRouter.splash,
+            initialRoute: MyRouter.chatbotScreen,
             locale: const Locale('vi', 'VN'), // Set the locale to Vietnamese
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,

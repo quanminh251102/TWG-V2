@@ -16,6 +16,8 @@ import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
+import 'package:twg/global/global_data.dart';
+import 'package:twg/global/locator.dart';
 import 'package:twg/global/router.dart';
 
 class ListBookingItem extends StatefulWidget {
@@ -70,7 +72,7 @@ class _ListBookingItemState extends State<ListBookingItem> {
       child: Container(
         decoration: BoxDecoration(
           color: ColorUtils.primaryColor.withOpacity(
-            0.1,
+            0.058,
           ),
           borderRadius: BorderRadius.circular(
             15.r,
@@ -108,7 +110,7 @@ class _ListBookingItemState extends State<ListBookingItem> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          widget.booking.authorId?.lastName ?? "",
+                          widget.booking.authorId?.firstName ?? "",
                           style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
@@ -327,90 +329,93 @@ class _ListBookingItemState extends State<ListBookingItem> {
                   SizedBox(
                     height: 20.h,
                   ),
-                  if (isMyList)
-                    ElevatedButton(
-                      onPressed: () {
-                        _iApplyViewModel.setBookingDto(widget.booking);
-                        Get.offNamed(MyRouter.applyInBooking);
-                      },
-                      child: const Text('Danh sách'),
-                    ),
-                  if (isMyList == false)
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10.w,
-                        vertical: 5.h,
-                      ),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            (isNavigateChatRoom)
-                                ? const CircularProgressIndicator()
-                                : InkWell(
-                                    onTap: () {
-                                      navigateChatRoom(context);
-                                    },
-                                    child: Container(
-                                      width: 150.w,
-                                      decoration: BoxDecoration(
-                                          color: ColorUtils.primaryColor,
-                                          border: Border.all(
-                                            color: ColorUtils.primaryColor,
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                            10.r,
-                                          )),
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 15.h,
-                                          horizontal: 30.w,
-                                        ),
-                                        child: const Center(
-                                          child: Text(
-                                            'Trò chuyện',
-                                            style: TextStyle(
-                                              color: ColorUtils.white,
-                                              fontWeight: FontWeight.bold,
+                  widget.booking.authorId?.id! ==
+                          locator<GlobalData>().currentUser!.id
+                      ? ElevatedButton(
+                          onPressed: () {
+                            _iApplyViewModel.setBookingDto(widget.booking);
+                            Get.offNamed(MyRouter.applyInBooking);
+                          },
+                          child: const Text('Danh sách'),
+                        )
+                      : Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10.w,
+                            vertical: 5.h,
+                          ),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                (isNavigateChatRoom)
+                                    ? const CircularProgressIndicator()
+                                    : InkWell(
+                                        onTap: () {
+                                          navigateChatRoom(context);
+                                        },
+                                        child: Container(
+                                          width: 150.w,
+                                          decoration: BoxDecoration(
+                                              color: ColorUtils.primaryColor,
+                                              border: Border.all(
+                                                color: ColorUtils.primaryColor,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                10.r,
+                                              )),
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 15.h,
+                                              horizontal: 30.w,
+                                            ),
+                                            child: const Center(
+                                              child: Text(
+                                                'Trò chuyện',
+                                                style: TextStyle(
+                                                  color: ColorUtils.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                            (isNavigateCreateApply)
-                                ? const CircularProgressIndicator()
-                                : InkWell(
-                                    onTap: () {
-                                      navigateCreateApply(context);
-                                    },
-                                    child: Container(
-                                      width: 150.w,
-                                      decoration: BoxDecoration(
-                                          color: ColorUtils.primaryColor,
-                                          border: Border.all(
-                                            color: ColorUtils.primaryColor,
+                                (isNavigateCreateApply)
+                                    ? const CircularProgressIndicator()
+                                    : InkWell(
+                                        onTap: () {
+                                          navigateCreateApply(context);
+                                        },
+                                        child: Container(
+                                          width: 150.w,
+                                          decoration: BoxDecoration(
+                                              color: ColorUtils.primaryColor,
+                                              border: Border.all(
+                                                color: ColorUtils.primaryColor,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                10.r,
+                                              )),
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 15.h,
+                                              horizontal: 30.w,
+                                            ),
+                                            child: const Center(
+                                              child: Text(
+                                                'Tham gia',
+                                                style: TextStyle(
+                                                    color: ColorUtils.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
                                           ),
-                                          borderRadius: BorderRadius.circular(
-                                            10.r,
-                                          )),
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 15.h,
-                                          horizontal: 30.w,
                                         ),
-                                        child: const Center(
-                                          child: Text(
-                                            'Tham gia',
-                                            style: TextStyle(
-                                                color: ColorUtils.white,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                          ]),
-                    ),
+                                      )
+                              ]),
+                        ),
                 ],
               ),
             ],

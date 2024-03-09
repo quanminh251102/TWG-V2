@@ -11,6 +11,7 @@ import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/iprofile_viewmodel.dart';
 import 'package:twg/global/router.dart';
+import 'package:twg/ui/common_widgets/action_button.dart';
 import 'package:twg/ui/common_widgets/confirm_login_dialog.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
 import 'package:twg/ui/screens/profile_and_settings/widget/profile_menu_widget.dart';
@@ -65,7 +66,7 @@ class _AccountScreenState extends State<AccountScreen>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
+                        ActionButton(
                           onTap: () async {
                             await _iAuthViewModel.logout();
                           },
@@ -85,7 +86,7 @@ class _AccountScreenState extends State<AccountScreen>
                             ),
                           ),
                         ),
-                        GestureDetector(
+                        ActionButton(
                           onTap: () {
                             Get.back();
                           },
@@ -174,25 +175,25 @@ class _AccountScreenState extends State<AccountScreen>
                     },
                   ),
                   ProfileMenuWidget(
-                    title: "Chính sách quyền riêng tư",
-                    icon: LineAwesomeIcons.lock,
-                    onPress: () {
-                      Get.offNamed(MyRouter.privacyPolicy);
-                    },
-                  ),
-                  ProfileMenuWidget(
-                    title: "Chuyến đi của tôi",
+                    title: "Chuyến đi",
                     icon: LineAwesomeIcons.user_check,
                     onPress: () {
                       Get.offNamed(MyRouter.myBooking);
                     },
                   ),
                   ProfileMenuWidget(
-                      title: "Yêu cầu của tôi",
+                      title: "Yêu cầu",
                       icon: LineAwesomeIcons.react,
                       onPress: () {
                         Get.offNamed(MyRouter.myApply);
                       }),
+                  ProfileMenuWidget(
+                    title: "Đánh giá",
+                    icon: LineAwesomeIcons.star,
+                    onPress: () {
+                      Get.offNamed(MyRouter.myReview);
+                    },
+                  ),
                   SizedBox(height: 10.h),
                   Padding(
                     padding: EdgeInsets.symmetric(
@@ -205,14 +206,14 @@ class _AccountScreenState extends State<AccountScreen>
                       thickness: 2,
                     ),
                   ),
-                  SizedBox(height: 10.h),
                   ProfileMenuWidget(
-                    title: "Đánh giá",
-                    icon: LineAwesomeIcons.star,
+                    title: "Chính sách quyền riêng tư",
+                    icon: LineAwesomeIcons.lock,
                     onPress: () {
-                      Get.offNamed(MyRouter.myReview);
+                      Get.offNamed(MyRouter.privacyPolicy);
                     },
                   ),
+                  SizedBox(height: 10.h),
                   ProfileMenuWidget(
                     title: "Đăng xuất",
                     icon: LineAwesomeIcons.alternate_sign_out,

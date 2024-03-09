@@ -110,6 +110,11 @@ dependencies:
   line_awesome_flutter: ^2.0.0
   json_theme: ^6.4.0
   linear_timer: ^2.0.0
+  spring_button: ^2.0.0
+  dialog_flowtter: ^0.2.0-nullsafety.0
+  device_info_plus: ^9.1.2
+  google_auth: ^0.0.3
+  googleapis_auth: ^1.5.0
 
 dev_dependencies:
   flutter_test:
@@ -138,6 +143,7 @@ flutter:
     - assets/icons/
     - assets/lottie/
     - assets/appainter_theme.json
+    - assets/dialog_flow_auth.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

@@ -317,8 +317,8 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
           apply.applyer!.firstName.toString().toLowerCase();
       String searchApplyername = _applyerName.toString().toLowerCase();
 
-      if (bookingStartpoint.contains(searchStartpoint) &&
-          bookingEndpoint.contains(searchEndpoint) &&
+      if (bookingStartpoint.contains(searchStartpoint) ||
+          bookingEndpoint.contains(searchEndpoint) ||
           applyApplyername.contains(searchApplyername)) {
         return true;
       }

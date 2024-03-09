@@ -10,6 +10,7 @@ import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/iprofile_viewmodel.dart';
 import 'package:twg/global/router.dart';
+import 'package:twg/ui/common_widgets/action_button.dart';
 import 'package:twg/ui/common_widgets/custom_booking_floating_button.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
 
@@ -160,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
+                        ActionButton(
                           onTap: () {
                             // BlocProvider.of<SigninCubit>(context).Logout();
                             // appRouter.push(const SignInViewRoute());
@@ -181,7 +182,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             ),
                           ),
                         ),
-                        GestureDetector(
+                        ActionButton(
                           onTap: () {
                             Navigator.pop(context);
                           },
