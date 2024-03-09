@@ -10,14 +10,13 @@ import 'package:twg/ui/utils/loading_dialog_utils.dart';
 
 class OrsService implements IOrsService {
   getRouteUrl(String startPoint, String endPoint) {
-    print('$baseOrsUrl?api_key=$apiKey&start=$startPoint&end=$endPoint');
     return '$baseOrsUrl?api_key=$apiKey&start=$startPoint&end=$endPoint';
   }
 
   @override
   Future<DirectionDto?> getCoordinates(
       LatLng location, LatLng destination) async {
-    LoadingDialogUtils.showLoading();
+    // LoadingDialogUtils.showLoading();
     var response = await Dio().get(
       getRouteUrl(
         "${location.longitude},${location.latitude}",
@@ -29,7 +28,7 @@ class OrsService implements IOrsService {
 
       listOfPoints = response.data['features'][0]['geometry']['coordinates'];
 
-      LoadingDialogUtils.hideLoading();
+      // LoadingDialogUtils.hideLoading();
       listOfPoints
           .map((p) => LatLng(p[1].toDouble(), p[0].toDouble()))
           .toList();
@@ -44,11 +43,11 @@ class OrsService implements IOrsService {
       );
 
       String distance = metersToKilometers(
-        response.data['features'][0]['properties']['summary']['distance'],
+        response.data['features'][0]['properties']['summary']['distance'] ?? 0,
       );
 
       String duration = secondsToMinutes(
-        response.data['features'][0]['properties']['summary']['duration'],
+        response.data['features'][0]['properties']['summary']['duration'] ?? 0,
       );
 
       DirectionDto? directionDto = DirectionDto(
@@ -58,12 +57,12 @@ class OrsService implements IOrsService {
         price: calculatePrice(
           double.parse(
             (response.data['features'][0]['properties']['summary']['distance'] /
-                    1000.0)
-                .toStringAsFixed(2),
+                        1000.0)
+                    .toStringAsFixed(2) ??
+                '0',
           ),
         ),
       );
-
       return directionDto;
     }
     return null;

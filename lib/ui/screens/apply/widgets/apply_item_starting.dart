@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:twg/core/dtos/apply/apply_dto.dart';
 import 'package:twg/core/dtos/apply/update_apply_dto.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
+import 'package:twg/global/router.dart';
 import 'package:twg/ui/screens/apply/widgets/status_label.dart';
 
 class ApplyItemStarting extends StatelessWidget {
@@ -14,7 +16,10 @@ class ApplyItemStarting extends StatelessWidget {
   }) : super(key: key);
 
   void watch_map() {
-    // appRouter.push(TrackingScreenRoute(apply: widget.apply));
+    Get.toNamed(
+      MyRouter.navigation,
+      arguments: apply.booking,
+    );
   }
 
   void accepted_close() async {

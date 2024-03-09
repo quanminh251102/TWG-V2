@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:twg/core/dtos/notification/notification_dto.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_custom_cards/flutter_custom_cards.dart';
+import 'package:lottie/lottie.dart' as lottie;
 
 class ListNotificationItem extends StatefulWidget {
   final NotificationDto notification;
@@ -23,12 +25,10 @@ class _ListNotificationItemState extends State<ListNotificationItem> {
             .toString()
             .substring(11, 16);
 
-    return CustomCard(
-      elevation: 0,
-      // height: 80,
-      childPadding: 10,
-      onTap: () {},
-      borderRadius: 12,
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.h,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,7 +48,14 @@ class _ListNotificationItemState extends State<ListNotificationItem> {
                 ),
               ),
             ),
-            placeholder: (context, url) => CircularProgressIndicator(),
+            placeholder: (context, url) => SizedBox(
+              width: 50.w,
+              height: 50.w,
+              child: lottie.Lottie.asset(
+                "assets/lottie/loading_image.json",
+                repeat: true,
+              ),
+            ),
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
           const SizedBox(width: 24),
@@ -58,23 +65,10 @@ class _ListNotificationItemState extends State<ListNotificationItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 RichText(
-                  // Controls visual overflow
                   overflow: TextOverflow.clip,
-
-                  // Controls how the text should be aligned horizontally
                   textAlign: TextAlign.end,
-
-                  // Control the text direction
                   textDirection: TextDirection.rtl,
-
-                  // Whether the text should break at soft line breaks
                   softWrap: true,
-
-                  // Maximum number of lines for the text to span
-                  //maxLines: 1,
-
-                  // The number of font pixels for each logical pixel
-                  textScaleFactor: 1,
                   text: TextSpan(
                     style: DefaultTextStyle.of(context).style,
                     children: <TextSpan>[
@@ -90,6 +84,9 @@ class _ListNotificationItemState extends State<ListNotificationItem> {
                       ),
                     ],
                   ),
+                ),
+                SizedBox(
+                  height: 5.h,
                 ),
                 Text(
                   customStartTime,

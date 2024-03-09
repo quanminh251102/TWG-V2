@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:math' show asin, atan2, cos, log, sin, sqrt;
+import 'dart:math' show atan2, cos, log, sin, sqrt;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +10,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-import 'package:twg/core/dtos/goongs/place_detail_dto.dart';
-import 'package:twg/core/dtos/goongs/place_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
@@ -19,10 +17,6 @@ import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
 import 'package:lottie/lottie.dart' as lottie;
 import 'package:twg/global/router.dart';
-import 'package:twg/ui/common_widgets/custom_button.dart';
-import 'package:twg/ui/screens/booking/widget/booking_search_item.dart';
-import 'package:twg/ui/screens/booking/widget/place_text_field.dart';
-import 'package:twg/ui/screens/booking/widget/save_place_box.dart';
 
 class ConfirmPlaceScreen extends StatefulWidget {
   const ConfirmPlaceScreen({super.key});
@@ -102,7 +96,6 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        automaticallyImplyLeading: true,
         title: const Text(
           'Địa điểm',
           style: TextStyle(
@@ -111,6 +104,16 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
           ),
         ),
         centerTitle: true,
+        automaticallyImplyLeading: false,
+        leading: InkWell(
+          onTap: () {
+            Get.back();
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
       ),
       body: SafeArea(child: Consumer<IBookingViewModel>(
         builder: (context, vm, child) {

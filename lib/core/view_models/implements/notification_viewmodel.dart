@@ -19,7 +19,6 @@ final _winNotifyPlugin = WindowsNotification(
 class NotificationViewModel
     with ChangeNotifier
     implements INotificationViewModel {
-  ChatRoomDto _currentChatRoom = ChatRoomDto();
   List<NotificationDto> _notifications = [];
   int _totalCount = 0;
   bool _isLoading = false;
@@ -30,8 +29,6 @@ class NotificationViewModel
   final INotificationService _iNotificationService =
       locator<INotificationService>();
   final ISocketService _iSocketService = locator<ISocketService>();
-
-  final ScrollController _scrollController = ScrollController();
 
   @override
   List<NotificationDto> get notifications => _notifications;

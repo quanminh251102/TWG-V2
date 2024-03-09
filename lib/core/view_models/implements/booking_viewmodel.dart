@@ -115,6 +115,19 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     notifyListeners();
   }
 
+  @override
+  Future<void> initHome(String status) async {
+    _reset();
+    final paginationProducts = await _iBookingService.getBookings(
+      status: status,
+      page: 1,
+      pageSize: 200,
+    );
+    _bookings = paginationProducts ?? [];
+    _totalCount = _iBookingService.total;
+    notifyListeners();
+  }
+
   String getNum(String mess) {
     // Tìm và lấy số đầu tiên trong chuỗi
     RegExp regExp = RegExp(r'(\d+)');
@@ -158,7 +171,9 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
 
   @override
   void updateBookingType(String bookingType) {
-    _currentBooking = BookingDto(status: 'available');
+    _currentBooking = BookingDto(
+      status: 'available',
+    );
     _currentBooking!.bookingType = bookingType;
     notifyListeners();
   }
@@ -174,15 +189,15 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   }) {
     _currentBooking!.startPointLat = currentLocation!.latitude.toString();
     _currentBooking!.startPointLong = currentLocation!.longitude.toString();
-    _currentBooking!.endPointLat = currentLocation!.latitude.toString();
-    _currentBooking!.endPointLong = currentLocation!.longitude.toString();
+    _currentBooking!.endPointLat = currentDestination!.latitude.toString();
+    _currentBooking!.endPointLong = currentDestination!.longitude.toString();
     _currentBooking!.startPointId = startPointId;
     _currentBooking!.startPointAddress = startPointAddress;
     _currentBooking!.startPointMainText = startPointMainText;
     _currentBooking!.endPointId = endPointId;
     _currentBooking!.endPointAddress = endPointAddress;
     _currentBooking!.endPointMainText = endPointMainText;
-
+    ;
     notifyListeners();
   }
 
@@ -237,7 +252,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     _resetMyBookings();
     final paginationProducts = await _iBookingService.getMyBookings(
       page: 1,
-      pageSize: 10,
+      pageSize: 100,
     );
     _bookings = paginationProducts ?? [];
     _totalCount = _iBookingService.total;

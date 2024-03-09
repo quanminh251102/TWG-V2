@@ -13,9 +13,9 @@ class ApplyItemRefuse extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
-        const StatusLabel(
+        StatusLabel(
           width: 80,
           backgroundColor: Color(0xffFFEDED),
           textColor: Color(0xffDC312D),

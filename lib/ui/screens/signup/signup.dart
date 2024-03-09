@@ -1,8 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
 import 'package:twg/global/router.dart';
+import 'package:twg/ui/common_widgets/action_button.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -21,9 +25,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late TextEditingController email;
   late TextEditingController passwordConfirm;
   late GlobalKey<FormState> _formKey;
+  late IAuthViewModel _iAuthViewModel;
   @override
   void initState() {
     super.initState();
+    _iAuthViewModel = context.read<IAuthViewModel>();
     usernameFocus = FocusNode();
     emailFocus = FocusNode();
     passwordFocus = FocusNode();
@@ -79,20 +85,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
         body: SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height * 0.1,
+            top: MediaQuery.of(context).size.height * 0.05,
             left: MediaQuery.of(context).size.width * 0.05,
             right: MediaQuery.of(context).size.width * 0.05),
         child: Container(
           color: Colors.white,
-          child: Column(children: [
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            SizedBox(
+              height: 50.h,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: 20.h,
+                bottom: 20.h,
+              ),
+              child: Center(
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  height: 150.h,
+                  width: 250.w,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
             Padding(
               padding: EdgeInsets.only(
                   right: MediaQuery.of(context).size.width * 0.2),
-              child: const Text(
-                'Tạo tài khoản mới của bạn',
+              child: Text(
+                'Tạo tài khoản',
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 30,
+                    fontSize: 26.sp,
                     fontWeight: FontWeight.bold),
               ),
             ),
@@ -269,14 +293,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: MediaQuery.of(context).size.height * 0.05,
                   ),
                   Center(
-                      child: GestureDetector(
-                    onTap: () {
+                      child: ActionButton(
+                    onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        // BlocProvider.of<SignupCubit>(context).SignUp(
-                        //     username.text,
-                        //     email.text,
-                        //     password.text,
-                        //     passwordConfirm.text);
+                        await _iAuthViewModel.signUp(
+                          email.text,
+                          username.text,
+                          password.text,
+                        );
                       }
                     },
                     child: Container(
@@ -289,7 +313,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Text(
                           'Đăng ký',
                           style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
+                              color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),

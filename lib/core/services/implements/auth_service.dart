@@ -1,3 +1,5 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:twg/core/dtos/auth/access_token_dto.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/dtos/auth/login_dto.dart';
@@ -5,12 +7,38 @@ import 'package:twg/core/dtos/base_api_dto.dart';
 import 'package:twg/core/utils/token_utils.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
+import 'package:twg/global/router.dart';
 
 import '../../../ui/utils/loading_dialog_utils.dart';
 
+import '../../dtos/auth/register_dto.dart';
 import '../interfaces/iauth_service.dart';
 
 class AuthService implements IAuthService {
+  @override
+  Future<bool> register(String name, String email, String password) async {
+    LoadingDialogUtils.showLoading();
+    try {
+      var result = await getRestClient().register(
+        RegisterDto(
+          firstName: name,
+          email: email,
+          password: password,
+        ),
+      );
+      if (result.data != null) {
+        EasyLoading.showSuccess("Đăng kí thành công!");
+        return true;
+      } else {
+        EasyLoading.showError(result.message ?? "Đăng kí thất bại!");
+      }
+    } on Exception catch (e) {
+      print(e);
+    } finally {
+      LoadingDialogUtils.hideLoading();
+    }
+    return false;
+  }
   // @override
   // Future<AccountDto?> registerSocial(
   //     String name, String emailAddress, String clientId) async {
@@ -116,5 +144,13 @@ class AuthService implements IAuthService {
       }
     }
     return false;
+  }
+
+  @override
+  Future<void> logOut() async {
+    locator<GlobalData>().token = '';
+    locator<GlobalData>().currentUser = null;
+    await TokenUtils.removeToken();
+    Get.offNamed(MyRouter.signIn);
   }
 }

@@ -1,8 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:twg/constants.dart';
 import 'package:twg/core/dtos/call/call_info_dto.dart';
 import 'package:twg/core/view_models/interfaces/icall_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
+import 'package:twg/global/router.dart';
 import 'package:twg/ui/screens/chat_room/widget/list_message.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -86,52 +92,83 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       centerTitle: false,
       backgroundColor: Colors.white,
       elevation: 0.5,
-      leading: IconButton(
-        onPressed: () {
-          // BlocProvider.of<MessageCubit>(context).leave_chat_room();
-          Navigator.pop(context);
-        },
-        icon: const Icon(
-          Icons.arrow_back_ios,
-          color: Colors.black,
+      leadingWidth: 200.w,
+      leading: Padding(
+        padding: EdgeInsets.only(
+          left: 25.w,
         ),
-      ),
-      title: Row(
-        children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundImage: NetworkImage(
-              partner!.avatarUrl.toString(),
-              // "https://res.cloudinary.com/dxoblxypq/image/upload/v1679984586/9843c460ff72ee89d791bffe667e451c_rzalqh.jpg",
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            InkWell(
+              onTap: () {
+                Get.offNamed(
+                  MyRouter.home,
+                );
+              },
+              child: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),
             ),
-          ),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                // HandleString.validateForLongStringWithLim(
-                //   (SocketProvider.current_user_id == widget.chatRoom.UserId1
-                //       ? widget.chatRoom.UserName2
-                //       : widget.chatRoom.UserName1),
-                //   10,
-                // ),
-                partner!.firstName.toString(),
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
+            partner!.avatarUrl == avatarUrl
+                ? Lottie.asset(
+                    'assets/lottie/avatar.json',
+                    fit: BoxFit.fill,
+                    height: 60.h,
+                    width: 60.w,
+                  )
+                : CachedNetworkImage(
+                    imageUrl: partner.avatarUrl.toString(),
+                    imageBuilder: (context, imageProvider) => Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(
+                            60.0,
+                          ),
+                        ),
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    placeholder: (context, url) => SizedBox(
+                      width: 50.w,
+                      height: 50.w,
+                      child: Lottie.asset(
+                        "assets/lottie/loading_image.json",
+                        repeat: true,
+                      ),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  partner.firstName.toString(),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold),
                 ),
-              ),
-              const Text(
-                'Online',
-                style: TextStyle(
-                  color: Color(0xFF7C7C7C),
-                  fontSize: 14,
+                const Text(
+                  'Online',
+                  style: TextStyle(
+                    color: Color(0xFF7C7C7C),
+                    fontSize: 14,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
       actions: [
         // IconButton(
@@ -235,11 +272,6 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       body: Scaffold(
           appBar: _appBar,
           bottomNavigationBar: _bottomNavigationBar,
-          // floatingActionButton: const CustomFloatingButton(),
-          // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          // bottomNavigationBar: const CustomBottomNavigationBar(
-          //   value: CustomNavigationBar.chat,
-          // ),
           body: Column(
             children: [
               Expanded(

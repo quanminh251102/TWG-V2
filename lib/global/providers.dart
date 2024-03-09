@@ -4,6 +4,7 @@ import 'package:twg/core/view_models/implements/apply_viewmodel.dart';
 import 'package:twg/core/view_models/implements/auth_viewmodel.dart';
 import 'package:twg/core/view_models/implements/booking_viewmodel.dart';
 import 'package:twg/core/view_models/implements/call_viewmodel.dart';
+import 'package:twg/core/view_models/implements/chatbot_viewmodel.dart';
 import 'package:twg/core/view_models/implements/home_viewmodel.dart';
 import 'package:twg/core/view_models/implements/messasge_viewmodel.dart';
 import 'package:twg/core/view_models/implements/notification_viewmodel.dart';
@@ -15,6 +16,7 @@ import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/iauth_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/icall_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ichatbot_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ihome_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/inotification_viewmodal.dart';
@@ -56,6 +58,9 @@ List<SingleChildWidget> viewModelProviders = [
   ),
   ChangeNotifierProvider<INotificationViewModel>(
     create: (_) => NotificationViewModel(),
+  ),
+  ChangeNotifierProvider<IChatbotViewModel>(
+    create: (_) => ChatbotViewModel(),
   ),
   // ChangeNotifierProvider<INotificationViewModel>(
   //   create: (_) => NotificationViewModel(),

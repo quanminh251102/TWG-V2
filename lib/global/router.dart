@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:twg/core/dtos/auth/account_dto.dart';
+import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/ui/screens/apply/apply_in_booking_page.dart';
 import 'package:twg/ui/screens/apply/create_apply_page.dart';
 import 'package:twg/ui/screens/apply/my_apply_page.dart';
@@ -10,10 +12,12 @@ import 'package:twg/ui/screens/booking/booking_screen.dart';
 import 'package:twg/ui/screens/booking/confirm_location_screen.dart';
 import 'package:twg/ui/screens/booking/my_booking_page.dart';
 import 'package:twg/ui/screens/booking/pick_place_screen.dart';
+import 'package:twg/ui/screens/booking/widget/booking_detail_screen.dart';
 import 'package:twg/ui/screens/call/call.dart';
 import 'package:twg/ui/screens/call/incoming_call.dart';
 import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
 import 'package:twg/ui/screens/chat_room/chat_screen.dart';
+import 'package:twg/ui/screens/chatbot/chat_screen.dart';
 import 'package:twg/ui/screens/home/home_screen.dart';
 import 'package:twg/ui/screens/notification/notification_screen.dart';
 import 'package:twg/ui/screens/profile_and_settings/account_screen.dart';
@@ -24,6 +28,9 @@ import 'package:twg/ui/screens/profile_and_settings/update_profile/update_profil
 import 'package:twg/ui/screens/signin/signin.dart';
 import 'package:twg/ui/screens/signup/signup.dart';
 import 'package:twg/ui/screens/splash_screen/splash_screen.dart';
+
+import '../ui/screens/navigation/navigation_screen.dart';
+import '../ui/screens/profile_and_settings/driver_profile_screen.dart';
 
 class MyRouter {
   static const String splash = 'splash';
@@ -47,6 +54,10 @@ class MyRouter {
   static const String pickPlaceMap = '/pickPlaceMap';
   static const String confirmPlaceMap = '/confirmPlaceMap';
   static const String notification = '/notification';
+  static const String driverProfile = '/driverProfile';
+  static const String navigation = '/navigation';
+  static const String bookingDetail = '/bookingDetail';
+  static const String chatbotScreen = '/chatbotScreen';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -172,6 +183,32 @@ class MyRouter {
         return _buildRouteNavigationWithoutEffect(
           settings,
           const NotificationScreen(),
+        );
+      case driverProfile:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          DriverProfileScreen(
+            accountDto: settings.arguments as AccountDto,
+          ),
+        );
+      case navigation:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          NavigationScreen(
+            bookingDto: settings.arguments as BookingDto,
+          ),
+        );
+      case bookingDetail:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          BookingDetailScreen(
+            booking: settings.arguments as BookingDto,
+          ),
+        );
+      case chatbotScreen:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const ChatBotScreen(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

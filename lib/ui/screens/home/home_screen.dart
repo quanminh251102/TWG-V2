@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_cards/flutter_custom_cards.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -9,24 +10,29 @@ import 'package:latlong2/latlong.dart';
 import 'package:lottie/lottie.dart' as lottie;
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:twg/global/router.dart';
+import 'package:twg/ui/common_widgets/booking_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/goongs/place_dto.dart';
 import 'package:twg/core/services/interfaces/isocket_service.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/icall_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ihome_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/inotification_viewmodal.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
+import 'package:twg/ui/common_widgets/custom_booking_floating_button.dart';
+import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
 import 'package:twg/ui/common_widgets/custom_text_field.dart';
 import 'package:twg/ui/common_widgets/notification_widget.dart';
 import 'package:twg/ui/screens/home/widget/search_response_item.dart';
 import 'package:twg/ui/screens/home/widget/zoom_button.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
-import 'package:twg/ui/common_widgets/custom_booking_floating_button.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String route = '/';
@@ -47,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final MapController mapController;
 
   late final customMarkers = <Marker>[];
+  late final bookingMarkers = <Marker>[];
   final FocusNode _focusNode = FocusNode();
 
   late IChatRoomViewModel _iChatRoomViewModel;
@@ -54,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final ISocketService _iSocketService = locator<ISocketService>();
   late IApplyViewModel _iApplyViewModel;
   late INotificationViewModel _iNotificationViewModel;
+  late IBookingViewModel _iBookingViewModel;
 
   @override
   void dispose() {
@@ -82,10 +90,39 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     mapController = MapController();
     _iHomeViewModel = context.read<IHomeViewModel>();
-
+    _iBookingViewModel = context.read<IBookingViewModel>();
     Future.delayed(
       Duration.zero,
       () async {
+        _iBookingViewModel.setIsMyList(false);
+        await _iBookingViewModel
+            .initHome(
+              EnumHelper.getDescription(
+                EnumMap.bookingStatusType,
+                BookingStatusType.available,
+              ),
+            )
+            .then((value) => {
+                  for (var booking in _iBookingViewModel.bookings)
+                    {
+                      if (booking.startPointLat != null &&
+                          booking.startPointLong != null)
+                        {
+                          bookingMarkers.add(
+                            bookingPin(
+                                LatLng(
+                                  double.parse(
+                                      booking.startPointLat.toString()),
+                                  double.parse(
+                                    booking.startPointLong.toString(),
+                                  ),
+                                ),
+                                booking),
+                          )
+                        }
+                    }
+                });
+
         await _iHomeViewModel.initHome().then((value) {
           if (locator<GlobalData>().currentPosition != null) {
             _animatedMapMove(
@@ -112,7 +149,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         width: 60.w,
         height: 60.h,
       );
-
+  Marker bookingPin(LatLng point, BookingDto bookingDto) => Marker(
+        point: point,
+        child: CustomMarker(
+          bookingDto: bookingDto,
+        ),
+        width: 60.w,
+        height: 60.h,
+      );
   void _animatedMapMove(LatLng destLocation, double destZoom) {
     final camera = mapController.camera;
     final latTween = Tween<double>(
@@ -163,6 +207,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -173,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             color: Colors.black,
           ),
         ),
-        actions: [
+        actions: const [
           NotificationWidget(),
         ],
       ),
@@ -208,9 +253,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     userAgentPackageName: 'dev.fleaflet.flutter_map.example',
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 100.h,
+                    padding: EdgeInsets.only(
+                      bottom: 100.h,
                     ),
+                    child: InkWell(
+                      onTap: () => Get.toNamed(
+                        MyRouter.chatbotScreen,
+                      ),
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Image.asset(
+                          'assets/lottie/chatbot.gif',
+                          fit: BoxFit.cover,
+                          height: 120.h,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 100.h, horizontal: 10.w),
                     child: ZoomButtons(
                       alignment: Alignment.bottomRight,
                       zoomInColor: ColorUtils.white,
@@ -256,6 +318,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   MarkerLayer(
                     markers: customMarkers,
                     alignment: Alignment.topCenter,
+                  ),
+                  MarkerLayer(
+                    markers: bookingMarkers,
                   ),
                 ],
               ),
@@ -355,10 +420,42 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     },
                   )
                 ],
-              )
+              ),
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+class CustomMarker extends StatefulWidget {
+  final BookingDto bookingDto;
+  const CustomMarker({
+    Key? key,
+    required this.bookingDto,
+  }) : super(key: key);
+
+  @override
+  State<CustomMarker> createState() => _CustomMarkerState();
+}
+
+class _CustomMarkerState extends State<CustomMarker> {
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Get.bottomSheet(
+          BookingDialog(
+            bookingDto: widget.bookingDto,
+          ),
+          isDismissible: true,
+          enableDrag: false,
+        );
+      },
+      child: lottie.Lottie.asset(
+        "assets/lottie/booking_marker.json",
+        repeat: true,
       ),
     );
   }

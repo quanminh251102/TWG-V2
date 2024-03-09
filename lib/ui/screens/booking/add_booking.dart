@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,7 @@ import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/money_utils.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/global/router.dart';
+import 'package:twg/ui/common_widgets/action_button.dart';
 import 'package:twg/ui/common_widgets/custom_button.dart';
 
 enum BookingType { findDriver, findPassenger }
@@ -115,10 +117,24 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
         appBar: AppBar(
           title: const Text(
             'ĐĂNG BÀI',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
           centerTitle: true,
           elevation: 0,
+          automaticallyImplyLeading: false,
+          leading: InkWell(
+            onTap: () {
+              Get.back();
+            },
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+          ),
         ),
         body: Consumer<IBookingViewModel>(
           builder: (context, value, child) {
@@ -383,7 +399,7 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                                 padding: const EdgeInsets.only(
                                     top: 20.0, bottom: 20),
                                 child: Align(
-                                  child: GestureDetector(
+                                  child: ActionButton(
                                     onTap: () async {
                                       setState(() {
                                         isLoading = false;

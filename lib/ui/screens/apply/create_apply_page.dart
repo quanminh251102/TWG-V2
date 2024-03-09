@@ -91,14 +91,23 @@ class _CreateApplyPageState extends State<CreateApplyPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tham gia chuyến đi'),
+        title: const Text(
+          'Tham gia chuyến đi',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
         centerTitle: true,
         elevation: 0.0,
         leading: InkWell(
-            onTap: () {
-              Get.offNamed(MyRouter.profile);
-            },
-            child: const Icon(Icons.arrow_back_ios)),
+          onTap: () {
+            Get.offNamed(MyRouter.profile);
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -123,7 +132,7 @@ class _CreateApplyPageState extends State<CreateApplyPage>
                   ),
                 ),
                 ListTile(
-                  title: const Text('Deal giá'),
+                  title: const Text('Giá thương lượng'),
                   leading: Radio(
                     value: PriceOpition.refuse,
                     groupValue: _site,

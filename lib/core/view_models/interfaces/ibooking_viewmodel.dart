@@ -37,6 +37,7 @@ abstract class IBookingViewModel implements ChangeNotifier {
   void setIsMyList(bool value);
   String? get keyword;
   Future<void> init(String status);
+  Future<void> initHome(String status);
   Future<void> getMoreBookings(String status);
   Future<void> initMyBookings();
   Future<void> getMoreMyBookings();
