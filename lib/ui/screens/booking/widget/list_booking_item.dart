@@ -68,358 +68,364 @@ class _ListBookingItemState extends State<ListBookingItem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
-      child: Container(
-        decoration: BoxDecoration(
-          color: ColorUtils.primaryColor.withOpacity(
-            0.058,
-          ),
-          borderRadius: BorderRadius.circular(
-            15.r,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: InkWell(
-                  onTap: () {
-                    Get.toNamed(
-                      MyRouter.driverProfile,
-                      arguments: widget.booking.authorId,
-                    );
-                  },
-                  child: Row(children: [
+      padding: EdgeInsets.symmetric(
+        vertical: 8.h,
+        horizontal: 10,
+      ),
+      child: Card(
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                // color: ColorUtils.primaryColor.withOpacity(
+                //   0.1,
+                // ),
+                borderRadius: BorderRadius.circular(
+                  15.r,
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10.w,
+                  vertical: 10.h,
+                ),
+                child: Column(
+                  children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 20.0),
-                      child: SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: CircleAvatar(
-                          radius: 25,
-                          backgroundImage: NetworkImage(
-                            widget.booking.authorId?.avatarUrl ?? "",
+                      padding: EdgeInsets.only(
+                        bottom: 10.h,
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          Get.toNamed(
+                            MyRouter.driverProfile,
+                            arguments: widget.booking.authorId,
+                          );
+                        },
+                        child: Row(children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              right: 10.w,
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: ColorUtils.primaryColor,
+                                    width: 2.w,
+                                  )),
+                              height: 35.r,
+                              width: 35.r,
+                              child: CircleAvatar(
+                                radius: 25.r,
+                                backgroundImage: NetworkImage(
+                                  widget.booking.authorId?.avatarUrl ?? "",
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                widget.booking.authorId?.firstName ?? "",
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                widget.booking.bookingType ?? "",
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                ),
+                              )
+                            ],
+                          ),
+                          const Spacer(),
+                          Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                    10.r,
+                                  ),
+                                  color: widget.booking.status == 'available'
+                                      ? ColorUtils.primaryColor
+                                      : widget.booking.status == 'complete'
+                                          ? Colors.green
+                                          : Colors.red),
+                              child: Padding(
+                                padding: EdgeInsets.all(8.r),
+                                child: Text(
+                                  widget.booking.status!.toUpperCase(),
+                                  style: TextStyle(
+                                      fontSize: 10.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                              )),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          const Icon(
+                            Icons.bookmark_outline,
+                          )
+                        ]),
+                      ),
+                    ),
+                    Text(
+                      widget.booking.content ?? "",
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5.0,
+                      ),
+                      child: Divider(
+                        color: Colors.grey.withOpacity(0.2),
+                        thickness: 1,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 8),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Thời gian: ',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            width: 1.sw / 1.5,
+                            child: Text(
+                              widget.booking.time ?? "",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: const TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          widget.booking.authorId?.firstName ?? "",
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          widget.booking.authorId?.phoneNumber ?? "",
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w400),
-                        ),
-                        Text(
-                          widget.booking.bookingType ?? "",
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: widget.booking.status == 'available'
-                                ? ColorUtils.primaryColor
-                                : widget.booking.status == 'complete'
-                                    ? Colors.green
-                                    : Colors.red),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            widget.booking.status!.toUpperCase(),
-                            style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                        ))
-                  ]),
-                ),
-              ),
-              ExpansionTile(
-                title: const Text('Chi tiết'),
-                children: [
-                  Text(widget.booking.content ?? "",
-                      style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.italic)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 5.0,
-                    ),
-                    child: Divider(
-                      color: Colors.grey.withOpacity(0.2),
-                      thickness: 1,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 5.0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              "assets/icons/distance.svg",
-                              height: 30,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              widget.booking.distance ?? "",
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              "assets/icons/clock.svg",
-                              height: 30,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              widget.booking.duration ?? "",
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              "assets/icons/wallet.svg",
-                              height: 30,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              VietnameseMoneyFormatter()
-                                  .formatToVietnameseCurrency(
-                                widget.booking.price.toString(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 40.w,
+                                child: lottie.Lottie.asset(
+                                  "assets/lottie/person.json",
+                                  animate: true,
+                                  repeat: true,
+                                ),
                               ),
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 8),
-                    child: Row(
-                      children: [
-                        const Text(
-                          'Thời gian: ',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        const Spacer(),
-                        Text(
-                          widget.booking.time ?? "",
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 40.w,
-                              child: lottie.Lottie.asset(
-                                "assets/lottie/person.json",
-                                animate: true,
-                                repeat: true,
+                              SizedBox(
+                                width: 10.w,
                               ),
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            SizedBox(
-                              width: 280.w,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.booking.startPointMainText ?? "",
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                  ),
-                                  Text(widget.booking.startPointAddress ?? "",
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30.h,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 40.w,
-                              child: lottie.Lottie.asset(
-                                "assets/lottie/location-booking.json",
-                                repeat: true,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            SizedBox(
-                              width: 280.w,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(widget.booking.endPointMainText ?? "",
-                                      style: const TextStyle(
-                                          fontSize: 16,
+                              SizedBox(
+                                width: 1.sw / 1.4,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      widget.booking.startPointMainText ?? "",
+                                      style: TextStyle(
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.bold),
                                       overflow: TextOverflow.ellipsis,
-                                      maxLines: 2),
-                                  Text(widget.booking.endPointAddress ?? "",
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2),
-                                ],
+                                      maxLines: 2,
+                                    ),
+                                    Text(widget.booking.startPointAddress ?? "",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 10.sp,
+                                        ),
+                                        maxLines: 2),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      )
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 5.0,
+                          ),
+                          child: Divider(
+                            color: Colors.grey.withOpacity(0.2),
+                            thickness: 1,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 40.w,
+                                child: lottie.Lottie.asset(
+                                  "assets/lottie/tele.json",
+                                  repeat: true,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              SizedBox(
+                                width: 1.sw / 1.4,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(widget.booking.endPointMainText ?? "",
+                                        style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.bold),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2),
+                                    Text(
+                                      widget.booking.endPointAddress ?? "",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                        fontSize: 10.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 40.h,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(
+                    60.r,
+                  ),
+                ),
+                color: ColorUtils.primaryColor.withOpacity(
+                  0.08,
+                ),
+              ),
+              height: 40.h,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 5.0,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: 25.w,
+                  ),
+                  child: Row(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/distance.svg",
+                                color: ColorUtils.primaryColor,
+                                height: 30,
+                              ),
+                              Text(
+                                widget.booking.distance ?? "",
+                                style: const TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          Row(
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/clock.svg",
+                                height: 30,
+                                color: ColorUtils.primaryColor,
+                              ),
+                              Text(
+                                widget.booking.duration ?? "",
+                                style: const TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          Row(
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/wallet.svg",
+                                color: ColorUtils.primaryColor,
+                                height: 30,
+                              ),
+                              Text(
+                                VietnameseMoneyFormatter()
+                                    .formatToVietnameseCurrency(
+                                  widget.booking.price.toString(),
+                                ),
+                                style: const TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  widget.booking.authorId?.id! ==
-                          locator<GlobalData>().currentUser!.id
-                      ? ElevatedButton(
-                          onPressed: () {
-                            _iApplyViewModel.setBookingDto(widget.booking);
-                            Get.offNamed(MyRouter.applyInBooking);
-                          },
-                          child: const Text('Danh sách'),
-                        )
-                      : Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
-                            vertical: 5.h,
-                          ),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                (isNavigateChatRoom)
-                                    ? const CircularProgressIndicator()
-                                    : InkWell(
-                                        onTap: () {
-                                          navigateChatRoom(context);
-                                        },
-                                        child: Container(
-                                          width: 150.w,
-                                          decoration: BoxDecoration(
-                                              color: ColorUtils.primaryColor,
-                                              border: Border.all(
-                                                color: ColorUtils.primaryColor,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                10.r,
-                                              )),
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: 15.h,
-                                              horizontal: 30.w,
-                                            ),
-                                            child: const Center(
-                                              child: Text(
-                                                'Trò chuyện',
-                                                style: TextStyle(
-                                                  color: ColorUtils.white,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                (isNavigateCreateApply)
-                                    ? const CircularProgressIndicator()
-                                    : InkWell(
-                                        onTap: () {
-                                          navigateCreateApply(context);
-                                        },
-                                        child: Container(
-                                          width: 150.w,
-                                          decoration: BoxDecoration(
-                                              color: ColorUtils.primaryColor,
-                                              border: Border.all(
-                                                color: ColorUtils.primaryColor,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                10.r,
-                                              )),
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: 15.h,
-                                              horizontal: 30.w,
-                                            ),
-                                            child: const Center(
-                                              child: Text(
-                                                'Tham gia',
-                                                style: TextStyle(
-                                                    color: ColorUtils.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                              ]),
-                        ),
-                ],
+                ),
               ),
-            ],
-          ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(15.r),
+              child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: InkWell(
+                      onTap: () => navigateCreateApply(context),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: ColorUtils.primaryColor,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: ColorUtils.grey.withOpacity(
+                                0.8,
+                              ),
+                            )),
+                        child: Padding(
+                          padding: EdgeInsets.all(8.r),
+                          child: Icon(
+                            Icons.arrow_forward_ios_outlined,
+                            color: Colors.white,
+                            size: 25.r,
+                          ),
+                        ),
+                      ))),
+            ),
+          ],
         ),
       ),
     );

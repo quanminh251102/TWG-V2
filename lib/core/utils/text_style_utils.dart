@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:twg/core/utils/color_utils.dart';
 
 class TextStyleUtils {
   static TextStyle titleAppBar = TextStyle(
@@ -70,4 +71,72 @@ class TextStyleUtils {
     fontWeight: FontWeight.w400,
     fontSize: 8.sp,
   );
+  static TextStyle describeText(
+      {double? fontSize, Color? color, String? fontFamily}) {
+    return TextStyle(
+      fontSize: fontSize ?? 16,
+      color: color ?? ColorUtils.describetextcolor,
+      fontFamily: fontFamily ?? "NOVAFont-Regular",
+    );
+  }
+
+  //Title Header
+  static TextStyle titleHeader(
+      {double? fontSize, Color? color, String? fontFamily}) {
+    return TextStyle(
+      fontSize: fontSize ?? 18,
+      color: color ?? ColorUtils.black,
+      fontFamily: fontFamily ?? "NOVAFont-Bold",
+    );
+  }
+
+  //Content Regular
+  static TextStyle contentRegular(
+      {double? fontSize, Color? color, String? fontFamily}) {
+    return TextStyle(
+      fontSize: fontSize ?? 16,
+      color: color ?? ColorUtils.black,
+      fontFamily: fontFamily ?? "NOVAFont-Regular",
+    );
+  }
+
+  //Content Bold
+  static TextStyle contentBold(
+      {double? fontSize, Color? color, String? fontFamily}) {
+    return TextStyle(
+      fontSize: fontSize ?? 16,
+      color: color ?? ColorUtils.black,
+      fontFamily: fontFamily ?? "NOVAFont-Bold",
+    );
+  }
+
+  //Content Black
+  static TextStyle contentBlack(
+      {double? fontSize, Color? color, String? fontFamily}) {
+    return TextStyle(
+      fontSize: fontSize ?? 16,
+      color: color ?? ColorUtils.black,
+      fontFamily: fontFamily ?? "NOVAFont-Black",
+    );
+  }
+
+  //Content Semibold
+  static TextStyle contentSemibold(
+      {double? fontSize, Color? color, String? fontFamily}) {
+    return TextStyle(
+      fontSize: fontSize ?? 16,
+      color: color ?? ColorUtils.black,
+      fontFamily: fontFamily ?? "NOVAFont-Semibold",
+    );
+  }
+
+  //Content Extrabold
+  static TextStyle contentExtrabold(
+      {double? fontSize, Color? color, String? fontFamily}) {
+    return TextStyle(
+      fontSize: fontSize ?? 16,
+      color: color ?? ColorUtils.black,
+      fontFamily: fontFamily ?? "NOVAFont-Extrabold",
+    );
+  }
 }

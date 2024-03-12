@@ -4,6 +4,7 @@ import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/ui/common_widgets/custom_booking_floating_button.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
+import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
 import 'package:twg/ui/common_widgets/notification_widget.dart';
 import 'package:twg/ui/screens/chat_room/widget/list_chat_room.dart';
 
@@ -46,6 +47,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        bottomNavigationBar: const BottomNavBarV2(
+          currentIndex: 3,
+        ),
         appBar: AppBar(
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
@@ -63,9 +67,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
           ],
         ),
         extendBody: true,
-        bottomNavigationBar: const CustomBottomNavigationBar(
-          value: CustomNavigationBar.chat,
-        ),
         body: Column(
           children: [
             Expanded(

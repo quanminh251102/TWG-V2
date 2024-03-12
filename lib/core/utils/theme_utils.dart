@@ -21,7 +21,7 @@ class ThemeUtils {
     ),
     primaryColor: ColorUtils.primaryColor,
     scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
-    fontFamily: 'Gotham',
+    fontFamily: 'NOVAFont-Regular',
   );
   static final lightTheme = ThemeData(
     useMaterial3: false,
@@ -40,6 +40,6 @@ class ThemeUtils {
     ),
     primaryColor: ColorUtils.primaryColor,
     scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
-    fontFamily: 'Gotham',
+    fontFamily: 'NOVAFont-Regular',
   );
 }

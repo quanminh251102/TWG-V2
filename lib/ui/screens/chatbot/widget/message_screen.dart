@@ -1,50 +1,86 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+
+import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/view_models/interfaces/ichatbot_viewmodel.dart';
+import 'package:twg/global/global_data.dart';
+
+import '../../../../core/utils/text_style_utils.dart';
+import '../../../../global/locator.dart';
 
 class MessagesScreen extends StatefulWidget {
-  final List messages;
-  const MessagesScreen({Key? key, required this.messages}) : super(key: key);
+  const MessagesScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _MessagesScreenState createState() => _MessagesScreenState();
 }
 
 class _MessagesScreenState extends State<MessagesScreen> {
+  late IChatbotViewModel _iChatbotViewModel;
+  @override
+  void initState() {
+    _iChatbotViewModel = context.read<IChatbotViewModel>();
+    Future.delayed(
+      Duration.zero,
+      () async {
+        await _iChatbotViewModel.initConversation();
+      },
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var w = MediaQuery.of(context).size.width;
-    return ListView.separated(
-        itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: widget.messages[index]['isUserMessage']
-                  ? MainAxisAlignment.end
-                  : MainAxisAlignment.start,
-              children: [
-                Container(
-                    padding: EdgeInsets.symmetric(vertical: 14, horizontal: 14),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(
-                            20,
-                          ),
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(
-                              widget.messages[index]['isUserMessage'] ? 0 : 20),
-                          topLeft: Radius.circular(
-                              widget.messages[index]['isUserMessage'] ? 20 : 0),
-                        ),
-                        color: widget.messages[index]['isUserMessage']
-                            ? Colors.grey.shade800
-                            : Colors.grey.shade900.withOpacity(0.8)),
-                    constraints: BoxConstraints(maxWidth: w * 2 / 3),
-                    child:
-                        Text(widget.messages[index]['message'].text.text[0])),
-              ],
-            ),
-          );
+    return Consumer<IChatbotViewModel>(builder: (context, vm, child) {
+      return Chat(
+        messages: vm.responseMessages.reversed.toList(),
+        onSendPressed: (text) async {
+          await _iChatbotViewModel.sendMessage(text.text);
         },
-        separatorBuilder: (_, i) => Padding(padding: EdgeInsets.only(top: 10)),
-        itemCount: widget.messages.length);
+        user: const types.User(id: 'User'),
+        showUserAvatars: true,
+        avatarBuilder: (user) {
+          return Padding(
+              padding: const EdgeInsets.only(right: 7),
+              child: CircleAvatar(
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Image.asset(
+                    "assets/images/chat.png",
+                    color: Colors.white,
+                  ),
+                ),
+              ));
+        },
+        l10n: const ChatL10nEn(
+            emptyChatPlaceholder: "Trò chuyện cùng tôi nhé🤗",
+            inputPlaceholder: "Bạn cần tư vấn về ....?",
+            sendButtonAccessibilityLabel: "Gửi"),
+        theme: DefaultChatTheme(
+            inputBackgroundColor: ColorUtils.primaryColor,
+            backgroundColor: Colors.transparent,
+            inputTextCursorColor: ColorUtils.primaryColor,
+            receivedMessageBodyTextStyle: TextStyleUtils.contentRegular(),
+            sentMessageBodyTextStyle:
+                TextStyleUtils.contentRegular(color: Colors.black),
+            dateDividerTextStyle: TextStyleUtils.contentSemibold(),
+            inputTextStyle: TextStyleUtils.contentSemibold(
+              color: Colors.white,
+            ),
+            sendButtonIcon: Image.asset(
+              "assets/images/send.png",
+              height: 25,
+            )),
+      );
+    });
   }
 }

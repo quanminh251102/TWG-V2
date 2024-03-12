@@ -12,6 +12,9 @@ import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/common_widgets/booking_dialog.dart';
+import 'package:twg/ui/common_widgets/confirm_login_dialog.dart';
+import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
+import 'package:twg/ui/screens/booking/widget/create_post_bottom_sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:twg/core/dtos/booking/booking_dto.dart';
@@ -222,8 +225,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           NotificationWidget(),
         ],
       ),
-      bottomNavigationBar: const CustomBottomNavigationBar(
-        value: CustomNavigationBar.home,
+      bottomNavigationBar: const BottomNavBarV2(
+        currentIndex: 0,
       ),
       extendBody: true,
       body: Consumer<IHomeViewModel>(

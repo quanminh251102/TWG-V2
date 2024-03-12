@@ -13,6 +13,7 @@ import 'package:twg/global/router.dart';
 import 'package:twg/ui/common_widgets/action_button.dart';
 import 'package:twg/ui/common_widgets/custom_booking_floating_button.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
+import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -298,8 +299,8 @@ class _ProfileScreenState extends State<ProfileScreen>
     return Scaffold(
       // appBar: CustomHomeAppBar(),
 
-      bottomNavigationBar: const CustomBottomNavigationBar(
-        value: CustomNavigationBar.account,
+      bottomNavigationBar: const BottomNavBarV2(
+        currentIndex: 4,
       ),
       body: SingleChildScrollView(
         child: Padding(

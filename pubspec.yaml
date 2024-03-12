@@ -115,6 +115,9 @@ dependencies:
   device_info_plus: ^9.1.2
   google_auth: ^0.0.3
   googleapis_auth: ^1.5.0
+  flutter_chat_ui: ^1.6.12
+  flutter_chat_types: ^3.6.2
+  rive: ^0.13.0
 
 dev_dependencies:
   flutter_test:
@@ -142,8 +145,38 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/lottie/
+    - assets/font/
     - assets/appainter_theme.json
     - assets/dialog_flow_auth.json
+    - assets/rive/
+  fonts:
+    - family: CambriaMath
+      fonts:
+        - asset: assets/font/CambriaMath.ttf
+
+    - family: NOVAFont-Semibold
+      fonts:
+        - asset: assets/font/NOVAFontSemibold.otf
+
+    - family: NOVAFont-Regular
+      fonts:
+        - asset: assets/font/NOVAFontRegular.otf
+
+    - family: NOVAFont-Black
+      fonts:
+        - asset: assets/font/NOVAFontBlack.otf
+
+    - family: NOVAFont-Bold
+      fonts:
+        - asset: assets/font/NOVAFontBold.otf
+
+    - family: NOVAFont-Extrabold
+      fonts:
+        - asset: assets/font/NOVAFontExtrabold.otf
+
+    - family: NOVAFont-Light
+      fonts:
+        - asset: assets/font/NOVAFontLight.otf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

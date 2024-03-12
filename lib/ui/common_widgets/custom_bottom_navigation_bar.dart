@@ -22,14 +22,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
-        vertical: 20.h,
-        horizontal: 30.w,
-      ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          30.r,
-        ),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
@@ -65,39 +58,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               isSelected: value == CustomNavigationBar.booking,
             ),
           ),
-          InkWell(
-            onTap: () {
-              if (locator<GlobalData>().currentUser != null) {
-                Get.bottomSheet(
-                  const CreatePostSheet(),
-                  backgroundColor: Colors.white,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                );
-              } else {
-                Get.dialog(
-                  const ConfirmLoginDialog(),
-                );
-              }
-            },
-            child: Container(
-              width: 100.w,
-              height: 60.h,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: ColorUtils.primaryColor,
-              ),
-              child: Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 30.r,
-              ),
-            ),
-          ),
+          SizedBox(width: 80.w),
           Expanded(
             child: _BottomBarItem(
               onTap: () {
