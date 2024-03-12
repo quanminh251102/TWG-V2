@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:twg/global/locator.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
 import 'package:twg/ui/common_widgets/confirm_login_dialog.dart';
+import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
 import 'package:twg/ui/screens/booking/widget/create_post_bottom_sheet.dart';
 import 'package:lottie/lottie.dart' as lottie;
 
@@ -39,11 +41,11 @@ class _BookingScreenState extends State<BookingScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: CustomHomeAppBar(),
-
-      bottomNavigationBar: const CustomBottomNavigationBar(
-        value: CustomNavigationBar.booking,
+      backgroundColor: Colors.white,
+      bottomNavigationBar: const BottomNavBarV2(
+        currentIndex: 1,
       ),
+      extendBody: true,
       appBar: AppBar(
         elevation: 0,
         automaticallyImplyLeading: false,
@@ -82,7 +84,17 @@ class _BookingScreenState extends State<BookingScreen>
           )
         ],
       ),
-      body: _AvailableBookingTab(),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.w,
+            ),
+            child: CupertinoSearchTextField(),
+          ),
+          Expanded(child: _AvailableBookingTab()),
+        ],
+      ),
     );
   }
 }

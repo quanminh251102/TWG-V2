@@ -86,37 +86,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
           ),
         ),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Consumer<IChatbotViewModel>(builder: (context, vm, child) {
-              return Expanded(
-                  child: MessagesScreen(
-                messages: vm.message,
-              ));
-            }),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-              color: Colors.deepPurple,
-              child: Row(
-                children: [
-                  Expanded(
-                      child: TextField(
-                    controller: _controller,
-                    style: TextStyle(color: Colors.white),
-                  )),
-                  IconButton(
-                      onPressed: () {
-                        _iChatbotViewModel.sendMessage(_controller.text);
-                        _controller.clear();
-                      },
-                      icon: Icon(Icons.send))
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
+      body: const MessagesScreen(),
     );
   }
 }

@@ -14,6 +14,7 @@ import 'package:twg/global/router.dart';
 import 'package:twg/ui/common_widgets/action_button.dart';
 import 'package:twg/ui/common_widgets/confirm_login_dialog.dart';
 import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
+import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
 import 'package:twg/ui/screens/profile_and_settings/widget/profile_menu_widget.dart';
 import 'package:lottie/lottie.dart' as lottie;
 part './widget/header.dart';
@@ -129,8 +130,8 @@ class _AccountScreenState extends State<AccountScreen>
   Widget build(BuildContext context) {
     var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
-      bottomNavigationBar: const CustomBottomNavigationBar(
-        value: CustomNavigationBar.account,
+      bottomNavigationBar: const BottomNavBarV2(
+        currentIndex: 4,
       ),
       appBar: AppBar(
         automaticallyImplyLeading: false,

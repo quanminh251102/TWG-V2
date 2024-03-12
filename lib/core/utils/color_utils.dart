@@ -41,6 +41,7 @@ class ColorUtils {
     }
   }
 
+  static const Color describetextcolor = Color(0xff95969D);
   static const Color primaryColor = Color(0xff3ECED9);
   static const Color lightPrimaryColor = Color.fromARGB(255, 241, 250, 255);
   static const Color darkPrimaryColor = Color.fromARGB(255, 12, 62, 0);
