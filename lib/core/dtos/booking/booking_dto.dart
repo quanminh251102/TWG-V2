@@ -1,53 +1,60 @@
 import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:twg/core/dtos/auth/address_level_dto.dart';
 part 'booking_dto.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class BookingDto {
-  String? id;
+  AddressLevelDto? startAddress;
+  AddressLevelDto? endAddress;
   AccountDto? authorId;
-  String? status;
+  int? status;
   int? price;
   String? bookingType;
   String? time;
-  String? startPointLat;
-  String? startPointLong;
+  String? content;
+  double? startPointLat;
+  double? startPointLong;
   String? startPointId;
   String? startPointMainText;
   String? startPointAddress;
-  String? endPointLat;
-  String? endPointLong;
+  double? endPointLat;
+  double? endPointLong;
   String? endPointId;
   String? endPointMainText;
   String? endPointAddress;
   String? distance;
   String? duration;
+  int? point;
   String? createdAt;
   String? updatedAt;
-  String? content;
-  BookingDto({
-    this.id,
-    this.authorId,
-    this.status,
-    this.price,
-    this.bookingType,
-    this.time,
-    this.startPointLat,
-    this.startPointLong,
-    this.startPointId,
-    this.startPointMainText,
-    this.startPointAddress,
-    this.endPointLat,
-    this.endPointLong,
-    this.endPointId,
-    this.endPointMainText,
-    this.endPointAddress,
-    this.distance,
-    this.duration,
-    this.createdAt,
-    this.updatedAt,
-    this.content,
-  });
+  String? id;
+
+  BookingDto(
+      {this.startAddress,
+      this.endAddress,
+      this.authorId,
+      this.status,
+      this.price,
+      this.bookingType,
+      this.time,
+      this.content,
+      this.startPointLat,
+      this.startPointLong,
+      this.startPointId,
+      this.startPointMainText,
+      this.startPointAddress,
+      this.endPointLat,
+      this.endPointLong,
+      this.endPointId,
+      this.endPointMainText,
+      this.endPointAddress,
+      this.distance,
+      this.duration,
+      this.point,
+      this.createdAt,
+      this.updatedAt,
+      this.id});
   factory BookingDto.fromJson(Map<String, dynamic> json) =>
       _$BookingDtoFromJson(json);
   Map<String, dynamic> toJson() => _$BookingDtoToJson(this);

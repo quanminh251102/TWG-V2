@@ -1,8 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:twg/core/dtos/auth/address_level_dto.dart';
 part 'account_dto.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class AccountDto {
+  AddressLevelDto? address;
+  int? priorityPoint;
   String? firstName;
   String? lastName;
   String? email;
@@ -16,10 +19,14 @@ class AccountDto {
   String? locationAddress;
   String? role;
   bool? isCalling;
+  String? createdAt;
+  String? updatedAt;
   String? id;
 
   AccountDto(
-      {this.firstName,
+      {this.address,
+      this.priorityPoint,
+      this.firstName,
       this.lastName,
       this.email,
       this.password,
@@ -32,6 +39,8 @@ class AccountDto {
       this.locationAddress,
       this.role,
       this.isCalling,
+      this.createdAt,
+      this.updatedAt,
       this.id});
   factory AccountDto.fromJson(Map<String, dynamic> json) =>
       _$AccountDtoFromJson(json);

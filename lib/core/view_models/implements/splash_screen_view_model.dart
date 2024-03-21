@@ -20,11 +20,11 @@ class SplashScreenViewModel extends ChangeNotifier
       var token = await TokenUtils.getToken();
       _iSocketService.connectServer(token as String);
       Get.offNamed(
-        MyRouter.home,
+        MyRouter.booking,
       );
     } else {
       Get.offNamed(
-        MyRouter.signIn,
+        MyRouter.onBoarding,
       );
     }
   }

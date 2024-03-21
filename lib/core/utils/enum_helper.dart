@@ -48,11 +48,7 @@ class EnumMap {
     CustomNavigationBar.chat: MyEnum(value: 2, description: 'Trò chuyện'),
     CustomNavigationBar.account: MyEnum(value: 3, description: 'Cá nhân'),
   };
-  static Map<BookingStatusType, MyEnum> bookingStatusType = {
-    BookingStatusType.complete: MyEnum(value: 0, description: 'complete'),
-    BookingStatusType.available: MyEnum(value: 1, description: 'available'),
-    BookingStatusType.cancel: MyEnum(value: 2, description: 'cancel'),
-  };
+
   static Map<BookingType, MyEnum> bookingType = {
     BookingType.findDriver: MyEnum(value: 0, description: 'Tìm tài xế'),
     BookingType.findPassenger: MyEnum(value: 1, description: 'Tìm hành khách'),
@@ -61,5 +57,12 @@ class EnumMap {
     SavePlaceType.home: MyEnum(value: 0, description: 'nhà'),
     SavePlaceType.company: MyEnum(value: 1, description: 'công ty'),
     SavePlaceType.other: MyEnum(value: 2, description: 'địa điểm'),
+  };
+  static Map<BookingStatus, MyEnum> bookingStatus = {
+    BookingStatus.available: MyEnum(value: 4, description: 'Sẵn sàng'),
+    BookingStatus.complete: MyEnum(value: 3, description: 'Hoàn thành'),
+    BookingStatus.close: MyEnum(value: 2, description: 'Đã đóng'),
+    BookingStatus.block: MyEnum(value: 1, description: 'Đã chặn'),
+    BookingStatus.cancel: MyEnum(value: 0, description: 'Đã tạm dừng'),
   };
 }

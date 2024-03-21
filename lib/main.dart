@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
             title: 'TWG',
             navigatorKey: NavigationUtils.navigatorKey,
             onGenerateRoute: (settings) => MyRouter.generateRoute(settings),
-            initialRoute: MyRouter.splash,
+            initialRoute: MyRouter.onBoarding,
             locale: const Locale('vi', 'VN'), // Set the locale to Vietnamese
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,

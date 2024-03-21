@@ -16,8 +16,8 @@ class ___CancelBookingTabState extends State<_CancelBookingTab> {
       _iBookingViewModel.setIsMyList(false);
       await _iBookingViewModel.init(
         EnumHelper.getDescription(
-          EnumMap.bookingStatusType,
-          BookingStatusType.cancel,
+          EnumMap.bookingStatus,
+          BookingStatus.cancel,
         ),
       );
       print('booking length :${_iBookingViewModel.bookings.length}');
@@ -28,8 +28,8 @@ class ___CancelBookingTabState extends State<_CancelBookingTab> {
         if (!isTop) {
           await _iBookingViewModel.getMoreBookings(
             EnumHelper.getDescription(
-              EnumMap.bookingStatusType,
-              BookingStatusType.cancel,
+              EnumMap.bookingStatus,
+              BookingStatus.cancel,
             ),
           );
         }

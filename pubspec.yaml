@@ -118,6 +118,7 @@ dependencies:
   flutter_chat_ui: ^1.6.12
   flutter_chat_types: ^3.6.2
   rive: ^0.13.0
+  introduction_screen: ^3.1.12
 
 dev_dependencies:
   flutter_test:

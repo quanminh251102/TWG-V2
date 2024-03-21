@@ -106,7 +106,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   Future<void> init(String status) async {
     _reset();
     final paginationProducts = await _iBookingService.getBookings(
-      status: status,
+      // status: status,
       page: 1,
       pageSize: 10,
     );
@@ -119,7 +119,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   Future<void> initHome(String status) async {
     _reset();
     final paginationProducts = await _iBookingService.getBookings(
-      status: status,
+      // status: status,
       page: 1,
       pageSize: 200,
     );
@@ -172,7 +172,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   @override
   void updateBookingType(String bookingType) {
     _currentBooking = BookingDto(
-      status: 'available',
+      status: 5,
     );
     _currentBooking!.bookingType = bookingType;
     notifyListeners();
@@ -187,10 +187,10 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     String? endPointMainText,
     String? endPointAddress,
   }) {
-    _currentBooking!.startPointLat = currentLocation!.latitude.toString();
-    _currentBooking!.startPointLong = currentLocation!.longitude.toString();
-    _currentBooking!.endPointLat = currentDestination!.latitude.toString();
-    _currentBooking!.endPointLong = currentDestination!.longitude.toString();
+    _currentBooking!.startPointLat = currentLocation!.latitude;
+    _currentBooking!.startPointLong = currentLocation!.longitude;
+    _currentBooking!.endPointLat = currentDestination!.latitude;
+    _currentBooking!.endPointLong = currentDestination!.longitude;
     _currentBooking!.startPointId = startPointId;
     _currentBooking!.startPointAddress = startPointAddress;
     _currentBooking!.startPointMainText = startPointMainText;
