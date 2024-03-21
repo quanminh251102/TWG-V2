@@ -13,15 +13,6 @@ enum CustomNavigationBar {
   account,
 }
 
-enum BookingStatusType {
-  @JsonValue(0)
-  complete,
-  @JsonValue(1)
-  available,
-  @JsonValue(2)
-  cancel,
-}
-
 enum BookingType {
   @JsonValue(0)
   findDriver,
@@ -36,4 +27,17 @@ enum SavePlaceType {
   company,
   @JsonValue(2)
   other,
+}
+
+enum BookingStatus {
+  @JsonValue(0)
+  available,
+  @JsonValue(1)
+  complete,
+  @JsonValue(2)
+  close,
+  @JsonValue(3)
+  block,
+  @JsonValue(4)
+  cancel,
 }

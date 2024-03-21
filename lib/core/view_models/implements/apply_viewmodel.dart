@@ -213,12 +213,12 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
   @override
   Future<void> initNavigation(BookingDto bookingDto) async {
     currentLocation = LatLng(
-      double.parse(bookingDto.startPointLat ?? '0'),
-      double.parse(bookingDto.startPointLong ?? '0'),
+      bookingDto.startPointLat!,
+      bookingDto.startPointLong!,
     );
     currentDestination = LatLng(
-      double.parse(bookingDto.endPointLat ?? '0'),
-      double.parse(bookingDto.endPointLong ?? '0'),
+      bookingDto.endPointLat!,
+      bookingDto.endPointLong!,
     );
     if (currentLocation != null && currentDestination != null) {
       _currentDirection = await _iOrsService.getCoordinates(

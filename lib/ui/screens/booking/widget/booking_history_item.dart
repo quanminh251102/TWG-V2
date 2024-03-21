@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/utils/money_utils.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
@@ -28,6 +29,28 @@ class _BookingHistoryItemState extends State<BookingHistoryItem> {
   late IBookingViewModel _iBookingViewModel;
 
   bool isMyList = false;
+  Color getStatusColor(int status) {
+    switch (status) {
+      case 5:
+        return ColorUtils.primaryColor;
+      case 4:
+        return Colors.green;
+      case 3:
+        return Colors.grey;
+      case 2:
+        return Colors.red;
+      case 1:
+        return Colors.orange;
+      default:
+        return ColorUtils.primaryColor;
+    }
+  }
+
+  String getStatus(int status) {
+    BookingStatus bookingStatus =
+        EnumHelper.getEnum(EnumMap.bookingStatus, status - 1);
+    return EnumHelper.getDescription(EnumMap.bookingStatus, bookingStatus);
+  }
 
   @override
   void initState() {
@@ -89,16 +112,14 @@ class _BookingHistoryItemState extends State<BookingHistoryItem> {
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: widget.booking.status == 'available'
-                                        ? ColorUtils.primaryColor
-                                        : widget.booking.status == 'complete'
-                                            ? Colors.green
-                                            : Colors.red),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: getStatusColor(widget.booking.status!),
+                                ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(5.0),
                                   child: Text(
-                                    widget.booking.status!.toUpperCase(),
+                                    getStatus(widget.booking.status!)
+                                        .toUpperCase(),
                                     style: TextStyle(
                                         fontSize: 10.sp,
                                         fontWeight: FontWeight.bold,

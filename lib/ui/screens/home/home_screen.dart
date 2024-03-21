@@ -101,8 +101,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         await _iBookingViewModel
             .initHome(
               EnumHelper.getDescription(
-                EnumMap.bookingStatusType,
-                BookingStatusType.available,
+                EnumMap.bookingStatus,
+                BookingStatus.available,
               ),
             )
             .then((value) => {
@@ -226,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ],
       ),
       bottomNavigationBar: const BottomNavBarV2(
-        currentIndex: 0,
+        currentIndex: 1,
       ),
       extendBody: true,
       body: Consumer<IHomeViewModel>(

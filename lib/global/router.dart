@@ -20,6 +20,7 @@ import 'package:twg/ui/screens/chat_room/chat_screen.dart';
 import 'package:twg/ui/screens/chatbot/chat_screen.dart';
 import 'package:twg/ui/screens/home/home_screen.dart';
 import 'package:twg/ui/screens/notification/notification_screen.dart';
+import 'package:twg/ui/screens/onboarding/introduction_screen.dart';
 import 'package:twg/ui/screens/profile_and_settings/account_screen.dart';
 import 'package:twg/ui/screens/profile_and_settings/my_reviews/my_reviews_page.dart';
 import 'package:twg/ui/screens/profile_and_settings/privacy_policy/privacy_policy_page.dart';
@@ -58,6 +59,7 @@ class MyRouter {
   static const String navigation = '/navigation';
   static const String bookingDetail = '/bookingDetail';
   static const String chatbotScreen = '/chatbotScreen';
+  static const String onBoarding = '/onBoarding';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -209,6 +211,11 @@ class MyRouter {
         return _buildRouteNavigationWithoutEffect(
           settings,
           const ChatBotScreen(),
+        );
+      case onBoarding:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const OnBoardingScreen(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

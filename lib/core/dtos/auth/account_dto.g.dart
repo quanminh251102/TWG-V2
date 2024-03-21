@@ -7,6 +7,10 @@ part of 'account_dto.dart';
 // **************************************************************************
 
 AccountDto _$AccountDtoFromJson(Map<String, dynamic> json) => AccountDto(
+      address: json['address'] == null
+          ? null
+          : AddressLevelDto.fromJson(json['address'] as Map<String, dynamic>),
+      priorityPoint: json['priorityPoint'] as int?,
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
       email: json['email'] as String?,
@@ -20,11 +24,15 @@ AccountDto _$AccountDtoFromJson(Map<String, dynamic> json) => AccountDto(
       locationAddress: json['locationAddress'] as String?,
       role: json['role'] as String?,
       isCalling: json['isCalling'] as bool?,
+      createdAt: json['createdAt'] as String?,
+      updatedAt: json['updatedAt'] as String?,
       id: json['id'] as String?,
     );
 
 Map<String, dynamic> _$AccountDtoToJson(AccountDto instance) =>
     <String, dynamic>{
+      'address': instance.address?.toJson(),
+      'priorityPoint': instance.priorityPoint,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'email': instance.email,
@@ -38,5 +46,7 @@ Map<String, dynamic> _$AccountDtoToJson(AccountDto instance) =>
       'locationAddress': instance.locationAddress,
       'role': instance.role,
       'isCalling': instance.isCalling,
+      'createdAt': instance.createdAt,
+      'updatedAt': instance.updatedAt,
       'id': instance.id,
     };

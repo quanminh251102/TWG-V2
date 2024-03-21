@@ -164,12 +164,12 @@ class _NavigationScreenState extends State<NavigationScreen>
                         LatLngBounds.fromPoints(
                           [
                             LatLng(
-                              double.parse(widget.bookingDto.startPointLat!),
-                              double.parse(widget.bookingDto.startPointLong!),
+                              widget.bookingDto.startPointLat!,
+                              widget.bookingDto.startPointLong!,
                             ),
                             LatLng(
-                              double.parse(widget.bookingDto.endPointLat!),
-                              double.parse(widget.bookingDto.endPointLong!),
+                              widget.bookingDto.endPointLat!,
+                              widget.bookingDto.endPointLong!,
                             )
                           ],
                         ),
@@ -203,8 +203,8 @@ class _NavigationScreenState extends State<NavigationScreen>
                     markers: [
                       Marker(
                         point: LatLng(
-                          double.parse(widget.bookingDto.endPointLat!),
-                          double.parse(widget.bookingDto.endPointLong!),
+                          widget.bookingDto.endPointLat!,
+                          widget.bookingDto.endPointLong!,
                         ),
                         child: lottie.Lottie.asset(
                           "assets/lottie/location.json",

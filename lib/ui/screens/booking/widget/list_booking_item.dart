@@ -11,6 +11,7 @@ import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/utils/money_utils.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
@@ -39,6 +40,28 @@ class _ListBookingItemState extends State<ListBookingItem> {
   late IMessageViewModel _iMessageViewModel;
   late IChatRoomViewModel _iChatRoomViewModel;
   bool isMyList = false;
+  Color getStatusColor(int status) {
+    switch (status) {
+      case 5:
+        return ColorUtils.primaryColor;
+      case 4:
+        return Colors.green;
+      case 3:
+        return Colors.grey;
+      case 2:
+        return Colors.red;
+      case 1:
+        return Colors.orange;
+      default:
+        return ColorUtils.primaryColor;
+    }
+  }
+
+  String getStatus(int status) {
+    BookingStatus bookingStatus =
+        EnumHelper.getEnum(EnumMap.bookingStatus, status - 1);
+    return EnumHelper.getDescription(EnumMap.bookingStatus, bookingStatus);
+  }
 
   @override
   void initState() {
@@ -115,8 +138,8 @@ class _ListBookingItemState extends State<ListBookingItem> {
                                     color: ColorUtils.primaryColor,
                                     width: 2.w,
                                   )),
-                              height: 35.r,
-                              width: 35.r,
+                              height: 40.r,
+                              width: 40.r,
                               child: CircleAvatar(
                                 radius: 25.r,
                                 backgroundImage: NetworkImage(
@@ -132,13 +155,13 @@ class _ListBookingItemState extends State<ListBookingItem> {
                               Text(
                                 widget.booking.authorId?.firstName ?? "",
                                 style: TextStyle(
-                                    fontSize: 14.sp,
+                                    fontSize: 15.sp,
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 widget.booking.bookingType ?? "",
-                                style: const TextStyle(
-                                  fontSize: 10,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
                                 ),
                               )
                             ],
@@ -146,20 +169,18 @@ class _ListBookingItemState extends State<ListBookingItem> {
                           const Spacer(),
                           Container(
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                    10.r,
-                                  ),
-                                  color: widget.booking.status == 'available'
-                                      ? ColorUtils.primaryColor
-                                      : widget.booking.status == 'complete'
-                                          ? Colors.green
-                                          : Colors.red),
+                                borderRadius: BorderRadius.circular(
+                                  10.r,
+                                ),
+                                color: getStatusColor(widget.booking.status!),
+                              ),
                               child: Padding(
                                 padding: EdgeInsets.all(8.r),
                                 child: Text(
-                                  widget.booking.status!.toUpperCase(),
+                                  getStatus(widget.booking.status!)
+                                      .toUpperCase(),
                                   style: TextStyle(
-                                      fontSize: 10.sp,
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
                                 ),
@@ -196,7 +217,7 @@ class _ListBookingItemState extends State<ListBookingItem> {
                           Text(
                             'Thời gian: ',
                             style: TextStyle(
-                              fontSize: 12.sp,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -207,8 +228,10 @@ class _ListBookingItemState extends State<ListBookingItem> {
                               widget.booking.time ?? "",
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
-                              style: const TextStyle(
-                                  fontSize: 10, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           )
                         ],
@@ -242,7 +265,7 @@ class _ListBookingItemState extends State<ListBookingItem> {
                                     Text(
                                       widget.booking.startPointMainText ?? "",
                                       style: TextStyle(
-                                          fontSize: 12.sp,
+                                          fontSize: 14.sp,
                                           fontWeight: FontWeight.bold),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
@@ -250,7 +273,7 @@ class _ListBookingItemState extends State<ListBookingItem> {
                                     Text(widget.booking.startPointAddress ?? "",
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          fontSize: 10.sp,
+                                          fontSize: 12.sp,
                                         ),
                                         maxLines: 2),
                                   ],
@@ -290,7 +313,7 @@ class _ListBookingItemState extends State<ListBookingItem> {
                                   children: [
                                     Text(widget.booking.endPointMainText ?? "",
                                         style: TextStyle(
-                                            fontSize: 12.sp,
+                                            fontSize: 14.sp,
                                             fontWeight: FontWeight.bold),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 2),
@@ -299,7 +322,7 @@ class _ListBookingItemState extends State<ListBookingItem> {
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
                                       style: TextStyle(
-                                        fontSize: 10.sp,
+                                        fontSize: 12.sp,
                                       ),
                                     ),
                                   ],
@@ -351,8 +374,9 @@ class _ListBookingItemState extends State<ListBookingItem> {
                               ),
                               Text(
                                 widget.booking.distance ?? "",
-                                style: const TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -368,8 +392,9 @@ class _ListBookingItemState extends State<ListBookingItem> {
                               ),
                               Text(
                                 widget.booking.duration ?? "",
-                                style: const TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -388,8 +413,9 @@ class _ListBookingItemState extends State<ListBookingItem> {
                                     .formatToVietnameseCurrency(
                                   widget.booking.price.toString(),
                                 ),
-                                style: const TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),

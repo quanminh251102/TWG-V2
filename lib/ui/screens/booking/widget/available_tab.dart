@@ -17,8 +17,8 @@ class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
       _iBookingViewModel.setIsMyList(false);
       await _iBookingViewModel.init(
         EnumHelper.getDescription(
-          EnumMap.bookingStatusType,
-          BookingStatusType.available,
+          EnumMap.bookingStatus,
+          BookingStatus.available,
         ),
       );
     });
@@ -28,8 +28,8 @@ class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
         if (!isTop) {
           await _iBookingViewModel.getMoreBookings(
             EnumHelper.getDescription(
-              EnumMap.bookingStatusType,
-              BookingStatusType.available,
+              EnumMap.bookingStatus,
+              BookingStatus.available,
             ),
           );
         }

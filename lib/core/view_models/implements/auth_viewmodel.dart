@@ -36,7 +36,7 @@ class AuthViewModel with ChangeNotifier implements IAuthViewModel {
       _iSocketService.connectServer(locator<GlobalData>().token);
       await EasyLoading.showSuccess('Đăng nhập thành công!');
       Get.offNamed(
-        MyRouter.home,
+        MyRouter.booking,
       );
     } else {
       // await EasyLoading.showError('Đăng nhập thất bại!');
