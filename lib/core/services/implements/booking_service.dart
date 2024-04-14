@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 import 'package:twg/core/dtos/goongs/save_place_dto.dart';
@@ -16,19 +17,83 @@ class BookingService implements IBookingService {
     String? token,
     int? page,
     int? pageSize,
-    int? sortCreatedAt,
-    int? sortUpdatedAt,
-    String? status,
+    int? status,
+    bool? isFavorite,
+    bool? isMine,
     String? authorId,
+    String? keyword,
+    String? bookingType,
+    int? minPrice,
+    int? maxPrice,
+    String? startAddress,
+    String? endAddress,
+    String? startTime,
+    String? endTime,
+    String? id,
   }) async {
     String? token = await TokenUtils.getToken();
     try {
       var result = await getRestClient().getBookings(
-          token: token,
-          page: page,
-          pageSize: pageSize,
-          status: status,
-          authorId: authorId);
+        token: token,
+        page: page,
+        pageSize: pageSize,
+        status: status,
+        isFavorite: isFavorite,
+        isMine: isMine,
+        authorId: authorId,
+        keyword: keyword,
+        bookingType: bookingType,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
+        startAddress: startAddress,
+        endAddress: endAddress,
+        startTime: startTime,
+        endTime: endTime,
+      );
+
+      if (result.success) {
+        _total = result.total ?? 0;
+        return result.data;
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  @override
+  Future<List<BookingDto>?> getSaveBookings({
+    String? token,
+    int? page,
+    int? pageSize,
+    int? status,
+    String? authorId,
+    String? keyword,
+    String? bookingType,
+    int? minPrice,
+    int? maxPrice,
+    String? startAddress,
+    String? endAddress,
+    String? startTime,
+    String? endTime,
+  }) async {
+    String? token = await TokenUtils.getToken();
+    try {
+      var result = await getRestClient().getSaveBookings(
+        token: token,
+        page: page,
+        pageSize: pageSize,
+        // status: status,
+        // authorId: authorId,
+        // keyword: keyword,
+        // bookingType: bookingType,
+        // minPrice: minPrice,
+        // maxPrice: maxPrice,
+        // startAddress: startAddress,
+        // endAddress: endAddress,
+        // startTime: startTime,
+        // endTime: endTime,
+      );
 
       if (result.success) {
         _total = result.total ?? 0;
@@ -113,6 +178,30 @@ class BookingService implements IBookingService {
         print(e);
       } finally {
         LoadingDialogUtils.hideLoading();
+      }
+    }
+    return false;
+  }
+
+  @override
+  Future<bool> saveBooking(String bookingId) async {
+    var token = await TokenUtils.getToken();
+    if (token != null) {
+      // LoadingDialogUtils.showLoading();
+      try {
+        var result = await getRestClient().saveBooking(
+          token: token,
+          id: bookingId,
+        );
+        if (result.success) {
+          EasyLoading.showSuccess('Lưu bài đăng thành công!');
+          return true;
+        }
+      } catch (e) {
+        print(e);
+      } finally {
+        // LoadingDialogUtils.hideLoading();
+        EasyLoading.showError('Lưu bài đăng thất bại!');
       }
     }
     return false;

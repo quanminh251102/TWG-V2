@@ -65,48 +65,58 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
   }
 
   Future<void> selectDateTime(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+    final DateTime? pickedDate = await showDatePicker(
       initialEntryMode: DatePickerEntryMode.inputOnly,
       context: context,
       initialDate: _selectedDateTime,
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
-      builder: (context, child) {
-        return Theme(
-          data: ThemeData.dark().copyWith(
-              colorScheme: const ColorScheme.dark(
-                primary: Colors.black,
-                surface: Colors.white,
-                onSurface: Colors.black,
-              ),
-              dialogBackgroundColor: ColorUtils.primaryColor,
-              dialogTheme: const DialogTheme(
-                  backgroundColor: ColorUtils.primaryColor,
-                  titleTextStyle: TextStyle(color: Colors.white),
-                  contentTextStyle: TextStyle(color: Colors.black))),
-          child: child!,
-        );
-      },
+      builder: (context, child) => customDatePickerTheme(child),
     );
-    if (picked != null) {
-      final TimeOfDay? timePicked = await showTimePicker(
+
+    if (pickedDate != null) {
+      final TimeOfDay? pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(_selectedDateTime),
       );
-      if (timePicked != null) {
-        setState(() {
-          _selectedDateTime = DateTime(
-            picked.year,
-            picked.month,
-            picked.day,
-            timePicked.hour,
-            timePicked.minute,
-          );
-          final DateFormat formatter = DateFormat('HH:mm | dd/MM/yyyy');
-          time.text = formatter.format(_selectedDateTime).toString();
-        });
+
+      if (pickedTime != null) {
+        updateSelectedDateTime(pickedDate, pickedTime);
       }
     }
+  }
+
+  Widget customDatePickerTheme(Widget? child) {
+    return Theme(
+      data: ThemeData.dark().copyWith(
+        colorScheme: const ColorScheme.dark(
+          primary: Colors.black,
+          surface: Colors.white,
+          onSurface: Colors.black,
+        ),
+        dialogBackgroundColor: ColorUtils.primaryColor,
+        dialogTheme: const DialogTheme(
+          backgroundColor: ColorUtils.primaryColor,
+          titleTextStyle: TextStyle(color: Colors.white),
+          contentTextStyle: TextStyle(color: Colors.black),
+        ),
+      ),
+      child: child ?? Container(),
+    );
+  }
+
+  void updateSelectedDateTime(DateTime pickedDate, TimeOfDay pickedTime) {
+    setState(() {
+      _selectedDateTime = DateTime(
+        pickedDate.year,
+        pickedDate.month,
+        pickedDate.day,
+        pickedTime.hour,
+        pickedTime.minute,
+      );
+      final DateFormat formatter = DateFormat('HH:mm | dd/MM/yyyy');
+      time.text = formatter.format(_selectedDateTime);
+    });
   }
 
   @override

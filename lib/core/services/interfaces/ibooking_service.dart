@@ -6,10 +6,19 @@ abstract class IBookingService {
     String? token,
     int? page,
     int? pageSize,
-    int? sortCreatedAt,
-    int? sortUpdatedAt,
-    String? status,
+    int? status,
+    bool? isFavorite,
+    bool? isMine,
     String? authorId,
+    String? keyword,
+    String? bookingType,
+    int? minPrice,
+    int? maxPrice,
+    String? startAddress,
+    String? endAddress,
+    String? startTime,
+    String? endTime,
+    String? id,
   });
   int get total;
   Future<List<BookingDto>?> getMyBookings({
@@ -19,6 +28,22 @@ abstract class IBookingService {
     int? sortCreatedAt,
     int? sortUpdatedAt,
   });
+  Future<List<BookingDto>?> getSaveBookings({
+    String? token,
+    int? page,
+    int? pageSize,
+    int? status,
+    String? authorId,
+    String? keyword,
+    String? bookingType,
+    int? minPrice,
+    int? maxPrice,
+    String? startAddress,
+    String? endAddress,
+    String? startTime,
+    String? endTime,
+  });
   Future<bool> saveLocation(Predictions location);
   Future<bool> createBooking(BookingDto bookingDto);
+  Future<bool> saveBooking(String bookingId);
 }

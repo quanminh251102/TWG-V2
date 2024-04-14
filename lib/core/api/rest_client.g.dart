@@ -118,8 +118,18 @@ class _RestClient implements RestClient {
     int? pageSize,
     int? sortCreatedAt,
     int? sortUpdatedAt,
-    String? status,
+    int? status,
+    bool? isFavorite,
+    bool? isMine,
     String? authorId,
+    String? keyword,
+    String? bookingType,
+    int? minPrice,
+    int? maxPrice,
+    String? startAddress,
+    String? endAddress,
+    String? startTime,
+    String? endTime,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -128,7 +138,17 @@ class _RestClient implements RestClient {
       r'sortCreatedAt': sortCreatedAt,
       r'sortUpdatedAt': sortUpdatedAt,
       r'status': status,
+      r'isFavorite': isFavorite,
+      r'isMine': isMine,
       r'authorId': authorId,
+      r'keyword': keyword,
+      r'bookingType': bookingType,
+      r'minPrice': minPrice,
+      r'maxPrice': maxPrice,
+      r'startAddress': startAddress,
+      r'endAddress': endAddress,
+      r'startTime': startTime,
+      r'endTime': endTime,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{r'api_key': token};
@@ -143,6 +163,74 @@ class _RestClient implements RestClient {
             .compose(
               _dio.options,
               '/api/booking',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = BaseApiDto<List<BookingDto>>.fromJson(
+      _result.data!,
+      (json) => json is List<dynamic>
+          ? json
+              .map<BookingDto>(
+                  (i) => BookingDto.fromJson(i as Map<String, dynamic>))
+              .toList()
+          : List.empty(),
+    );
+    return value;
+  }
+
+  @override
+  Future<BaseApiDto<List<BookingDto>>> getSaveBookings({
+    String? token,
+    int? page,
+    int? pageSize,
+    int? sortCreatedAt,
+    int? sortUpdatedAt,
+    int? status,
+    String? authorId,
+    String? keyword,
+    String? bookingType,
+    int? minPrice,
+    int? maxPrice,
+    String? startAddress,
+    String? endAddress,
+    String? startTime,
+    String? endTime,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+      r'sortCreatedAt': sortCreatedAt,
+      r'sortUpdatedAt': sortUpdatedAt,
+      r'status': status,
+      r'authorId': authorId,
+      r'keyword': keyword,
+      r'bookingType': bookingType,
+      r'minPrice': minPrice,
+      r'maxPrice': maxPrice,
+      r'startAddress': startAddress,
+      r'endAddress': endAddress,
+      r'startTime': startTime,
+      r'endTime': endTime,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{r'api_key': token};
+    _headers.removeWhere((k, v) => v == null);
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseApiDto<List<BookingDto>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/booking/saved',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -207,6 +295,41 @@ class _RestClient implements RestClient {
                   (i) => BookingDto.fromJson(i as Map<String, dynamic>))
               .toList()
           : List.empty(),
+    );
+    return value;
+  }
+
+  @override
+  Future<BaseApiDto<dynamic>> saveBooking({
+    String? id,
+    String? token,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{r'api_key': token};
+    _headers.removeWhere((k, v) => v == null);
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseApiDto<dynamic>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/booking/saved/${id}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = BaseApiDto<dynamic>.fromJson(
+      _result.data!,
+      (json) => json as dynamic,
     );
     return value;
   }

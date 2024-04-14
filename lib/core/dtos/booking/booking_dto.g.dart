@@ -7,19 +7,14 @@ part of 'booking_dto.dart';
 // **************************************************************************
 
 BookingDto _$BookingDtoFromJson(Map<String, dynamic> json) => BookingDto(
-      startAddress: json['startAddress'] == null
-          ? null
-          : AddressLevelDto.fromJson(
-              json['startAddress'] as Map<String, dynamic>),
-      endAddress: json['endAddress'] == null
-          ? null
-          : AddressLevelDto.fromJson(
-              json['endAddress'] as Map<String, dynamic>),
+      id: json['_id'] as String?,
+      createdAt: json['createdAt'] as String?,
+      updatedAt: json['updatedAt'] as String?,
       authorId: json['authorId'] == null
           ? null
           : AccountDto.fromJson(json['authorId'] as Map<String, dynamic>),
       status: json['status'] as int?,
-      price: json['price'] as int?,
+      price: (json['price'] as num?)?.toDouble(),
       bookingType: json['bookingType'] as String?,
       time: json['time'] as String?,
       content: json['content'] as String?,
@@ -36,15 +31,28 @@ BookingDto _$BookingDtoFromJson(Map<String, dynamic> json) => BookingDto(
       distance: json['distance'] as String?,
       duration: json['duration'] as String?,
       point: json['point'] as int?,
-      createdAt: json['createdAt'] as String?,
-      updatedAt: json['updatedAt'] as String?,
-      id: json['id'] as String?,
+      userFavorites: (json['userFavorites'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      userMayFavorites: (json['userMayFavorites'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      applyNum: json['applyNum'] as int?,
+      watchedNum: json['watchedNum'] as int?,
+      savedNum: json['savedNum'] as int?,
+      diftAtribute: (json['diftAtribute'] as num?)?.toDouble(),
+      isNew: json['isNew'] as bool?,
+      interesestValue: (json['interesestValue'] as num?)?.toDouble(),
+      interesestConfidenceValue:
+          (json['interesestConfidenceValue'] as num?)?.toDouble(),
+      isReal: json['isReal'] as bool?,
+      isCaseBased: json['isCaseBased'] as bool?,
+      isFavorite: json['isFavorite'] as bool?,
+      isMayFavorite: json['isMayFavorite'] as bool?,
     );
 
 Map<String, dynamic> _$BookingDtoToJson(BookingDto instance) =>
     <String, dynamic>{
-      'startAddress': instance.startAddress?.toJson(),
-      'endAddress': instance.endAddress?.toJson(),
       'authorId': instance.authorId?.toJson(),
       'status': instance.status,
       'price': instance.price,
@@ -64,6 +72,19 @@ Map<String, dynamic> _$BookingDtoToJson(BookingDto instance) =>
       'distance': instance.distance,
       'duration': instance.duration,
       'point': instance.point,
+      'userFavorites': instance.userFavorites,
+      'userMayFavorites': instance.userMayFavorites,
+      'applyNum': instance.applyNum,
+      'watchedNum': instance.watchedNum,
+      'savedNum': instance.savedNum,
+      'diftAtribute': instance.diftAtribute,
+      'isNew': instance.isNew,
+      'interesestValue': instance.interesestValue,
+      'interesestConfidenceValue': instance.interesestConfidenceValue,
+      'isReal': instance.isReal,
+      'isCaseBased': instance.isCaseBased,
+      'isFavorite': instance.isFavorite,
+      'isMayFavorite': instance.isMayFavorite,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
       'id': instance.id,

@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
+import 'package:twg/core/dtos/booking/filter_booking_dto.dart';
 import 'package:twg/core/dtos/goongs/place_detail_dto.dart';
 import 'package:twg/core/dtos/goongs/place_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
@@ -38,7 +39,9 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   DirectionDto? _currentDirection;
   LatLngBounds? _boundConfirmScreen;
   BookingDto? _currentBooking;
-
+  FilterBookingDto? _filterBookingDto;
+  @override
+  FilterBookingDto? get filterBookingDto => _filterBookingDto;
   @override
   BookingDto? get currentBooking => _currentBooking;
 
@@ -103,16 +106,94 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   }
 
   @override
-  Future<void> init(String status) async {
+  Future<void> init(int status) async {
     _reset();
+    _filterBookingDto = FilterBookingDto();
     final paginationProducts = await _iBookingService.getBookings(
-      // status: status,
+      status: status,
       page: 1,
       pageSize: 10,
     );
     _bookings = paginationProducts ?? [];
     _totalCount = _iBookingService.total;
     notifyListeners();
+  }
+
+  @override
+  Future<void> saveBooking(String bookingId) async {
+    if (await _iBookingService.saveBooking(bookingId)) {
+      await getBooking(bookingId);
+    }
+  }
+
+  @override
+  Future<void> getBooking(String bookingId) async {
+    final paginationProducts =
+        await _iBookingService.getBookings(id: bookingId);
+    if (paginationProducts != null && paginationProducts.isNotEmpty) {
+      var tempBookingIndex = _bookings
+          .indexWhere((element) => element.id == paginationProducts[0].id);
+
+      if (tempBookingIndex != -1) {
+        _bookings[tempBookingIndex] = paginationProducts[0];
+        notifyListeners();
+      }
+    }
+  }
+
+  @override
+  Future<void> onSearchBooking() async {
+    _reset();
+    final paginationProducts = await _iBookingService.getBookings(
+      status: _filterBookingDto?.status,
+      authorId: _filterBookingDto?.authorId,
+      keyword: _filterBookingDto?.keyword,
+      bookingType: _filterBookingDto?.bookingType,
+      minPrice: _filterBookingDto?.minPrice,
+      maxPrice: _filterBookingDto?.maxPrice,
+      startAddress: _filterBookingDto?.startAddress,
+      endAddress: _filterBookingDto?.endAddress,
+      startTime: _filterBookingDto?.startTime,
+      endTime: _filterBookingDto?.endTime,
+      page: 1,
+      pageSize: 10,
+    );
+    _bookings = paginationProducts ?? [];
+    _totalCount = _iBookingService.total;
+    notifyListeners();
+  }
+
+  @override
+  Future<void> onSearchSaveBooking() async {
+    _reset();
+    final paginationProducts = await _iBookingService.getBookings(
+      isFavorite: true,
+      status: _filterBookingDto?.status,
+      authorId: _filterBookingDto?.authorId,
+      keyword: _filterBookingDto?.keyword,
+      bookingType: _filterBookingDto?.bookingType,
+      minPrice: _filterBookingDto?.minPrice,
+      maxPrice: _filterBookingDto?.maxPrice,
+      startAddress: _filterBookingDto?.startAddress,
+      endAddress: _filterBookingDto?.endAddress,
+      startTime: _filterBookingDto?.startTime,
+      endTime: _filterBookingDto?.endTime,
+      page: 1,
+      pageSize: 10,
+    );
+    _bookings = paginationProducts ?? [];
+    _totalCount = _iBookingService.total;
+    notifyListeners();
+  }
+
+  @override
+  Future<void> deleteFilter() async {
+    _filterBookingDto = FilterBookingDto();
+  }
+
+  @override
+  Future<void> updateFilter(FilterBookingDto filterBookingDto) async {
+    _filterBookingDto = filterBookingDto;
   }
 
   @override
@@ -197,7 +278,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     _currentBooking!.endPointId = endPointId;
     _currentBooking!.endPointAddress = endPointAddress;
     _currentBooking!.endPointMainText = endPointMainText;
-    ;
+
     notifyListeners();
   }
 
@@ -205,7 +286,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   Future<void> createBooking(
       {String? time, String? price, String? content}) async {
     _currentBooking!.time = time;
-    _currentBooking!.price = int.parse(
+    _currentBooking!.price = double.parse(
       price!.replaceAll(RegExp(r'[^0-9]'), '').trim(),
     );
     _currentBooking!.content = content;
@@ -219,7 +300,20 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   }
 
   @override
-  Future<void> getMoreBookings(String status) async {
+  Future<void> getMoreBookings({
+    int? sortCreatedAt,
+    int? sortUpdatedAt,
+    int? status,
+    String? authorId,
+    String? keyword,
+    String? bookingType,
+    int? minPrice,
+    int? maxPrice,
+    String? startAddress,
+    String? endAddress,
+    String? startTime,
+    String? endTime,
+  }) async {
     if (_totalCount == 0) {
       return;
     }
@@ -227,7 +321,61 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     notifyListeners();
 
     final paginationBookings = await _iBookingService.getBookings(
-      status: status,
+      status: _filterBookingDto?.status,
+      authorId: _filterBookingDto?.authorId,
+      keyword: _filterBookingDto?.keyword,
+      bookingType: _filterBookingDto?.bookingType,
+      minPrice: _filterBookingDto?.minPrice,
+      maxPrice: _filterBookingDto?.maxPrice,
+      startAddress: _filterBookingDto?.startAddress,
+      endAddress: _filterBookingDto?.endAddress,
+      startTime: _filterBookingDto?.startTime,
+      endTime: _filterBookingDto?.endTime,
+      page: page,
+      pageSize: page * 10,
+    );
+
+    _bookings.addAll(
+      paginationBookings ?? [],
+    );
+    _totalCount = _iBookingService.total;
+    page += 1;
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  @override
+  Future<void> getMoreSaveBookings({
+    int? sortCreatedAt,
+    int? sortUpdatedAt,
+    int? status,
+    String? authorId,
+    String? keyword,
+    String? bookingType,
+    int? minPrice,
+    int? maxPrice,
+    String? startAddress,
+    String? endAddress,
+    String? startTime,
+    String? endTime,
+  }) async {
+    if (_totalCount == 0) {
+      return;
+    }
+    _isLoading = true;
+    notifyListeners();
+
+    final paginationBookings = await _iBookingService.getSaveBookings(
+      status: _filterBookingDto?.status,
+      authorId: _filterBookingDto?.authorId,
+      keyword: _filterBookingDto?.keyword,
+      bookingType: _filterBookingDto?.bookingType,
+      minPrice: _filterBookingDto?.minPrice,
+      maxPrice: _filterBookingDto?.maxPrice,
+      startAddress: _filterBookingDto?.startAddress,
+      endAddress: _filterBookingDto?.endAddress,
+      startTime: _filterBookingDto?.startTime,
+      endTime: _filterBookingDto?.endTime,
       page: page,
       pageSize: page * 10,
     );

@@ -22,7 +22,9 @@ class BottomNavBarV2 extends StatefulWidget {
   _BottomNavBarV2State createState() => _BottomNavBarV2State();
 }
 
-class _BottomNavBarV2State extends State<BottomNavBarV2> {
+class _BottomNavBarV2State extends State<BottomNavBarV2>
+    with TickerProviderStateMixin {
+  AnimationController? animationController;
   setBottomBarIndex(index) {
     switch (index) {
       case 0:
@@ -44,11 +46,21 @@ class _BottomNavBarV2State extends State<BottomNavBarV2> {
   }
 
   @override
+  void initState() {
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    animationController?.forward();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return SizedBox(
       width: size.width,
-      height: 80.h,
+      height: 70.h,
       child: Stack(
         children: [
           CustomPaint(
@@ -57,39 +69,119 @@ class _BottomNavBarV2State extends State<BottomNavBarV2> {
           ),
           Center(
             heightFactor: 0.6,
-            child: FloatingActionButton(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    width: 3.w,
-                    color: Colors.white.withOpacity(
-                      0.5,
-                    ),
-                  ),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                backgroundColor: ColorUtils.primaryColor,
-                elevation: 0.1,
-                onPressed: () {
-                  if (locator<GlobalData>().currentUser != null) {
-                    Get.bottomSheet(
-                      const CreatePostSheet(),
-                      backgroundColor: Colors.white,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
+            child: Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).padding.bottom),
+              child: SizedBox(
+                width: 38 * 2.0,
+                height: 38 + 62.0,
+                child: Container(
+                  alignment: Alignment.topCenter,
+                  color: Colors.transparent,
+                  child: SizedBox(
+                    width: 38 * 2.0,
+                    height: 38 * 2.0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ScaleTransition(
+                        alignment: Alignment.center,
+                        scale: Tween<double>(begin: 0.0, end: 1.0).animate(
+                            CurvedAnimation(
+                                parent: animationController!,
+                                curve: Curves.fastOutSlowIn)),
+                        child: Container(
+                          // alignment: Alignment.center,s
+                          decoration: BoxDecoration(
+                            color: ColorUtils.primaryColor,
+                            gradient: LinearGradient(
+                                colors: [
+                                  ColorUtils.primaryColor,
+                                  HexColor('#6A88E5'),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight),
+                            shape: BoxShape.circle,
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  color: ColorUtils.blueIOS.withOpacity(0.4),
+                                  offset: const Offset(4.0, 8.0),
+                                  blurRadius: 16.0),
+                            ],
+                          ),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              splashColor: Colors.white.withOpacity(0.1),
+                              highlightColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              onTap: () {
+                                if (locator<GlobalData>().currentUser != null) {
+                                  Get.bottomSheet(
+                                    const CreatePostSheet(),
+                                    backgroundColor: Colors.white,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20),
+                                      ),
+                                    ),
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  );
+                                } else {
+                                  Get.dialog(
+                                    const ConfirmLoginDialog(),
+                                  );
+                                }
+                              },
+                              child: const Icon(
+                                Icons.add,
+                                color: Colors.white,
+                                size: 32,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                    );
-                  } else {
-                    Get.dialog(
-                      const ConfirmLoginDialog(),
-                    );
-                  }
-                },
-                child: const Icon(Icons.add)),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
-          Container(
+          // Center(
+          //   heightFactor: 0.6,
+          //   child: FloatingActionButton(
+          //       shape: RoundedRectangleBorder(
+          //         side: BorderSide(
+          //           width: 3.w,
+          //           color: Colors.white.withOpacity(
+          //             0.5,
+          //           ),
+          //         ),
+          //         borderRadius: BorderRadius.circular(100),
+          //       ),
+          //       backgroundColor: ColorUtils.primaryColor,
+          //       elevation: 0.1,
+          //       onPressed: () {
+          //         if (locator<GlobalData>().currentUser != null) {
+          //           Get.bottomSheet(
+          //             const CreatePostSheet(),
+          //             backgroundColor: Colors.white,
+          //             shape: const RoundedRectangleBorder(
+          //               borderRadius: BorderRadius.vertical(
+          //                 top: Radius.circular(20),
+          //               ),
+          //             ),
+          //             clipBehavior: Clip.antiAliasWithSaveLayer,
+          //           );
+          //         } else {
+          //           Get.dialog(
+          //             const ConfirmLoginDialog(),
+          //           );
+          //         }
+          //       },
+          //       child: const Icon(Icons.add)),
+          // ),
+          SizedBox(
             width: size.width,
             height: 80.h,
             child: Row(
@@ -174,5 +266,17 @@ class BNBCustomPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
+  }
+}
+
+class HexColor extends Color {
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll('#', '');
+    if (hexColor.length == 6) {
+      hexColor = 'FF' + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
   }
 }

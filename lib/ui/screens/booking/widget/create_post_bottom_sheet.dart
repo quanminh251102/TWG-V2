@@ -103,7 +103,7 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
                     PostOptionItem(
                       title: 'Tìm hành khách',
                       description:
-                          'Đăng bài để tìm hành khách chia sẻ chuyến đi.',
+                          'Đăng bài để Tìm hành khách chia sẻ chuyến đi.',
                       icon: const Icon(
                         Icons.person,
                         color: Colors.white,

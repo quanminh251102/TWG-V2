@@ -329,26 +329,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
               Column(
                 children: [
-                  SafeArea(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: 20.w,
-                        right: 20.w,
-                        top: 20.h,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 20.w,
+                      right: 20.w,
+                      top: 20.h,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5.r),
                       ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5.r),
-                        ),
-                        child: CustomSearchField(
-                          focusNode: _focusNode,
-                          controller: _controller,
-                          readOnly: false,
-                          onChanged: (value) async {
-                            await _iHomeViewModel.onSearch(value);
-                          },
-                        ),
+                      child: CustomSearchField(
+                        focusNode: _focusNode,
+                        controller: _controller,
+                        readOnly: false,
+                        onChanged: (value) async {
+                          await _iHomeViewModel.onSearch(value);
+                        },
                       ),
                     ),
                   ),

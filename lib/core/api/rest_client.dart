@@ -48,8 +48,36 @@ abstract class RestClient {
     @Query('pageSize') int? pageSize,
     @Query('sortCreatedAt') int? sortCreatedAt,
     @Query('sortUpdatedAt') int? sortUpdatedAt,
-    @Query('status') String? status,
+    @Query('status') int? status,
+    @Query('isFavorite') bool? isFavorite,
+    @Query('isMine') bool? isMine,
     @Query('authorId') String? authorId,
+    @Query('keyword') String? keyword,
+    @Query('bookingType') String? bookingType,
+    @Query('minPrice') int? minPrice,
+    @Query('maxPrice') int? maxPrice,
+    @Query('startAddress') String? startAddress,
+    @Query('endAddress') String? endAddress,
+    @Query('startTime') String? startTime,
+    @Query('endTime') String? endTime,
+  });
+  @GET('/api/booking/saved')
+  Future<BaseApiDto<List<BookingDto>>> getSaveBookings({
+    @Header('api_key') String? token,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('sortCreatedAt') int? sortCreatedAt,
+    @Query('sortUpdatedAt') int? sortUpdatedAt,
+    @Query('status') int? status,
+    @Query('authorId') String? authorId,
+    @Query('keyword') String? keyword,
+    @Query('bookingType') String? bookingType,
+    @Query('minPrice') int? minPrice,
+    @Query('maxPrice') int? maxPrice,
+    @Query('startAddress') String? startAddress,
+    @Query('endAddress') String? endAddress,
+    @Query('startTime') String? startTime,
+    @Query('endTime') String? endTime,
   });
   @GET('/api/booking/my-list')
   Future<BaseApiDto<List<BookingDto>>> getMyBookings({
@@ -60,6 +88,11 @@ abstract class RestClient {
     @Query('sortUpdatedAt') int? sortUpdatedAt,
   });
 
+  @POST("/api/booking/saved/{id}")
+  Future<BaseApiDto<dynamic>> saveBooking({
+    @Path("id") String? id,
+    @Header('api_key') String? token,
+  });
   //chat_room
   @POST("/api/chat_room")
   Future<BaseApiDto<ChatRoomDto>> createChatRoom(

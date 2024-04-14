@@ -21,7 +21,7 @@ class ApplyItemClose extends StatelessWidget {
       initialRating: 1.0,
       // your app's name?
       title: const Text(
-        'Đánh giá người đi chung',
+        'Đánh giá hành khách',
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 25,
