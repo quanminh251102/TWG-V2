@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
+import 'package:twg/core/dtos/booking/filter_booking_dto.dart';
 import 'package:twg/core/dtos/goongs/place_detail_dto.dart';
 import 'package:twg/core/dtos/goongs/place_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
@@ -36,9 +37,42 @@ abstract class IBookingViewModel implements ChangeNotifier {
   bool get isMyList;
   void setIsMyList(bool value);
   String? get keyword;
-  Future<void> init(String status);
+  FilterBookingDto? get filterBookingDto;
+  Future<void> init(int status);
   Future<void> initHome(String status);
-  Future<void> getMoreBookings(String status);
+  Future<void> deleteFilter();
+  Future<void> updateFilter(FilterBookingDto filterBookingDto);
+  Future<void> saveBooking(String bookingId);
+  Future<void> getMoreBookings({
+    int? sortCreatedAt,
+    int? sortUpdatedAt,
+    int? status,
+    String? authorId,
+    String? keyword,
+    String? bookingType,
+    int? minPrice,
+    int? maxPrice,
+    String? startAddress,
+    String? endAddress,
+    String? startTime,
+    String? endTime,
+  });
+  Future<void> getMoreSaveBookings({
+    int? sortCreatedAt,
+    int? sortUpdatedAt,
+    int? status,
+    String? authorId,
+    String? keyword,
+    String? bookingType,
+    int? minPrice,
+    int? maxPrice,
+    String? startAddress,
+    String? endAddress,
+    String? startTime,
+    String? endTime,
+  });
+  Future<void> onSearchSaveBooking();
+  Future<void> onSearchBooking();
   Future<void> initMyBookings();
   Future<void> getMoreMyBookings();
   Future<void> onPickPlace(String keyWord);

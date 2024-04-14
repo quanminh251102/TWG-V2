@@ -48,7 +48,7 @@ class _BookingHistoryItemState extends State<BookingHistoryItem> {
 
   String getStatus(int status) {
     BookingStatus bookingStatus =
-        EnumHelper.getEnum(EnumMap.bookingStatus, status - 1);
+        EnumHelper.getEnum(EnumMap.bookingStatus, status);
     return EnumHelper.getDescription(EnumMap.bookingStatus, bookingStatus);
   }
 

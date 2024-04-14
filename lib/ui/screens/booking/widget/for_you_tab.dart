@@ -1,35 +1,36 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of '../booking_screen.dart';
 
-class _CompleteBookingTab extends StatefulWidget {
+class _ForYouBookingTab extends StatefulWidget {
   @override
-  State<_CompleteBookingTab> createState() => ___CompleteBookingTabState();
+  State<_ForYouBookingTab> createState() => ___ForYouBookingTabState();
 }
 
-class ___CompleteBookingTabState extends State<_CompleteBookingTab> {
+class ___ForYouBookingTabState extends State<_ForYouBookingTab> {
   late final ScrollController scrollController;
   late IBookingViewModel _iBookingViewModel;
   @override
   void initState() {
     _iBookingViewModel = context.read<IBookingViewModel>();
     scrollController = ScrollController();
+
     Future.delayed(Duration.zero, () async {
       _iBookingViewModel.setIsMyList(false);
-      await _iBookingViewModel.init(
-        EnumHelper.getDescription(
-          EnumMap.bookingStatus,
-          BookingStatus.complete,
-        ),
-      );
-      print('booking length :${_iBookingViewModel.bookings.length}');
+      // await _iBookingViewModel.init(
+      //   EnumHelper.getDescription(
+      //     EnumMap.bookingStatus,
+      //     BookingStatus.available,
+      //   ),
+      // );
     });
     scrollController.addListener(() async {
       if (scrollController.position.atEdge) {
         bool isTop = scrollController.position.pixels == 0;
         if (!isTop) {
           await _iBookingViewModel.getMoreBookings(
-            EnumHelper.getDescription(
+            status: EnumHelper.getValue(
               EnumMap.bookingStatus,
-              BookingStatus.complete,
+              BookingStatus.available,
             ),
           );
         }
@@ -40,12 +41,6 @@ class ___CompleteBookingTabState extends State<_CompleteBookingTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<IBookingViewModel>(
-      builder: (context, vm, child) {
-        return ListBooking(
-          bookings: vm.bookings,
-        );
-      },
-    );
+    return Text('Dành cho bạn');
   }
 }

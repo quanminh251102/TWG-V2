@@ -30,14 +30,8 @@ enum SavePlaceType {
 }
 
 enum BookingStatus {
-  @JsonValue(0)
+  @JsonValue(2)
   available,
   @JsonValue(1)
   complete,
-  @JsonValue(2)
-  close,
-  @JsonValue(3)
-  block,
-  @JsonValue(4)
-  cancel,
 }

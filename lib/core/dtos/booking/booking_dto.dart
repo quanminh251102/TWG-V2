@@ -5,11 +5,9 @@ part 'booking_dto.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class BookingDto {
-  AddressLevelDto? startAddress;
-  AddressLevelDto? endAddress;
   AccountDto? authorId;
   int? status;
-  int? price;
+  double? price;
   String? bookingType;
   String? time;
   String? content;
@@ -26,13 +24,26 @@ class BookingDto {
   String? distance;
   String? duration;
   int? point;
+  List<String>? userFavorites;
+  List<String>? userMayFavorites;
+  int? applyNum;
+  int? watchedNum;
+  int? savedNum;
+  double? diftAtribute;
+  bool? isNew;
+  double? interesestValue;
+  double? interesestConfidenceValue;
+  bool? isReal;
+  bool? isCaseBased;
+  bool? isFavorite;
+  bool? isMayFavorite;
   String? createdAt;
   String? updatedAt;
   String? id;
-
   BookingDto(
-      {this.startAddress,
-      this.endAddress,
+      {this.id,
+      this.createdAt,
+      this.updatedAt,
       this.authorId,
       this.status,
       this.price,
@@ -52,9 +63,20 @@ class BookingDto {
       this.distance,
       this.duration,
       this.point,
-      this.createdAt,
-      this.updatedAt,
-      this.id});
+      this.userFavorites,
+      this.userMayFavorites,
+      this.applyNum,
+      this.watchedNum,
+      this.savedNum,
+      this.diftAtribute,
+      this.isNew,
+      this.interesestValue,
+      this.interesestConfidenceValue,
+      this.isReal,
+      this.isCaseBased,
+      this.isFavorite,
+      this.isMayFavorite});
+
   factory BookingDto.fromJson(Map<String, dynamic> json) =>
       _$BookingDtoFromJson(json);
   Map<String, dynamic> toJson() => _$BookingDtoToJson(this);

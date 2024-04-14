@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -68,11 +70,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.white,
-      ),
-    );
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness:
+          !kIsWeb && Platform.isAndroid ? Brightness.dark : Brightness.light,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarDividerColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
     return MultiProvider(
       providers: [...viewModelProviders],
       child: ScreenUtilInit(
@@ -85,7 +91,7 @@ class _MyAppState extends State<MyApp> {
             title: 'TWG',
             navigatorKey: NavigationUtils.navigatorKey,
             onGenerateRoute: (settings) => MyRouter.generateRoute(settings),
-            initialRoute: MyRouter.onBoarding,
+            initialRoute: MyRouter.splash,
             locale: const Locale('vi', 'VN'), // Set the locale to Vietnamese
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,

@@ -143,7 +143,7 @@ class _NavigationScreenState extends State<NavigationScreen>
           ),
         ),
       ),
-      body: SafeArea(child: Consumer<IApplyViewModel>(
+      body: Consumer<IApplyViewModel>(
         builder: (context, vm, child) {
           return Stack(
             children: [
@@ -521,7 +521,7 @@ class _NavigationScreenState extends State<NavigationScreen>
             ],
           );
         },
-      )),
+      ),
     );
   }
 }

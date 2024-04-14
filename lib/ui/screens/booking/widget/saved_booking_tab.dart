@@ -1,20 +1,19 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of '../booking_screen.dart';
 
-class _AvailableBookingTab extends StatefulWidget {
+class _SaveBookingTab extends StatefulWidget {
   final AnimationController animationController;
   final Function(double scrollOffset) scrollCallback;
-  const _AvailableBookingTab({
+  const _SaveBookingTab({
     Key? key,
     required this.animationController,
     required this.scrollCallback,
   }) : super(key: key);
 
   @override
-  State<_AvailableBookingTab> createState() => ___AvailableBookingTabState();
+  State<_SaveBookingTab> createState() => ___SaveBookingTabState();
 }
 
-class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
+class ___SaveBookingTabState extends State<_SaveBookingTab> {
   late IBookingViewModel _iBookingViewModel;
   late ScrollController scrollController;
   @override
@@ -26,12 +25,7 @@ class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
       if (scrollController.position.atEdge) {
         bool isTop = scrollController.position.pixels == 0;
         if (!isTop) {
-          await _iBookingViewModel.getMoreBookings(
-            status: EnumHelper.getValue(
-              EnumMap.bookingStatus,
-              BookingStatus.available,
-            ),
-          );
+          await _iBookingViewModel.getMoreSaveBookings();
         }
       }
     });
@@ -40,12 +34,7 @@ class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
       Duration.zero,
       () async {
         _iBookingViewModel.setIsMyList(false);
-        await _iBookingViewModel.init(
-          EnumHelper.getValue(
-            EnumMap.bookingStatus,
-            BookingStatus.available,
-          ),
-        );
+        await _iBookingViewModel.onSearchSaveBooking();
       },
     );
 

@@ -59,10 +59,7 @@ class EnumMap {
     SavePlaceType.other: MyEnum(value: 2, description: 'địa điểm'),
   };
   static Map<BookingStatus, MyEnum> bookingStatus = {
-    BookingStatus.available: MyEnum(value: 4, description: 'Sẵn sàng'),
-    BookingStatus.complete: MyEnum(value: 3, description: 'Hoàn thành'),
-    BookingStatus.close: MyEnum(value: 2, description: 'Đã đóng'),
-    BookingStatus.block: MyEnum(value: 1, description: 'Đã chặn'),
-    BookingStatus.cancel: MyEnum(value: 0, description: 'Đã tạm dừng'),
+    BookingStatus.available: MyEnum(value: 2, description: 'Sẵn sàng'),
+    BookingStatus.complete: MyEnum(value: 1, description: 'Hoàn thành'),
   };
 }
