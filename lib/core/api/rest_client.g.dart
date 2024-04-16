@@ -749,9 +749,9 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<BaseApiDto<SavePlaceDto>> saveLocation({
+  Future<BaseApiDto<LocationDto>> saveLocation({
     required String token,
-    required SavePlaceDto model,
+    required LocationDto model,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -760,7 +760,7 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(model.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<BaseApiDto<SavePlaceDto>>(Options(
+        _setStreamType<BaseApiDto<LocationDto>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -776,9 +776,9 @@ class _RestClient implements RestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = BaseApiDto<SavePlaceDto>.fromJson(
+    final value = BaseApiDto<LocationDto>.fromJson(
       _result.data!,
-      (json) => SavePlaceDto.fromJson(json as Map<String, dynamic>),
+      (json) => LocationDto.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

@@ -11,6 +11,7 @@ import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 import 'package:twg/core/dtos/goongs/save_place_dto.dart';
+import 'package:twg/core/dtos/location/location_dto.dart';
 import 'package:twg/core/dtos/message/message_dto.dart';
 import 'package:twg/core/dtos/message/send_message_dto.dart';
 import 'package:twg/core/dtos/notification/notification_dto.dart';
@@ -173,9 +174,9 @@ abstract class RestClient {
   });
 
   @POST("/api/location-saved")
-  Future<BaseApiDto<SavePlaceDto>> saveLocation({
+  Future<BaseApiDto<LocationDto>> saveLocation({
     @Header('api_key') required String token,
-    @Body() required SavePlaceDto model,
+    @Body() required LocationDto model,
   });
 
   @POST("/api/booking")

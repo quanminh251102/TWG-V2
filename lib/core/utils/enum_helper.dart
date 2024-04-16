@@ -55,7 +55,7 @@ class EnumMap {
   };
   static Map<SavePlaceType, MyEnum> savePlaceType = {
     SavePlaceType.home: MyEnum(value: 0, description: 'nhà'),
-    SavePlaceType.company: MyEnum(value: 1, description: 'công ty'),
+    SavePlaceType.school: MyEnum(value: 1, description: 'trường học'),
     SavePlaceType.other: MyEnum(value: 2, description: 'địa điểm'),
   };
   static Map<BookingStatus, MyEnum> bookingStatus = {

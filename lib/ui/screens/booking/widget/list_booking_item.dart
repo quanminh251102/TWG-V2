@@ -7,8 +7,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart' as lottie;
 import 'package:provider/provider.dart';
-
-import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
@@ -18,10 +16,7 @@ import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
-import 'package:twg/global/global_data.dart';
-import 'package:twg/global/locator.dart';
 import 'package:twg/global/router.dart';
-import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
 
 class ListBookingItem extends StatefulWidget {
   final BookingDto booking;

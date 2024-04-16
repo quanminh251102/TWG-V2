@@ -6,6 +6,7 @@ import 'package:twg/core/dtos/booking/filter_booking_dto.dart';
 import 'package:twg/core/dtos/goongs/place_detail_dto.dart';
 import 'package:twg/core/dtos/goongs/place_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
+import 'package:twg/core/dtos/location/location_dto.dart';
 import 'package:twg/core/dtos/osrm/osrm_response_dto.dart';
 
 abstract class IBookingViewModel implements ChangeNotifier {
@@ -78,5 +79,5 @@ abstract class IBookingViewModel implements ChangeNotifier {
   Future<void> onPickPlace(String keyWord);
   Future<PlaceDto?> getPlaceById(String locationId);
   Future<List<PlaceDetailDto>?> getPlaceByGeocode(LatLng latLng);
-  Future<void> saveLocation(Predictions location);
+  Future<void> saveLocation(LocationDto location);
 }

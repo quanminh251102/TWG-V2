@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
-import 'package:twg/ui/screens/apply/apply_in_booking_page.dart';
-import 'package:twg/ui/screens/apply/create_apply_page.dart';
-import 'package:twg/ui/screens/apply/my_apply_page.dart';
+import 'package:twg/core/dtos/location/location_dto.dart';
+import 'package:twg/core/utils/enum.dart';
 import 'package:twg/ui/screens/apply/apply_in_booking_page.dart';
 import 'package:twg/ui/screens/apply/create_apply_page.dart';
 import 'package:twg/ui/screens/apply/my_apply_page.dart';
@@ -19,12 +18,13 @@ import 'package:twg/ui/screens/chat_room/chat_room_screen.dart';
 import 'package:twg/ui/screens/chat_room/chat_screen.dart';
 import 'package:twg/ui/screens/chatbot/chat_screen.dart';
 import 'package:twg/ui/screens/home/home_screen.dart';
+import 'package:twg/ui/screens/location/add_location_screen.dart';
+import 'package:twg/ui/screens/location/location_detail_screen.dart';
 import 'package:twg/ui/screens/notification/notification_screen.dart';
 import 'package:twg/ui/screens/onboarding/introduction_screen.dart';
 import 'package:twg/ui/screens/profile_and_settings/account_screen.dart';
 import 'package:twg/ui/screens/profile_and_settings/my_reviews/my_reviews_page.dart';
 import 'package:twg/ui/screens/profile_and_settings/privacy_policy/privacy_policy_page.dart';
-import 'package:twg/ui/screens/profile_and_settings/profile_screen.dart';
 import 'package:twg/ui/screens/profile_and_settings/update_profile/update_profile_page.dart';
 import 'package:twg/ui/screens/signin/signin.dart';
 import 'package:twg/ui/screens/signup/signup.dart';
@@ -60,6 +60,8 @@ class MyRouter {
   static const String bookingDetail = '/bookingDetail';
   static const String chatbotScreen = '/chatbotScreen';
   static const String onBoarding = '/onBoarding';
+  static const String addLocation = 'addLocation';
+  static const String locationDetail = 'locationDetail';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -211,6 +213,20 @@ class MyRouter {
         return _buildRouteNavigationWithoutEffect(
           settings,
           const ChatBotScreen(),
+        );
+      case addLocation:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          AddLocationScreen(
+            locationType: settings.arguments as SavePlaceType,
+          ),
+        );
+      case locationDetail:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          LocationDetailScreen(
+            location: settings.arguments as LocationDto,
+          ),
         );
       case onBoarding:
         return _buildRouteNavigationWithoutEffect(

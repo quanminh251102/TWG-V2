@@ -24,7 +24,7 @@ enum SavePlaceType {
   @JsonValue(0)
   home,
   @JsonValue(1)
-  company,
+  school,
   @JsonValue(2)
   other,
 }
