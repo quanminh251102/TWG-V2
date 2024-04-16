@@ -218,7 +218,7 @@ class _PlaceTextFieldState extends State<PlaceTextField>
                                               fontSize: 16.sp,
                                             ),
                                       suffixIcon: widget
-                                              .destinationTextEditingController
+                                              .locationTextEditingController
                                               .text
                                               .isNotEmpty
                                           ? IconButton(
@@ -384,50 +384,6 @@ class _PlaceTextFieldState extends State<PlaceTextField>
                 ),
               ],
             ),
-
-            // InkWell(
-            //   onTap: () {
-            //     _selectDateRange(context);
-            //   },
-            //   child: Container(
-            //     height: 80.h,
-            //     decoration: BoxDecoration(
-            //         color: const Color(
-            //           0xfff9f9f9,
-            //         ),
-            //         borderRadius: BorderRadius.circular(
-            //           20.r,
-            //         )),
-            //     width: 350.w,
-            //     child: Padding(
-            //       padding: EdgeInsets.symmetric(
-            //         horizontal: 20.w,
-            //         vertical: 3.h,
-            //       ),
-            //       child: Align(
-            //         alignment: Alignment.centerLeft,
-            //         child: Text(
-            //           _selectedDateRange == null ? 'Chọn ngày' : _range,
-            //           style: _selectedDateRange == null
-            //               ? TextStyle(
-            //                   fontSize: 16.sp,
-            //                   color: Colors.grey,
-            //                 )
-            //               : TextStyle(
-            //                   color: Colors.black,
-            //                   fontWeight: FontWeight.w200,
-            //                   fontSize: 16.sp,
-            //                 ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // CustomButton(
-            //   height: 50.h,
-            //   width: double.infinity,
-            //   text: 'Tìm kiếm',
-            // )
           ],
         );
       },

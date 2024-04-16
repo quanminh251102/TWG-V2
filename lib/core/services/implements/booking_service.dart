@@ -2,6 +2,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 import 'package:twg/core/dtos/goongs/save_place_dto.dart';
+import 'package:twg/core/dtos/location/location_dto.dart';
 import 'package:twg/core/services/interfaces/ibooking_service.dart';
 import 'package:twg/core/utils/token_utils.dart';
 import 'package:twg/global/global_data.dart';
@@ -32,6 +33,7 @@ class BookingService implements IBookingService {
     String? id,
   }) async {
     String? token = await TokenUtils.getToken();
+    LoadingDialogUtils.showLoading();
     try {
       var result = await getRestClient().getBookings(
         token: token,
@@ -50,7 +52,7 @@ class BookingService implements IBookingService {
         startTime: startTime,
         endTime: endTime,
       );
-
+      LoadingDialogUtils.hideLoading();
       if (result.success) {
         _total = result.total ?? 0;
         return result.data;
@@ -132,23 +134,15 @@ class BookingService implements IBookingService {
   }
 
   @override
-  Future<bool> saveLocation(Predictions location) async {
+  Future<bool> saveLocation(LocationDto location) async {
     var token = await TokenUtils.getToken();
     if (token != null) {
       LoadingDialogUtils.showLoading();
       try {
-        var result = await getRestClient().saveLocation(
-            token: token,
-            model: SavePlaceDto(
-              placeName: location.description!.split(',')[0].toString(),
-              placeDescription: location.description!
-                  .split(', ')
-                  .sublist(1)
-                  .join(', ')
-                  .toString(),
-              placeId: location.placeId,
-            ));
+        var result =
+            await getRestClient().saveLocation(token: token, model: location);
         if (result.success) {
+          EasyLoading.showSuccess('Lưu địa chỉ thành công!');
           return true;
         }
       } catch (e) {
@@ -199,10 +193,7 @@ class BookingService implements IBookingService {
         }
       } catch (e) {
         print(e);
-      } finally {
-        // LoadingDialogUtils.hideLoading();
-        EasyLoading.showError('Lưu bài đăng thất bại!');
-      }
+      } finally {}
     }
     return false;
   }

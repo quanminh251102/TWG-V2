@@ -8,6 +8,7 @@ import 'package:twg/core/dtos/booking/filter_booking_dto.dart';
 import 'package:twg/core/dtos/goongs/place_detail_dto.dart';
 import 'package:twg/core/dtos/goongs/place_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
+import 'package:twg/core/dtos/location/location_dto.dart';
 import 'package:twg/core/dtos/osrm/osrm_response_dto.dart';
 import 'package:twg/core/services/interfaces/ibooking_service.dart';
 import 'package:twg/core/services/interfaces/igoong_service.dart';
@@ -111,9 +112,10 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     _filterBookingDto = FilterBookingDto();
     final paginationProducts = await _iBookingService.getBookings(
       status: status,
-      page: 1,
+      page: page,
       pageSize: 10,
     );
+    page += 1;
     _bookings = paginationProducts ?? [];
     _totalCount = _iBookingService.total;
     notifyListeners();
@@ -136,9 +138,9 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
 
       if (tempBookingIndex != -1) {
         _bookings[tempBookingIndex] = paginationProducts[0];
-        notifyListeners();
       }
     }
+    notifyListeners();
   }
 
   @override
@@ -457,7 +459,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   }
 
   @override
-  Future<void> saveLocation(Predictions location) async {
+  Future<void> saveLocation(LocationDto location) async {
     await _iBookingService.saveLocation(location);
   }
 

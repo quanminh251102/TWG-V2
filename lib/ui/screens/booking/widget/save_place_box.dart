@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:twg/core/utils/enum.dart';
+import 'package:twg/global/router.dart';
 
 class SavePlaceBox extends StatefulWidget {
   const SavePlaceBox({super.key});
@@ -86,40 +88,49 @@ class SavePlaceItem extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(
-            10.r,
-          )),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 10.w,
-          vertical: 8.h,
-        ),
-        child: Row(
-          children: [
-            if (!isExist)
-              Icon(
-                Icons.add_location,
+    return InkWell(
+      onTap: () {
+        Get.toNamed(MyRouter.addLocation,
+            arguments: EnumHelper.getEnum(
+              EnumMap.savePlaceType,
+              type,
+            ));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(
+              10.r,
+            )),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 10.w,
+            vertical: 8.h,
+          ),
+          child: Row(
+            children: [
+              if (!isExist)
+                const Icon(
+                  Icons.add_location,
+                ),
+              SizedBox(
+                width: 3.w,
               ),
-            SizedBox(
-              width: 3.w,
-            ),
-            !isExist
-                ? Text(
-                    'Thêm ${EnumHelper.getDescription(
-                      EnumMap.savePlaceType,
-                      EnumHelper.getEnum(
+              !isExist
+                  ? Text(
+                      'Thêm ${EnumHelper.getDescription(
                         EnumMap.savePlaceType,
-                        type,
-                      ),
-                    )}',
-                  )
-                : Text(
-                    placeName ?? '',
-                  )
-          ],
+                        EnumHelper.getEnum(
+                          EnumMap.savePlaceType,
+                          type,
+                        ),
+                      )}',
+                    )
+                  : Text(
+                      placeName ?? '',
+                    )
+            ],
+          ),
         ),
       ),
     );
