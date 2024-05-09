@@ -134,6 +134,36 @@ class BookingService implements IBookingService {
   }
 
   @override
+  Future<List<BookingDto>?> getRecommendBooking({
+    String? token,
+    String? type,
+    double? startPointLat,
+    double? startPointLong,
+    double? endPointLat,
+    double? endPointLong,
+  }) async {
+    String? token = await TokenUtils.getToken();
+    try {
+      var result = await getRestClient().getRecommendBooking(
+        token: token,
+        type: type,
+        startPointLat: startPointLat,
+        startPointLong: startPointLong,
+        endPointLat: endPointLat,
+        endPointLong: endPointLong,
+      );
+
+      if (result.success) {
+        _total = result.total ?? 0;
+        return result.data;
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  @override
   Future<bool> saveLocation(LocationDto location) async {
     var token = await TokenUtils.getToken();
     if (token != null) {

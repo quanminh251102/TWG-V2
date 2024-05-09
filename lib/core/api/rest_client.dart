@@ -80,6 +80,7 @@ abstract class RestClient {
     @Query('startTime') String? startTime,
     @Query('endTime') String? endTime,
   });
+
   @GET('/api/booking/my-list')
   Future<BaseApiDto<List<BookingDto>>> getMyBookings({
     @Header('api_key') String? token,
@@ -93,6 +94,16 @@ abstract class RestClient {
   Future<BaseApiDto<dynamic>> saveBooking({
     @Path("id") String? id,
     @Header('api_key') String? token,
+  });
+
+  @GET('/api/booking/recommend')
+  Future<BaseApiDto<List<BookingDto>>> getRecommendBooking({
+    @Header('api_key') String? token,
+    @Query('type') String? type,
+    @Query('startPointLat') double? startPointLat,
+    @Query('startPointLong') double? startPointLong,
+    @Query('endPointLat') double? endPointLat,
+    @Query('endPointLong') double? endPointLong,
   });
   //chat_room
   @POST("/api/chat_room")
@@ -177,6 +188,15 @@ abstract class RestClient {
   Future<BaseApiDto<LocationDto>> saveLocation({
     @Header('api_key') required String token,
     @Body() required LocationDto model,
+  });
+
+  @GET("/api/location-saved")
+  Future<BaseApiDto<List<LocationDto>>> getLocationByUser({
+    @Header('api_key') String? token,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('sortCreatedAt') int? sortCreatedAt,
+    @Query('sortUpdatedAt') int? sortUpdatedAt,
   });
 
   @POST("/api/booking")

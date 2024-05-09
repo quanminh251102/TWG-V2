@@ -223,21 +223,22 @@ class _ListBookingItemState extends State<ListBookingItem> {
                                   SizedBox(
                                     width: 10.w,
                                   ),
-                                  InkWell(
-                                    onTap: () async {
-                                      await _iBookingViewModel
-                                          .saveBooking(widget.booking.id!);
-                                    },
-                                    child: widget.booking.isFavorite!
-                                        ? const Icon(
-                                            Icons.bookmark,
-                                            color: Colors.amber,
-                                          )
-                                        : const Icon(
-                                            Icons.bookmark_outline,
-                                            color: Colors.black,
-                                          ),
-                                  )
+                                  if (widget.booking.isFavorite != null)
+                                    InkWell(
+                                      onTap: () async {
+                                        await _iBookingViewModel
+                                            .saveBooking(widget.booking.id!);
+                                      },
+                                      child: widget.booking.isFavorite!
+                                          ? const Icon(
+                                              Icons.bookmark,
+                                              color: Colors.amber,
+                                            )
+                                          : const Icon(
+                                              Icons.bookmark_outline,
+                                              color: Colors.black,
+                                            ),
+                                    )
                                 ]),
                               ),
                             ),

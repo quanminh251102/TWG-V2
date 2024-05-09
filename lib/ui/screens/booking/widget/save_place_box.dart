@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:twg/core/utils/enum.dart';
 import 'package:twg/global/router.dart';
 
+import '../../../../core/utils/color_utils.dart';
+
 class SavePlaceBox extends StatefulWidget {
   const SavePlaceBox({super.key});
 
@@ -110,8 +112,10 @@ class SavePlaceItem extends StatelessWidget {
           child: Row(
             children: [
               if (!isExist)
-                const Icon(
+                Icon(
                   Icons.add_location,
+                  color: ColorUtils.primaryColor,
+                  size: 25.r,
                 ),
               SizedBox(
                 width: 3.w,

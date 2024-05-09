@@ -15,6 +15,7 @@ abstract class IBookingViewModel implements ChangeNotifier {
   bool get loadingFromMap;
   bool get onSearchPlace;
   bool get onChangePlace;
+  List<PlaceDetailDto>? get recommendPlaces;
   set currentLocation(LatLng? location);
   set currentDestination(LatLng? destination);
   LatLng? get currentLocation;
@@ -39,6 +40,7 @@ abstract class IBookingViewModel implements ChangeNotifier {
   void setIsMyList(bool value);
   String? get keyword;
   FilterBookingDto? get filterBookingDto;
+  List<BookingDto> get recommendBooking;
   Future<void> init(int status);
   Future<void> initHome(String status);
   Future<void> deleteFilter();
@@ -80,4 +82,11 @@ abstract class IBookingViewModel implements ChangeNotifier {
   Future<PlaceDto?> getPlaceById(String locationId);
   Future<List<PlaceDetailDto>?> getPlaceByGeocode(LatLng latLng);
   Future<void> saveLocation(LocationDto location);
+  Future<void> getRecommendBooking({
+    String? type,
+    double? startPointLat,
+    double? startPointLong,
+    double? endPointLat,
+    double? endPointLong,
+  });
 }

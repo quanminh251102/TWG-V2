@@ -28,7 +28,10 @@ class _BottomNavBarV2State extends State<BottomNavBarV2>
   setBottomBarIndex(index) {
     switch (index) {
       case 0:
-        Get.toNamed(MyRouter.booking);
+        Get.toNamed(
+          MyRouter.booking,
+          arguments: false,
+        );
         break;
       case 1:
         Get.toNamed(MyRouter.home);
