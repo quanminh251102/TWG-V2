@@ -21,6 +21,7 @@ class SplashScreenViewModel extends ChangeNotifier
       _iSocketService.connectServer(token as String);
       Get.offNamed(
         MyRouter.booking,
+        arguments: false,
       );
     } else {
       Get.offNamed(

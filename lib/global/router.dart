@@ -19,7 +19,10 @@ import 'package:twg/ui/screens/chat_room/chat_screen.dart';
 import 'package:twg/ui/screens/chatbot/chat_screen.dart';
 import 'package:twg/ui/screens/home/home_screen.dart';
 import 'package:twg/ui/screens/location/add_location_screen.dart';
+import 'package:twg/ui/screens/location/choose_from_map.dart';
+import 'package:twg/ui/screens/location/loading_screen.dart';
 import 'package:twg/ui/screens/location/location_detail_screen.dart';
+import 'package:twg/ui/screens/location/pick_location_screen.dart';
 import 'package:twg/ui/screens/notification/notification_screen.dart';
 import 'package:twg/ui/screens/onboarding/introduction_screen.dart';
 import 'package:twg/ui/screens/profile_and_settings/account_screen.dart';
@@ -60,8 +63,11 @@ class MyRouter {
   static const String bookingDetail = '/bookingDetail';
   static const String chatbotScreen = '/chatbotScreen';
   static const String onBoarding = '/onBoarding';
-  static const String addLocation = 'addLocation';
-  static const String locationDetail = 'locationDetail';
+  static const String addLocation = '/addLocation';
+  static const String locationDetail = '/locationDetail';
+  static const String pickLocation = '/pickLocation';
+  static const String chooseFromMap = '/chooseFromMap';
+  static const String loadingRecommend = '/loadingRecommend';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -104,7 +110,9 @@ class MyRouter {
       case booking:
         return _buildRouteNavigationWithoutEffect(
           settings,
-          const BookingScreen(),
+          BookingScreen(
+            isRecommend: settings.arguments as bool,
+          ),
         );
       case chatRoom:
         return _buildRouteNavigationWithoutEffect(
@@ -227,6 +235,25 @@ class MyRouter {
           LocationDetailScreen(
             location: settings.arguments as LocationDto,
           ),
+        );
+      case pickLocation:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          PickLocationScreen(
+            locationDto: settings.arguments as LocationDto?,
+          ),
+        );
+      case chooseFromMap:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          ChooseFromMapScreen(
+            isLocation: settings.arguments as bool,
+          ),
+        );
+      case loadingRecommend:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const LoadingPage(),
         );
       case onBoarding:
         return _buildRouteNavigationWithoutEffect(

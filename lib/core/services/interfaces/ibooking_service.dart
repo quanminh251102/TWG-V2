@@ -47,4 +47,12 @@ abstract class IBookingService {
   Future<bool> saveLocation(LocationDto location);
   Future<bool> createBooking(BookingDto bookingDto);
   Future<bool> saveBooking(String bookingId);
+  Future<List<BookingDto>?> getRecommendBooking({
+    String? token,
+    String? type,
+    double? startPointLat,
+    double? startPointLong,
+    double? endPointLat,
+    double? endPointLong,
+  });
 }

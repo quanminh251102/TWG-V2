@@ -37,6 +37,7 @@ class AuthViewModel with ChangeNotifier implements IAuthViewModel {
       await EasyLoading.showSuccess('Đăng nhập thành công!');
       Get.offNamed(
         MyRouter.booking,
+        arguments: false,
       );
     } else {
       // await EasyLoading.showError('Đăng nhập thất bại!');

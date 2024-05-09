@@ -200,6 +200,7 @@ class _AddLocationScreenState extends State<AddLocationScreen>
                                                   SavePlaceType.school
                                               ? 'company'
                                               : 'other',
+                                      placeId: currentLocation!.placeId,
                                       placeName: placeName,
                                       placeGeoCode:
                                           '${vm.currentLocation!.latitude},${vm.currentLocation!.longitude}',

@@ -51,7 +51,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
             child: _BottomBarItem(
               onTap: () {
                 // Get.toNamed(MyRouter., arguments: -1)
-                Get.toNamed(MyRouter.booking);
+                Get.toNamed(
+                  MyRouter.booking,
+                  arguments: false,
+                );
               },
               title: 'Chuyến đi',
               image: 'assets/icons/book.svg',

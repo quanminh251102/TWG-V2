@@ -18,6 +18,7 @@ import 'package:twg/global/locator.dart';
 import 'package:twg/global/router.dart';
 
 class BookingViewModel with ChangeNotifier implements IBookingViewModel {
+  List<BookingDto> _recommendBooking = [];
   List<BookingDto> _bookings = [];
   int _totalCount = 0;
   bool _isLoading = false;
@@ -30,6 +31,9 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
 
   BookingDto? _bookingDto;
   bool _onChangePlace = false;
+  List<PlaceDetailDto>? _recommendPlaces;
+  @override
+  List<PlaceDetailDto>? get recommendPlaces => _recommendPlaces;
   bool _onSearchPlace = false;
   List<Predictions> _listPredictions = [];
 
@@ -41,6 +45,8 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   LatLngBounds? _boundConfirmScreen;
   BookingDto? _currentBooking;
   FilterBookingDto? _filterBookingDto;
+  @override
+  List<BookingDto> get recommendBooking => _recommendBooking;
   @override
   FilterBookingDto? get filterBookingDto => _filterBookingDto;
   @override
@@ -104,6 +110,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     _keyword = null;
     page = 1;
     _bookings.clear();
+    _recommendBooking.clear();
   }
 
   @override
@@ -244,6 +251,28 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
               )
               .toList());
     }
+    notifyListeners();
+  }
+
+  @override
+  Future<void> getRecommendBooking({
+    String? type,
+    double? startPointLat,
+    double? startPointLong,
+    double? endPointLat,
+    double? endPointLong,
+  }) async {
+    _reset();
+    final paginationRecommendBooking =
+        await _iBookingService.getRecommendBooking(
+      type: type,
+      startPointLat: startPointLat,
+      startPointLong: startPointLong,
+      endPointLat: endPointLat,
+      endPointLong: endPointLong,
+    );
+    _bookings = paginationRecommendBooking ?? [];
+    _totalCount = _iBookingService.total;
     notifyListeners();
   }
 
@@ -453,6 +482,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     notifyListeners();
     List<PlaceDetailDto>? placeDetailDto =
         await _iGoongService.getPlaceByGeocode(latLng);
+    _recommendPlaces = placeDetailDto;
     _onChangePlace = false;
     notifyListeners();
     return placeDetailDto;

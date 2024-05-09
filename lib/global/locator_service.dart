@@ -5,6 +5,7 @@ import 'package:twg/core/services/implements/booking_service.dart';
 import 'package:twg/core/services/implements/chat_room_service.dart';
 import 'package:twg/core/services/implements/cloudinary_service.dart';
 import 'package:twg/core/services/implements/goongs_service.dart';
+import 'package:twg/core/services/implements/location_service.dart';
 import 'package:twg/core/services/implements/map_service.dart';
 import 'package:twg/core/services/implements/message_service.dart';
 import 'package:twg/core/services/implements/notification_service.dart';
@@ -19,6 +20,7 @@ import 'package:twg/core/services/interfaces/ibooking_service.dart';
 import 'package:twg/core/services/interfaces/ichat_room_service.dart';
 import 'package:twg/core/services/interfaces/icloudinary_service.dart';
 import 'package:twg/core/services/interfaces/igoong_service.dart';
+import 'package:twg/core/services/interfaces/ilocation_service.dart';
 import 'package:twg/core/services/interfaces/imap_service.dart';
 import 'package:twg/core/services/interfaces/imessage_service.dart';
 import 'package:twg/core/services/interfaces/inotification_service.dart';
@@ -42,6 +44,7 @@ void registerServiceSingletons(GetIt locator) {
   locator.registerLazySingleton<IOrsService>(() => OrsService());
   locator
       .registerLazySingleton<INotificationService>(() => NotificationService());
+  locator.registerLazySingleton<ILocationService>(() => LocationService());
   // locator.registerLazySingleton<ICategoryService>(() => CategoryService());
   // locator
   //     .registerLazySingleton<IManufactureService>(() => ManufactureService());

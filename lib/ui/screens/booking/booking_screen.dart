@@ -1,38 +1,34 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:twg/core/dtos/booking/filter_booking_dto.dart';
+
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/utils/money_utils.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ihome_viewmodel.dart';
-import 'package:twg/global/locator.dart';
-import 'package:twg/global/global_data.dart';
-import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
-import 'package:twg/ui/common_widgets/confirm_login_dialog.dart';
-import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
-import 'package:twg/ui/screens/booking/widget/create_post_bottom_sheet.dart';
-import 'package:lottie/lottie.dart' as lottie;
+import 'package:twg/core/view_models/interfaces/ilocation_viewmodel.dart';
 import 'package:twg/ui/animation/ani_bottom_sheet.dart';
-import 'package:twg/ui/screens/booking/widget/list_booking_item.dart';
+import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
+import 'package:twg/ui/screens/booking/widget/recommend_text_field.dart';
 
 import 'widget/list_booking.dart';
+
 part './widget/available_tab.dart';
-part './widget/saved_booking_tab.dart';
-part './widget/for_you_tab.dart';
 part './widget/filter_dialog.dart';
+part './widget/for_you_tab.dart';
+part './widget/saved_booking_tab.dart';
 
 class BookingScreen extends StatefulWidget {
-  const BookingScreen({super.key});
+  final bool isRecommend;
+  const BookingScreen({
+    Key? key,
+    required this.isRecommend,
+  }) : super(key: key);
 
   @override
   State<BookingScreen> createState() => _BookingScreenState();
@@ -48,15 +44,15 @@ class _BookingScreenState extends State<BookingScreen>
   int current = 0;
   Animation<double>? topBarAnimation;
   double topBarOpacity = 0.0;
-
+  bool? isRecommend = false;
   double changePositionedOfLine() {
     switch (current) {
       case 0:
-        return 60.w;
+        return 50.w;
       case 1:
-        return 170.w;
+        return 205.w;
       case 2:
-        return 305.w;
+        return 320.w;
       default:
         return 0;
     }
@@ -65,9 +61,9 @@ class _BookingScreenState extends State<BookingScreen>
   double changeContainerWidth() {
     switch (current) {
       case 0:
-        return 50.w;
-      case 1:
         return 80.w;
+      case 1:
+        return 50.w;
       case 2:
         return 50.w;
 
@@ -79,9 +75,9 @@ class _BookingScreenState extends State<BookingScreen>
   String getTabTitle(int index) {
     switch (index) {
       case 0:
-        return "Hoạt động";
-      case 1:
         return "Dành cho bạn";
+      case 1:
+        return "Hoạt động";
       case 2:
         return "Đã lưu";
       default:
@@ -91,6 +87,7 @@ class _BookingScreenState extends State<BookingScreen>
 
   @override
   void initState() {
+    isRecommend = widget.isRecommend;
     _iHomeViewModel = context.read<IHomeViewModel>();
     _iBookingViewModel = context.read<IBookingViewModel>();
     _tabController = TabController(
@@ -141,6 +138,31 @@ class _BookingScreenState extends State<BookingScreen>
     }
 
     List<Widget> tabs = [
+      _ForYouBookingTab(
+        isRecommend: isRecommend ?? false,
+        animationController: animationController,
+        scrollCallback: (scrollOffset) {
+          if (scrollOffset >= 24) {
+            if (topBarOpacity != 1.0) {
+              setState(() {
+                topBarOpacity = 1.0;
+              });
+            }
+          } else if (scrollOffset <= 24 && scrollOffset >= 0) {
+            if (topBarOpacity != scrollOffset / 24) {
+              setState(() {
+                topBarOpacity = scrollOffset / 24;
+              });
+            }
+          } else if (scrollOffset <= 0) {
+            if (topBarOpacity != 0.0) {
+              setState(() {
+                topBarOpacity = 0.0;
+              });
+            }
+          }
+        },
+      ),
       _AvailableBookingTab(
         animationController: animationController,
         scrollCallback: (scrollOffset) {
@@ -165,7 +187,6 @@ class _BookingScreenState extends State<BookingScreen>
           }
         },
       ),
-      _ForYouBookingTab(),
       _SaveBookingTab(
         animationController: animationController,
         scrollCallback: (scrollOffset) {
@@ -295,12 +316,13 @@ class _BookingScreenState extends State<BookingScreen>
                                                   return Padding(
                                                     padding:
                                                         EdgeInsets.symmetric(
-                                                      horizontal: 25.w,
+                                                      horizontal: 30.w,
                                                     ),
                                                     child: GestureDetector(
                                                       onTap: () {
                                                         setState(() {
                                                           current = index;
+                                                          isRecommend = false;
                                                         });
                                                       },
                                                       child: Text(
@@ -345,74 +367,78 @@ class _BookingScreenState extends State<BookingScreen>
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: 12.w,
-                                  right: 12.w,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        child: CupertinoSearchTextField(
-                                      controller: _searchController,
-                                      onSuffixTap: () async {
-                                        _searchController.text = '';
-                                        _iBookingViewModel.filterBookingDto
-                                            ?.keyword = _searchController.text;
-                                        await _iBookingViewModel
-                                            .onSearchBooking();
-                                      },
-                                      onSubmitted: (value) async {
-                                        _iBookingViewModel
-                                            .filterBookingDto?.keyword = value;
-                                        await _iBookingViewModel
-                                            .onSearchBooking();
-                                      },
-                                    )),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 10.w,
-                                      ),
-                                      child: Container(
-                                        height: 30.r,
-                                        width: 30.r,
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.2),
-                                            borderRadius: BorderRadius.circular(
-                                              10.r,
-                                            ),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.3),
-                                                blurRadius: 10.r,
-                                                spreadRadius: 1,
-                                                offset: const Offset(
-                                                  4,
-                                                  4,
-                                                ),
+                              if (current != 0)
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 12.w,
+                                    right: 12.w,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                          child: CupertinoSearchTextField(
+                                        controller: _searchController,
+                                        onSuffixTap: () async {
+                                          _searchController.text = '';
+                                          _iBookingViewModel
+                                                  .filterBookingDto?.keyword =
+                                              _searchController.text;
+                                          await _iBookingViewModel
+                                              .onSearchBooking();
+                                        },
+                                        onSubmitted: (value) async {
+                                          _iBookingViewModel.filterBookingDto
+                                              ?.keyword = value;
+                                          await _iBookingViewModel
+                                              .onSearchBooking();
+                                        },
+                                      )),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 10.w,
+                                        ),
+                                        child: Container(
+                                          height: 30.r,
+                                          width: 30.r,
+                                          decoration: BoxDecoration(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                10.r,
                                               ),
-                                              BoxShadow(
-                                                color: Colors.white,
-                                                blurRadius: 10.r,
-                                                spreadRadius: 1,
-                                                offset: const Offset(
-                                                  -4,
-                                                  -4,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.3),
+                                                  blurRadius: 10.r,
+                                                  spreadRadius: 1,
+                                                  offset: const Offset(
+                                                    4,
+                                                    4,
+                                                  ),
                                                 ),
-                                              )
-                                            ]),
-                                        child: GestureDetector(
-                                          onTap: () => openFilterDialog(),
-                                          child: const Icon(
-                                            CupertinoIcons.layers,
+                                                BoxShadow(
+                                                  color: Colors.white,
+                                                  blurRadius: 10.r,
+                                                  spreadRadius: 1,
+                                                  offset: const Offset(
+                                                    -4,
+                                                    -4,
+                                                  ),
+                                                )
+                                              ]),
+                                          child: GestureDetector(
+                                            onTap: () => openFilterDialog(),
+                                            child: const Icon(
+                                              CupertinoIcons.layers,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    )
-                                  ],
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
                               SizedBox(
                                 height: 20.h,
                               ),

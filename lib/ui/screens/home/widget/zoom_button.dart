@@ -23,7 +23,7 @@ class ZoomButtons extends StatelessWidget {
   const ZoomButtons(
       {super.key,
       this.minZoom = 1,
-      this.maxZoom = 18,
+      this.maxZoom = 21,
       this.mini = true,
       this.padding = 2.0,
       this.alignment = Alignment.topRight,

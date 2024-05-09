@@ -366,11 +366,15 @@ class _LocationDetailScreenState extends State<LocationDetailScreen>
                       LocationDto locationDto = LocationDto(
                         type: widget.location.type,
                         placeName: nameController.text,
+                        placeId: widget.location.placeId,
                         placeGeoCode: widget.location.placeGeoCode,
                         placeDescription: widget.location.placeDescription,
                       );
                       await _iBookingViewModel.saveLocation(locationDto);
-                      Get.toNamed(MyRouter.booking);
+                      Get.toNamed(
+                        MyRouter.booking,
+                        arguments: false,
+                      );
                     },
                   ),
                 ),
