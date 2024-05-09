@@ -64,7 +64,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              '/api/account/register',
+              '/api/auth/register',
               queryParameters: queryParameters,
               data: _data,
             )

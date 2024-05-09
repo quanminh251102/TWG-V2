@@ -32,7 +32,7 @@ abstract class RestClient {
   Future<BaseApiDto<AccessTokenDto>> getToken(
     @Body() LoginDto model,
   );
-  @POST("/api/account/register")
+  @POST("/api/auth/register")
   Future<BaseApiDto<AccountDto>> register(
     @Body() RegisterDto model,
   );
