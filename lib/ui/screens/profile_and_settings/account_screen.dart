@@ -74,7 +74,7 @@ class _AccountScreenState extends State<AccountScreen>
                           child: Container(
                             decoration: BoxDecoration(
                                 color: ColorUtils.primaryColor,
-                                borderRadius: BorderRadius.circular(25)),
+                                borderRadius: BorderRadius.circular(10)),
                             height: MediaQuery.of(context).size.height * 0.06,
                             width: MediaQuery.of(context).size.width * 0.4,
                             child: const Center(
@@ -94,7 +94,7 @@ class _AccountScreenState extends State<AccountScreen>
                           child: Container(
                             decoration: BoxDecoration(
                                 color: const Color.fromARGB(255, 219, 219, 219),
-                                borderRadius: BorderRadius.circular(25)),
+                                borderRadius: BorderRadius.circular(10)),
                             height: MediaQuery.of(context).size.height * 0.06,
                             width: MediaQuery.of(context).size.width * 0.4,
                             child: const Center(
