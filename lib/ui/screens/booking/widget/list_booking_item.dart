@@ -127,7 +127,6 @@ class _ListBookingItemState extends State<ListBookingItem> {
                       ),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
                           vertical: 10.h,
                         ),
                         child: Column(
@@ -135,6 +134,8 @@ class _ListBookingItemState extends State<ListBookingItem> {
                             Padding(
                               padding: EdgeInsets.only(
                                 bottom: 10.h,
+                                left: 16.w,
+                                right: 16.w,
                               ),
                               child: InkWell(
                                 onTap: () {
