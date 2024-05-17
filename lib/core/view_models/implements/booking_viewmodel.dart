@@ -20,6 +20,7 @@ import 'package:twg/global/router.dart';
 class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   List<BookingDto> _recommendBooking = [];
   List<BookingDto> _bookings = [];
+  int _totalCountRecommend = 0;
   int _totalCount = 0;
   bool _isLoading = false;
   int page = 1;
@@ -125,6 +126,13 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     page += 1;
     _bookings = paginationProducts ?? [];
     _totalCount = _iBookingService.total;
+
+    final paginationRecommendBooking =
+        await _iBookingService.getRecommendBooking(
+      type: 'from_user',
+    );
+    _recommendBooking = paginationRecommendBooking ?? [];
+    _totalCountRecommend = _iBookingService.total;
     notifyListeners();
   }
 
@@ -271,8 +279,8 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
       endPointLat: endPointLat,
       endPointLong: endPointLong,
     );
-    _bookings = paginationRecommendBooking ?? [];
-    _totalCount = _iBookingService.total;
+    _recommendBooking = paginationRecommendBooking ?? [];
+    _totalCountRecommend = _iBookingService.total;
     notifyListeners();
   }
 

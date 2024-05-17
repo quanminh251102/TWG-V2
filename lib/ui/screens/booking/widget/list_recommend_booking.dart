@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/ui/screens/booking/widget/list_booking_item.dart';
+import 'package:twg/ui/screens/booking/widget/list_recommend_item.dart';
 
-class ListBooking extends StatefulWidget {
+class ListRecommendBooking extends StatefulWidget {
   final List<BookingDto> bookings;
-  final ScrollController? controller;
-  const ListBooking({
+  final ScrollController controller;
+  const ListRecommendBooking({
     Key? key,
     required this.bookings,
-    this.controller,
+    required this.controller,
     this.mainScreenAnimationController,
     this.mainScreenAnimation,
   }) : super(key: key);
@@ -18,10 +19,10 @@ class ListBooking extends StatefulWidget {
   final Animation<double>? mainScreenAnimation;
 
   @override
-  State<ListBooking> createState() => _ListBookingState();
+  State<ListRecommendBooking> createState() => _ListRecommendBookingState();
 }
 
-class _ListBookingState extends State<ListBooking>
+class _ListRecommendBookingState extends State<ListRecommendBooking>
     with TickerProviderStateMixin {
   AnimationController? animationController;
   @override
@@ -48,12 +49,10 @@ class _ListBookingState extends State<ListBooking>
               transform: Matrix4.translationValues(
                   0.0, 30 * (1.0 - widget.mainScreenAnimation!.value), 0.0),
               child: ListView.builder(
+                physics: const ClampingScrollPhysics(),
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
                 controller: widget.controller,
-                padding: EdgeInsets.only(top: 0.h),
-                physics: widget.controller != null
-                    ? null
-                    : const NeverScrollableScrollPhysics(),
-                shrinkWrap: widget.controller != null ? false : true,
                 itemBuilder: (ctx, index) {
                   final int count =
                       widget.bookings.length > 10 ? 10 : widget.bookings.length;
@@ -64,10 +63,8 @@ class _ListBookingState extends State<ListBooking>
                               curve: Interval((1 / count) * index, 1.0,
                                   curve: Curves.fastOutSlowIn)));
                   animationController?.forward();
-                  return ListBookingItem(
+                  return ListRecommendItem(
                     booking: widget.bookings[index],
-                    animation: animation,
-                    animationController: animationController!,
                   );
                 },
                 itemCount: widget.bookings.length,

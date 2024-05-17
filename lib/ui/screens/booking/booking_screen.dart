@@ -1,9 +1,11 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_firs
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import 'package:twg/core/utils/color_utils.dart';
@@ -14,13 +16,14 @@ import 'package:twg/core/view_models/interfaces/ihome_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ilocation_viewmodel.dart';
 import 'package:twg/ui/animation/ani_bottom_sheet.dart';
 import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
+import 'package:twg/ui/screens/booking/widget/list_recommend_booking.dart';
+import 'package:twg/ui/screens/booking/widget/list_recommend_item.dart';
 import 'package:twg/ui/screens/booking/widget/recommend_text_field.dart';
 
 import 'widget/list_booking.dart';
 
 part './widget/available_tab.dart';
 part './widget/filter_dialog.dart';
-part './widget/for_you_tab.dart';
 part './widget/saved_booking_tab.dart';
 
 class BookingScreen extends StatefulWidget {
@@ -48,25 +51,9 @@ class _BookingScreenState extends State<BookingScreen>
   double changePositionedOfLine() {
     switch (current) {
       case 0:
-        return 50.w;
+        return 1.sw / 7;
       case 1:
-        return 205.w;
-      case 2:
-        return 320.w;
-      default:
-        return 0;
-    }
-  }
-
-  double changeContainerWidth() {
-    switch (current) {
-      case 0:
-        return 80.w;
-      case 1:
-        return 50.w;
-      case 2:
-        return 50.w;
-
+        return 1.sw / 1.55;
       default:
         return 0;
     }
@@ -75,10 +62,8 @@ class _BookingScreenState extends State<BookingScreen>
   String getTabTitle(int index) {
     switch (index) {
       case 0:
-        return "Dành cho bạn";
-      case 1:
         return "Hoạt động";
-      case 2:
+      case 1:
         return "Đã lưu";
       default:
         return "";
@@ -138,31 +123,6 @@ class _BookingScreenState extends State<BookingScreen>
     }
 
     List<Widget> tabs = [
-      _ForYouBookingTab(
-        isRecommend: isRecommend ?? false,
-        animationController: animationController,
-        scrollCallback: (scrollOffset) {
-          if (scrollOffset >= 24) {
-            if (topBarOpacity != 1.0) {
-              setState(() {
-                topBarOpacity = 1.0;
-              });
-            }
-          } else if (scrollOffset <= 24 && scrollOffset >= 0) {
-            if (topBarOpacity != scrollOffset / 24) {
-              setState(() {
-                topBarOpacity = scrollOffset / 24;
-              });
-            }
-          } else if (scrollOffset <= 0) {
-            if (topBarOpacity != 0.0) {
-              setState(() {
-                topBarOpacity = 0.0;
-              });
-            }
-          }
-        },
-      ),
       _AvailableBookingTab(
         animationController: animationController,
         scrollCallback: (scrollOffset) {
@@ -313,29 +273,37 @@ class _BookingScreenState extends State<BookingScreen>
                                                     MainAxisAlignment.center,
                                                 children: List.generate(
                                                     tabs.length, (index) {
-                                                  return Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                      horizontal: 30.w,
-                                                    ),
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          current = index;
-                                                          isRecommend = false;
-                                                        });
-                                                      },
-                                                      child: Text(
-                                                        getTabTitle(index),
-                                                        style: TextStyle(
-                                                          fontSize:
-                                                              current == index
-                                                                  ? 16
-                                                                  : 14,
-                                                          fontWeight: current ==
-                                                                  index
-                                                              ? FontWeight.bold
-                                                              : FontWeight.w300,
+                                                  return Container(
+                                                    width: 1.sw / 2,
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                        horizontal: 30.w,
+                                                      ),
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            current = index;
+                                                            isRecommend = false;
+                                                          });
+                                                        },
+                                                        child: Center(
+                                                          child: Text(
+                                                            getTabTitle(index),
+                                                            style: TextStyle(
+                                                              fontSize:
+                                                                  current ==
+                                                                          index
+                                                                      ? 16
+                                                                      : 14,
+                                                              fontWeight: current ==
+                                                                      index
+                                                                  ? FontWeight
+                                                                      .bold
+                                                                  : FontWeight
+                                                                      .w300,
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
@@ -351,7 +319,7 @@ class _BookingScreenState extends State<BookingScreen>
                                         child: AnimatedContainer(
                                           margin:
                                               const EdgeInsets.only(left: 10),
-                                          width: changeContainerWidth(),
+                                          width: 80.w,
                                           height: 1.sh * 0.008,
                                           decoration: BoxDecoration(
                                             color: ColorUtils.primaryColor,
@@ -367,78 +335,74 @@ class _BookingScreenState extends State<BookingScreen>
                                   ),
                                 ),
                               ),
-                              if (current != 0)
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 12.w,
-                                    right: 12.w,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          child: CupertinoSearchTextField(
-                                        controller: _searchController,
-                                        onSuffixTap: () async {
-                                          _searchController.text = '';
-                                          _iBookingViewModel
-                                                  .filterBookingDto?.keyword =
-                                              _searchController.text;
-                                          await _iBookingViewModel
-                                              .onSearchBooking();
-                                        },
-                                        onSubmitted: (value) async {
-                                          _iBookingViewModel.filterBookingDto
-                                              ?.keyword = value;
-                                          await _iBookingViewModel
-                                              .onSearchBooking();
-                                        },
-                                      )),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 10.w,
-                                        ),
-                                        child: Container(
-                                          height: 30.r,
-                                          width: 30.r,
-                                          decoration: BoxDecoration(
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                10.r,
-                                              ),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.3),
-                                                  blurRadius: 10.r,
-                                                  spreadRadius: 1,
-                                                  offset: const Offset(
-                                                    4,
-                                                    4,
-                                                  ),
-                                                ),
-                                                BoxShadow(
-                                                  color: Colors.white,
-                                                  blurRadius: 10.r,
-                                                  spreadRadius: 1,
-                                                  offset: const Offset(
-                                                    -4,
-                                                    -4,
-                                                  ),
-                                                )
-                                              ]),
-                                          child: GestureDetector(
-                                            onTap: () => openFilterDialog(),
-                                            child: const Icon(
-                                              CupertinoIcons.layers,
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: 12.w,
+                                  right: 12.w,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        child: CupertinoSearchTextField(
+                                      controller: _searchController,
+                                      onSuffixTap: () async {
+                                        _searchController.text = '';
+                                        _iBookingViewModel.filterBookingDto
+                                            ?.keyword = _searchController.text;
+                                        await _iBookingViewModel
+                                            .onSearchBooking();
+                                      },
+                                      onSubmitted: (value) async {
+                                        _iBookingViewModel
+                                            .filterBookingDto?.keyword = value;
+                                        await _iBookingViewModel
+                                            .onSearchBooking();
+                                      },
+                                    )),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 10.w,
+                                      ),
+                                      child: Container(
+                                        height: 30.r,
+                                        width: 30.r,
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.2),
+                                            borderRadius: BorderRadius.circular(
+                                              10.r,
                                             ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.3),
+                                                blurRadius: 10.r,
+                                                spreadRadius: 1,
+                                                offset: const Offset(
+                                                  4,
+                                                  4,
+                                                ),
+                                              ),
+                                              BoxShadow(
+                                                color: Colors.white,
+                                                blurRadius: 10.r,
+                                                spreadRadius: 1,
+                                                offset: const Offset(
+                                                  -4,
+                                                  -4,
+                                                ),
+                                              )
+                                            ]),
+                                        child: GestureDetector(
+                                          onTap: () => openFilterDialog(),
+                                          child: const Icon(
+                                            CupertinoIcons.layers,
                                           ),
                                         ),
-                                      )
-                                    ],
-                                  ),
+                                      ),
+                                    )
+                                  ],
                                 ),
+                              ),
                               SizedBox(
                                 height: 20.h,
                               ),
