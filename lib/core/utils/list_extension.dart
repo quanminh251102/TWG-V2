@@ -6,13 +6,13 @@ extension ListExtension<T> on Iterable<T> {
   }
 
   bool isNullOrEmpty() {
-    return this == null || this.isEmpty;
+    return isEmpty;
   }
 
   T? firstOrDefault(bool Function(T element) test) {
     T? item;
     try{
-      item = this.firstWhere(test);
+      item = firstWhere(test);
     }catch(e){}
     return item;
   }
@@ -31,7 +31,7 @@ extension ListExtension<T> on Iterable<T> {
 
   Iterable<T> except(Iterable<T> elements) {
     var result = List<T>.from(this);
-    if (elements == null || elements.isEmpty) return result;
+    if (elements.isEmpty) return result;
 
     for (var element in elements) {
       while (result.contains(element)) {
@@ -47,10 +47,10 @@ extension ListExtension<T> on Iterable<T> {
 
   Iterable<T> intersect(Iterable<T> elements) {
     var result = <T>[];
-    if (elements == null || elements.isEmpty) return [];
+    if (elements.isEmpty) return [];
 
     for (var element in elements) {
-      if(this.contains(element)) {
+      if(contains(element)) {
         result.add(element);
       }
     }
@@ -60,7 +60,7 @@ extension ListExtension<T> on Iterable<T> {
   /// check whether `elements` are the same as current list or not, that means every element of A appears in B
   /// and every element of B appears in A
   bool isEqual(Iterable<T> elements) {
-    return this.every((x) => elements.contains(x)) &&
-        elements.every((x) => this.contains(x));
+    return every((x) => elements.contains(x)) &&
+        elements.every((x) => contains(x));
   }
 }

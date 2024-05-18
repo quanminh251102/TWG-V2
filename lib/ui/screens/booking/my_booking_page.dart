@@ -9,10 +9,7 @@ import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/screens/booking/widget/booking_history_item.dart';
-import 'package:twg/ui/screens/booking/widget/list_booking.dart';
-import 'package:twg/ui/screens/booking/widget/list_booking_item.dart';
 
-import 'widget/my_booking_item.dart';
 
 class MyBookPage extends StatefulWidget {
   const MyBookPage({super.key});
@@ -26,8 +23,8 @@ class _MyBookPageState extends State<MyBookPage>
   bool isLoading_getMyBook = false;
   List<BookingDto> bookings = [];
   List<BookingDto> bookings_selected = [];
-  TextEditingController _startPoint = TextEditingController();
-  TextEditingController _endPoint = TextEditingController();
+  final TextEditingController _startPoint = TextEditingController();
+  final TextEditingController _endPoint = TextEditingController();
   late FocusNode startPointFocus;
   late FocusNode endPointFocus;
   late IBookingViewModel _iBookingViewModel;

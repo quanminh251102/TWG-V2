@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dialog_flowtter/dialog_flowtter.dart';
@@ -8,9 +7,9 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class ChatbotViewModel with ChangeNotifier implements IChatbotViewModel {
   late DialogFlowtter _dialogFlowtter;
-  List<Map<String, dynamic>> _messages = [];
+  final List<Map<String, dynamic>> _messages = [];
 
-  List<types.Message> _responseMessages = [];
+  final List<types.Message> _responseMessages = [];
   @override
   List<types.Message> get responseMessages => _responseMessages;
 

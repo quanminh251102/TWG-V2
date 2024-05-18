@@ -1,19 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:twg/core/dtos/auth/account_dto.dart';
-import 'package:twg/core/dtos/call/call_info_dto.dart';
-import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
-import 'package:twg/core/dtos/message/message_dto.dart';
-import 'package:twg/core/dtos/message/send_message_dto.dart';
 import 'package:twg/core/dtos/review/create_review_dto.dart';
 import 'package:twg/core/dtos/review/review_dto.dart';
-import 'package:twg/core/services/interfaces/imessage_service.dart';
 import 'package:twg/core/services/interfaces/ireview_service.dart';
-import 'package:twg/core/services/interfaces/isocket_service.dart';
-import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ireview_viewmodel.dart';
-import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
 
 class ReviewViewModel with ChangeNotifier implements IReviewViewModel {
@@ -54,9 +44,9 @@ class ReviewViewModel with ChangeNotifier implements IReviewViewModel {
   void filter() {
     _reviewsAfterFilter = _reviews.where((review) {
       String name = review.creater!.firstName.toString().toLowerCase();
-      String search_name = _name.toLowerCase();
+      String searchName = _name.toLowerCase();
 
-      if (name.contains(search_name)) {
+      if (name.contains(searchName)) {
         return true;
       }
       return false;

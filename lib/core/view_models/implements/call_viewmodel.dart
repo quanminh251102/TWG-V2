@@ -19,15 +19,15 @@ class CallViewModel with ChangeNotifier implements ICallViewModel {
   IO.Socket? get socket => _socket;
 
   @override
-  void setSocket(IO.Socket _value) {
-    _socket = _value;
+  void setSocket(IO.Socket value) {
+    _socket = value;
   }
 
   @override
   void initSocketEventForCall() {
     // when we get a call
     _iSocketService.socket!.on("incoming-call", (data) {
-      print("data ${data}");
+      print("data $data");
       print("data from ${data['from']}");
 
       _callInfo.receiverId = data['from'];

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_cards/flutter_custom_cards.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:twg/constants.dart';
@@ -334,7 +333,7 @@ class ApplyItem extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: ColorUtils.primaryColor),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Row(
                         children: [
                           if (apply.dealPrice == 0)

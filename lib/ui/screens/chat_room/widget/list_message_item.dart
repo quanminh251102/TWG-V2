@@ -139,7 +139,7 @@ class _ListMessageItemState extends State<ListMessageItem> {
               //     child: Image.network(message.message as String,
               //         width: 150, fit: BoxFit.fill)),
               const SizedBox(height: 4),
-              Text(startTime, style: TextStyle(color: Colors.grey)),
+              Text(startTime, style: const TextStyle(color: Colors.grey)),
             ],
           ),
         ),
@@ -166,7 +166,7 @@ class _ListMessageItemState extends State<ListMessageItem> {
                 const SizedBox(height: 4),
                 Text(
                   startTime,
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                 )
               ],
             ),
@@ -186,7 +186,7 @@ class _ListMessageItemState extends State<ListMessageItem> {
         ),
         child: Text(
           message.message as String,
-          style: TextStyle(color: Colors.black, fontSize: 12),
+          style: const TextStyle(color: Colors.black, fontSize: 12),
         ),
       )));
 
@@ -233,23 +233,23 @@ class _ListMessageItemState extends State<ListMessageItem> {
 
   @override
   Widget build(BuildContext context) {
-    var _message = widget.Message;
-    String customStartTime = DateTime.parse(_message.createdAt as String)
+    var message = widget.Message;
+    String customStartTime = DateTime.parse(message.createdAt as String)
         .toLocal()
         .toString()
         .substring(11, 16);
 
-    String _type = _message.type as String;
+    String type = message.type as String;
     bool isMe = locator<GlobalData>().currentUser?.email.toString() ==
-        _message.userId!.email.toString();
-    return (_type == "isDate")
-        ? dateWidget(_message, customStartTime)
+        message.userId!.email.toString();
+    return (type == "isDate")
+        ? dateWidget(message, customStartTime)
         : isMe // mean is Me
-            ? ((_type == "text")
-                ? (textRight(_message, customStartTime))
-                : (imageRight(_message, customStartTime)))
-            : ((_type == "text")
-                ? (textLeft(_message, customStartTime))
-                : (imageLeft(_message, customStartTime)));
+            ? ((type == "text")
+                ? (textRight(message, customStartTime))
+                : (imageRight(message, customStartTime)))
+            : ((type == "text")
+                ? (textLeft(message, customStartTime))
+                : (imageLeft(message, customStartTime)));
   }
 }

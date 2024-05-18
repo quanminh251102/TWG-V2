@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 
 class ColorUtils {
   static Color fromString(String colorString) {
-    if (colorString == null) {
-      return Color(0xffF2F2F2);
-    }
     try {
       // rgba(247, 247, 247, 0.73)
       if (colorString.substring(0, 4) == 'rgba') {
@@ -26,18 +23,19 @@ class ColorUtils {
           double alpha = double.parse(rgbaValueList[3]);
           return Color.fromRGBO(red, green, blue, alpha);
         } catch (e) {
-          throw e;
+          rethrow;
         }
       }
 
       // #f3e2d0
       final buffer = StringBuffer();
-      if (colorString.length == 6 || colorString.length == 7)
+      if (colorString.length == 6 || colorString.length == 7) {
         buffer.write('ff');
+      }
       buffer.write(colorString.replaceFirst('#', ''));
       return Color(int.parse(buffer.toString(), radix: 16));
     } catch (e) {
-      return Color(0xffF2F2F2);
+      return const Color(0xffF2F2F2);
     }
   }
 

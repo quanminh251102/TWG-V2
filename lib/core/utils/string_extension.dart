@@ -32,10 +32,10 @@ extension StringExtension on String {
   }
 
   double toTimeOfDayAsDouble() {
-    TimeOfDay _time = TimeOfDay(
-        hour: int.parse(this.split(":")[0]),
-        minute: int.parse(this.split(":")[1]));
-    return _time.hour + _time.minute / 60.0;
+    TimeOfDay time = TimeOfDay(
+        hour: int.parse(split(":")[0]),
+        minute: int.parse(split(":")[1]));
+    return time.hour + time.minute / 60.0;
   }
 
   // List<TextSpan> detectLink() {

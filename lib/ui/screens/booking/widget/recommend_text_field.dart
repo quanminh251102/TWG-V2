@@ -5,12 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-import 'package:twg/core/dtos/goongs/place_detail_dto.dart';
 import 'package:twg/core/dtos/location/location_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/ilocation_viewmodel.dart';
-import 'package:twg/ui/screens/booking/widget/save_place_box.dart';
 
 import '../../../../global/router.dart';
 

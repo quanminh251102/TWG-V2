@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:linear_timer/linear_timer.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/constants.dart';
-import 'package:twg/core/dtos/apply/apply_dto.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
@@ -21,7 +18,6 @@ import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
 import 'package:twg/global/router.dart';
-import 'package:twg/ui/common_widgets/custom_button.dart';
 import 'package:twg/ui/utils/handling_string_utils.dart';
 
 class BookingDialog extends StatefulWidget {
@@ -450,7 +446,7 @@ class _AnimatedDividerState extends State<AnimatedDivider>
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500), // Adjust the duration as needed
+      duration: const Duration(milliseconds: 500), // Adjust the duration as needed
     );
 
     _animation = Tween<double>(begin: 0, end: 1).animate(_controller);

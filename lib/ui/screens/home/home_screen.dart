@@ -1,21 +1,19 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_cards/flutter_custom_cards.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:lottie/lottie.dart' as lottie;
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 import 'package:twg/global/router.dart';
+import 'package:twg/ui/screens/booking/widget/auto_complete/auto_complete.dart';
+import 'package:twg/ui/screens/booking/widget/auto_complete/options.dart';
 import 'package:twg/ui/common_widgets/booking_dialog.dart';
-import 'package:twg/ui/common_widgets/confirm_login_dialog.dart';
 import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
-import 'package:twg/ui/screens/booking/widget/create_post_bottom_sheet.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/goongs/place_dto.dart';
@@ -30,11 +28,6 @@ import 'package:twg/core/view_models/interfaces/ihome_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/inotification_viewmodal.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
-import 'package:twg/ui/common_widgets/custom_booking_floating_button.dart';
-import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
-import 'package:twg/ui/common_widgets/custom_text_field.dart';
-import 'package:twg/ui/common_widgets/notification_widget.dart';
-import 'package:twg/ui/screens/home/widget/search_response_item.dart';
 import 'package:twg/ui/screens/home/widget/zoom_button.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -57,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   late final customMarkers = <Marker>[];
   late final bookingMarkers = <Marker>[];
-  final FocusNode _focusNode = FocusNode();
 
   late IChatRoomViewModel _iChatRoomViewModel;
   late ICallViewModel _iCallViewModel;
@@ -65,12 +57,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late IApplyViewModel _iApplyViewModel;
   late INotificationViewModel _iNotificationViewModel;
   late IBookingViewModel _iBookingViewModel;
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
-  }
+  final FieldSettings settings = FieldSettings();
 
   @override
   void initState() {
@@ -209,22 +196,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: const Text(
-          'Trang chủ',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        actions: const [
-          NotificationWidget(),
-        ],
-      ),
       bottomNavigationBar: const BottomNavBarV2(
         currentIndex: 1,
       ),
@@ -331,94 +302,43 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
+                      top: kToolbarHeight,
                       left: 20.w,
                       right: 20.w,
-                      top: 20.h,
                     ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5.r),
-                      ),
-                      child: CustomSearchField(
-                        focusNode: _focusNode,
-                        controller: _controller,
-                        readOnly: false,
-                        onChanged: (value) async {
-                          await _iHomeViewModel.onSearch(value);
-                        },
-                      ),
+                    child: AutoCompleteField(
+                      controller: _controller,
+                      settings: settings,
+                      onSuggestionSelected: (Predictions predictions) async {
+                        if (predictions.description!.toLowerCase() !=
+                            _controller.text.toLowerCase()) {
+                          _controller.text = predictions.description ?? "";
+                          setState(() {});
+                          PlaceDto? searchPlace =
+                              await vm.getPlaceById(predictions.placeId!);
+                          if (searchPlace != null) {
+                            if (customMarkers.length > 1) {
+                              customMarkers.removeLast();
+                            }
+                            customMarkers.add(
+                              buildPin(
+                                LatLng(
+                                  searchPlace.geometry!.location!.lat!,
+                                  searchPlace.geometry!.location!.lng!,
+                                ),
+                              ),
+                            );
+                            _animatedMapMove(
+                              LatLng(
+                                searchPlace.geometry!.location!.lat!,
+                                searchPlace.geometry!.location!.lng!,
+                              ),
+                              19,
+                            );
+                          }
+                        }
+                      },
                     ),
-                  ),
-                  Consumer<IHomeViewModel>(
-                    builder: (context, value, child) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 20.w,
-                        ),
-                        child: Container(
-                          child: vm.onSearchPlace == true
-                              ? Container(
-                                  height: 300.h,
-                                  color: Colors.white,
-                                  child: Center(
-                                    child: lottie.Lottie.asset(
-                                        "assets/lottie/loading_location.json",
-                                        repeat: true,
-                                        height: 300.h),
-                                  ),
-                                )
-                              : vm.listPredictions.isNotEmpty &&
-                                      _controller.text != '' &&
-                                      _focusNode.hasFocus
-                                  ? Container(
-                                      color: Colors.white,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: vm.listPredictions.map((e) {
-                                          return InkWell(
-                                            onTap: () async {
-                                              _focusNode.unfocus();
-                                              _controller.text =
-                                                  e.description ?? "";
-                                              setState(() {});
-                                              PlaceDto? searchPlace = await vm
-                                                  .getPlaceById(e.placeId!);
-                                              if (searchPlace != null) {
-                                                if (customMarkers.length > 1) {
-                                                  customMarkers.removeLast();
-                                                }
-                                                customMarkers.add(
-                                                  buildPin(
-                                                    LatLng(
-                                                      searchPlace.geometry!
-                                                          .location!.lat!,
-                                                      searchPlace.geometry!
-                                                          .location!.lng!,
-                                                    ),
-                                                  ),
-                                                );
-                                                _animatedMapMove(
-                                                  LatLng(
-                                                    searchPlace.geometry!
-                                                        .location!.lat!,
-                                                    searchPlace.geometry!
-                                                        .location!.lng!,
-                                                  ),
-                                                  19,
-                                                );
-                                              }
-                                            },
-                                            child: SearchResponseItem(
-                                              description: e.description ?? "",
-                                            ),
-                                          );
-                                        }).toList(),
-                                      ))
-                                  : const SizedBox.shrink(),
-                        ),
-                      );
-                    },
                   )
                 ],
               ),

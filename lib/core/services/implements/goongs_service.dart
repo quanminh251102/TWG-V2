@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:twg/constants.dart';
 import 'package:twg/core/dtos/goongs/place_detail_dto.dart';

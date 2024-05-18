@@ -1,4 +1,3 @@
-import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'send_message_dto.g.dart';
 

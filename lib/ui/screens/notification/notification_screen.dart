@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/view_models/interfaces/inotification_viewmodal.dart';
 import 'package:twg/ui/screens/notification/widget/list_notification.dart';

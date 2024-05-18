@@ -17,7 +17,7 @@ class ApplyItemClose extends StatelessWidget {
     this.rvm,
   }) : super(key: key);
   void close_review(context) async {
-    final _dialog = RatingDialog(
+    final dialog = RatingDialog(
       initialRating: 1.0,
       // your app's name?
       title: const Text(
@@ -62,7 +62,7 @@ class ApplyItemClose extends StatelessWidget {
     showDialog(
       context: context,
       barrierDismissible: true, // set to false if you want to force a rating
-      builder: (context) => _dialog,
+      builder: (context) => dialog,
     );
   }
 

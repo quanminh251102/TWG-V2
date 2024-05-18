@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,20 +6,13 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:lottie/lottie.dart' as lottie;
 import 'package:provider/provider.dart';
 
-import 'package:twg/core/dtos/goongs/place_detail_dto.dart';
-import 'package:twg/core/dtos/goongs/place_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 import 'package:twg/core/dtos/location/location_dto.dart';
-import 'package:twg/core/utils/color_utils.dart';
-import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/common_widgets/custom_button.dart';
-import 'package:twg/ui/screens/booking/widget/booking_search_item.dart';
-import 'package:twg/ui/screens/booking/widget/location_text_field.dart';
 
 import '../../../global/global_data.dart';
 import '../../../global/locator.dart';

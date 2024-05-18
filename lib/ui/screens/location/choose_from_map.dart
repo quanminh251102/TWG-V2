@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -664,11 +663,11 @@ class _ChooseFromMapScreenState extends State<ChooseFromMapScreen>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.map_outlined),
+                  const Icon(Icons.map_outlined),
                   SizedBox(
                     width: 5.w,
                   ),
-                  Text(
+                  const Text(
                     'Chọn từ bản đồ',
                   ),
                 ],

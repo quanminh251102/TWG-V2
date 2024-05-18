@@ -76,26 +76,54 @@ class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
             Padding(
               padding: EdgeInsets.only(
                 left: 8.w,
+                right: 8.w,
               ),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 5.h),
+                        child: Lottie.asset(
+                          'assets/lottie/new-booking.json',
+                          fit: BoxFit.fill,
+                          height: 30.h,
+                          width: 30.w,
+                        ),
+                      ),
+                      Text(
+                        'Dành cho bạn',
+                        style: TextStyle(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                   Padding(
-                    padding: EdgeInsets.only(bottom: 5.h),
-                    child: Lottie.asset(
-                      'assets/lottie/new-booking.json',
-                      fit: BoxFit.fill,
-                      height: 30.h,
-                      width: 30.w,
+                    padding: EdgeInsets.only(
+                      top: 8.h,
                     ),
-                  ),
-                  Text(
-                    'Dành cho bạn',
-                    style: TextStyle(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.bold,
+                    child: Row(
+                      children: [
+                        Text(
+                          'Xem thêm',
+                          style: TextStyle(
+                            color: ColorUtils.primaryColor,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: ColorUtils.primaryColor,
+                          size: 15.sp,
+                        )
+                      ],
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

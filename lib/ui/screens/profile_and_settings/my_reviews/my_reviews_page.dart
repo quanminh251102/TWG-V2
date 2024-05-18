@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_custom_cards/flutter_custom_cards.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
@@ -23,7 +18,7 @@ class MyReViewsPage extends StatefulWidget {
 class _MyReViewsPageState extends State<MyReViewsPage> {
   List<dynamic> reviews = [];
   List<dynamic> reviews_selected = [];
-  TextEditingController _name = TextEditingController();
+  final TextEditingController _name = TextEditingController();
   late FocusNode nameFocus;
   late IReviewViewModel _iReviewViewModel;
   bool isLoading = false;

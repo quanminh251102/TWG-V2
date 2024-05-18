@@ -1,10 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +24,7 @@ class AddBookingScreen extends StatefulWidget {
 
 String formatString(String input) {
   if (input.length > 30) {
-    return input.substring(0, 27) + "...";
+    return "${input.substring(0, 27)}...";
   } else {
     return input;
   }
@@ -42,7 +39,7 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
   late TextEditingController price;
   late GlobalKey<FormState> _formKey;
   DateTime _selectedDateTime = DateTime.now();
-  BookingType _bookingType = BookingType.findDriver;
+  final BookingType _bookingType = BookingType.findDriver;
 
   bool isLoading = false;
   late IBookingViewModel _iBookingViewModel;

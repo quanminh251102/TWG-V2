@@ -24,8 +24,8 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   late final ScrollController scrollController;
   late ICallViewModel _iCallViewModel;
 
-  late TextEditingController _controller = TextEditingController();
-  ScrollController controller = new ScrollController();
+  late final TextEditingController _controller = TextEditingController();
+  ScrollController controller = ScrollController();
   // ItemScrollController itemScrollController = new ItemScrollController();
   // final ItemPositionsListener itemPositionsListener =
   //     ItemPositionsListener.create();
@@ -34,14 +34,14 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   late bool isNotTop = false;
   late bool isLoading = false;
   List<int> indexOnViews = [];
-  bool _isLoading = false;
+  final bool _isLoading = false;
   int numLoad = 1;
   // List<Message> list = [];
   //late IO.Socket socket;
 
   bool stateIsKeyBoardShow = false;
 
-  bool _isLoadingImage = false;
+  final bool _isLoadingImage = false;
 
   @override
   void initState() {
@@ -84,10 +84,10 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
     final isKeyBoardShow = MediaQuery.of(context).viewInsets.bottom > 0;
     final keyBoardHeight = MediaQuery.of(context).viewInsets.bottom;
-    final current_user_id = '';
+    const currentUserId = '';
 
     final partner = _iMessageViewModel.getPartner();
-    final _appBar = AppBar(
+    final appBar = AppBar(
       toolbarHeight: appBarHeight,
       centerTitle: false,
       backgroundColor: Colors.white,
@@ -191,7 +191,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       ],
     );
 
-    final _bottomNavigationBar = SizedBox(
+    final bottomNavigationBar = SizedBox(
       height: botttomNavigatebarHeight,
       child: Container(
         padding: const EdgeInsets.only(
@@ -270,8 +270,8 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
     return Scaffold(
       body: Scaffold(
-          appBar: _appBar,
-          bottomNavigationBar: _bottomNavigationBar,
+          appBar: appBar,
+          bottomNavigationBar: bottomNavigationBar,
           body: Column(
             children: [
               Expanded(

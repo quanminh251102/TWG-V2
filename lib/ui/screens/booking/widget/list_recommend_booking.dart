@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
-import 'package:twg/ui/screens/booking/widget/list_booking_item.dart';
 import 'package:twg/ui/screens/booking/widget/list_recommend_item.dart';
 
 class ListRecommendBooking extends StatefulWidget {

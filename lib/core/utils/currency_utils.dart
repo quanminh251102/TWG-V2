@@ -12,7 +12,7 @@ class CurrencyUtils {
   }
 
   static String formatCurrency(double amount) {
-    return format.format(amount) + 'đ';
+    return '${format.format(amount)}đ';
   }
 
   static final format = NumberFormat('#,###');

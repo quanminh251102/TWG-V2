@@ -1,6 +1,4 @@
-import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:twg/core/dtos/message/message_dto.dart';
 part 'create_chat_room_dto.g.dart';
 
 @JsonSerializable(explicitToJson: true)

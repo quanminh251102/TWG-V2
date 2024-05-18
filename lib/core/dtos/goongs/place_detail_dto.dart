@@ -32,7 +32,7 @@ class PlaceDetailDto {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (addressComponents != null) {
       data['address_components'] =
           addressComponents!.map((v) => v.toJson()).toList();
@@ -63,7 +63,7 @@ class AddressComponents {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['long_name'] = longName;
     data['short_name'] = shortName;
     return data;
@@ -81,7 +81,7 @@ class Geometry {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (location != null) {
       data['location'] = location!.toJson();
     }
@@ -101,7 +101,7 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['lat'] = lat;
     data['lng'] = lng;
     return data;
@@ -120,7 +120,7 @@ class PlusCode {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['compound_code'] = compoundCode;
     data['global_code'] = globalCode;
     return data;

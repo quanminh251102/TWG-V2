@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
@@ -137,7 +136,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
 
   @override
   Widget build(BuildContext context) {
-    _formUpdateProfile() => Form(
+    formUpdateProfile() => Form(
           key: _formKey,
           child: Column(children: [
             TextFormField(
@@ -181,7 +180,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
             ),
             DropDownTextField(
               clearOption: false,
-              controller: this.gender,
+              controller: gender,
               textFieldFocusNode: genderFocus,
               textFieldDecoration: InputDecoration(
                 labelText: 'Giới tính',
@@ -212,7 +211,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
               ],
               onChanged: (val) {
                 print(val);
-                print(this.gender.dropDownValue);
+                print(gender.dropDownValue);
               },
             ),
             const SizedBox(
@@ -252,7 +251,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
             // const SizedBox(
             //   height: 24,
             // ),
-            (this._isLoadingUpdate)
+            (_isLoadingUpdate)
                 ? const CircularProgressIndicator()
                 : Center(
                     child: ActionButton(
@@ -325,7 +324,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
-          child: _formUpdateProfile(),
+          child: formUpdateProfile(),
         ),
       ),
     );

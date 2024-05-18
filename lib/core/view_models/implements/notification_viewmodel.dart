@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/core/dtos/notification/notification_dto.dart';
 import 'package:twg/core/services/interfaces/inotification_service.dart';
 import 'package:twg/core/services/interfaces/isocket_service.dart';
@@ -14,7 +13,7 @@ import 'package:windows_notification/windows_notification.dart';
 
 final _winNotifyPlugin = WindowsNotification(
     applicationId:
-        "r{D65231B0-B2F1-4857-A4CE-A8E7C6EA7D27}\WindowsPowerShell\v1.0\powershell.exe");
+        "r{D65231B0-B2F1-4857-A4CE-A8E7C6EA7D27}WindowsPowerShell\v1.0powershell.exe");
 
 class NotificationViewModel
     with ChangeNotifier

@@ -144,12 +144,12 @@ class _RJson {
   ///
   /// [level] your level
   static String _getLevelStr(int level) {
-    StringBuffer levelStr = new StringBuffer();
+    StringBuffer levelStr = StringBuffer();
     for (int levelI = 0; levelI < level; levelI++) {
       List<int> codeUnits = "\t".codeUnits;
-      codeUnits.forEach((i) {
+      for (var i in codeUnits) {
         levelStr.writeCharCode(i);
-      });
+      }
     }
     return levelStr.toString();
   }
@@ -168,10 +168,10 @@ class _RJson {
         jsonForMatStr.write(_getLevelStr(level));
       }
       if ('{'.codeUnitAt(0) == c || '['.codeUnitAt(0) == c) {
-        jsonForMatStr.write(String.fromCharCode(c) + "\r\n");
+        jsonForMatStr.write("${String.fromCharCode(c)}\r\n");
         level++;
       } else if (','.codeUnitAt(0) == c) {
-        jsonForMatStr.write(String.fromCharCode(c) + "\r\n");
+        jsonForMatStr.write("${String.fromCharCode(c)}\r\n");
       } else if ('}'.codeUnitAt(0) == c || ']'.codeUnitAt(0) == c) {
         jsonForMatStr.write("\r\n");
         level--;

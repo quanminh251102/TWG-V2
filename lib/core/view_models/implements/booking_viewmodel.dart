@@ -38,7 +38,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   bool _onSearchPlace = false;
   List<Predictions> _listPredictions = [];
 
-  bool _loadingFromMap = false;
+  final bool _loadingFromMap = false;
 
   LatLng? _currentLocation;
   LatLng? _currentDestination;
@@ -111,12 +111,12 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     _keyword = null;
     page = 1;
     _bookings.clear();
-    _recommendBooking.clear();
   }
 
   @override
   Future<void> init(int status) async {
     _reset();
+    _recommendBooking.clear();
     _filterBookingDto = FilterBookingDto();
     final paginationProducts = await _iBookingService.getBookings(
       status: status,
@@ -271,6 +271,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     double? endPointLong,
   }) async {
     _reset();
+    _recommendBooking.clear();
     final paginationRecommendBooking =
         await _iBookingService.getRecommendBooking(
       type: type,

@@ -9,10 +9,10 @@ class CustomSearchField extends StatefulWidget {
   final Function(String value)? onFieldSubmitted;
   final Function(String value)? onChanged;
   final FocusNode? focusNode;
-  TextEditingController? controller;
-
+  final TextEditingController? controller;
+  final BorderRadius? borderRadius;
   final bool readOnly;
-  CustomSearchField({
+  const CustomSearchField({
     Key? key,
     this.onTap,
     this.onFieldSubmitted,
@@ -20,6 +20,7 @@ class CustomSearchField extends StatefulWidget {
     this.focusNode,
     this.controller,
     required this.readOnly,
+    this.borderRadius,
   }) : super(key: key);
   @override
   State<CustomSearchField> createState() => _CustomSearchFieldState();
@@ -60,8 +61,16 @@ class _CustomSearchFieldState extends State<CustomSearchField> {
                 : const Color(0xff97999E),
           ),
           border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(color: Color(0xff97999E))),
+            borderRadius: widget.borderRadius ??
+                BorderRadius.circular(
+                  6.r,
+                ),
+            borderSide: const BorderSide(
+              color: Color(
+                0xff97999E,
+              ),
+            ),
+          ),
           hintText: 'Tìm kiếm',
         ),
       ),
