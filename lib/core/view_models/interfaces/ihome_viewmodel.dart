@@ -8,6 +8,6 @@ abstract class IHomeViewModel implements ChangeNotifier {
   Position? get currentPosition;
   bool? get onSearchPlace;
   List<Predictions> get listPredictions;
-  Future<void> onSearch(String keyWord);
+  Future<List<Predictions>> onSearch(String keyWord);
   Future<PlaceDto?> getPlaceById(String locationId);
 }

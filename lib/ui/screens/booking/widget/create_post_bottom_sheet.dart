@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
@@ -9,7 +8,6 @@ import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/animation/ani_bottom_sheet.dart';
 import 'package:twg/ui/common_widgets/custom_button.dart';
-import 'package:twg/ui/screens/booking/add_booking.dart';
 
 class CreatePostSheet extends StatefulWidget {
   const CreatePostSheet({super.key});

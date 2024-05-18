@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'color_utils.dart';
 
@@ -20,7 +19,7 @@ class ThemeUtils {
           borderSide: BorderSide(color: ColorUtils.primaryColor)),
     ),
     primaryColor: ColorUtils.primaryColor,
-    scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+    scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
     fontFamily: 'NOVAFont-Regular',
   );
   static final lightTheme = ThemeData(
@@ -39,7 +38,7 @@ class ThemeUtils {
           borderSide: BorderSide(color: ColorUtils.primaryColor)),
     ),
     primaryColor: ColorUtils.primaryColor,
-    scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+    scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
     fontFamily: 'NOVAFont-Regular',
   );
 }

@@ -1,5 +1,5 @@
 class _LocalizationUtils {
-  Map<String, dynamic> _staticLocalizedValues = new Map();
+  Map<String, dynamic> _staticLocalizedValues = {};
 
   static final _LocalizationUtils _translations =
       _LocalizationUtils._internal();
@@ -18,11 +18,9 @@ class _LocalizationUtils {
   String textStatic(String key, {Map<String, String>? params}) {
     late String value;
 
-    if (_staticLocalizedValues != null) {
-      // Get the translated string
-      value = _getStaticLocalizedValue(key, _staticLocalizedValues);
-    }
-
+    // Get the translated string
+    value = _getStaticLocalizedValue(key, _staticLocalizedValues);
+  
     if (params != null) {
       /// If parametes is not null then replace all these params in the string
       value = _mapParamsToTranslatedString(value, params);
@@ -30,9 +28,9 @@ class _LocalizationUtils {
     return value;
   }
 
-  String _getStaticLocalizedValue(key, Map<String, dynamic> _values) {
-    if (_values[key] != null && _values[key] != '') {
-      return _values[key];
+  String _getStaticLocalizedValue(key, Map<String, dynamic> values) {
+    if (values[key] != null && values[key] != '') {
+      return values[key];
     }
 
     return key;

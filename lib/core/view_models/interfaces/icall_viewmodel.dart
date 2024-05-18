@@ -6,6 +6,6 @@ abstract class ICallViewModel implements ChangeNotifier {
   CallInfoDto get callInfo;
   IO.Socket? get socket;
   void initSocketEventForCall();
-  void setSocket(IO.Socket _value);
+  void setSocket(IO.Socket value);
   void makeCall(CallInfoDto info);
 }

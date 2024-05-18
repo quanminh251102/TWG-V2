@@ -1,4 +1,3 @@
-import 'package:twg/core/dtos/apply/apply_dto.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'review_dto.g.dart';
@@ -57,7 +56,7 @@ class ApplyInReview {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['applyer'] = applyer;
     data['dealPrice'] = dealPrice;
     data['booking'] = booking;

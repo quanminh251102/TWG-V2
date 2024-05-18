@@ -10,7 +10,6 @@ import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/money_utils.dart';
 import 'package:twg/core/utils/text_style_utils.dart';
-import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/common_widgets/custom_button.dart';
 import 'package:twg/ui/utils/handling_string_utils.dart';
@@ -371,7 +370,7 @@ class _AnimatedDividerState extends State<AnimatedDivider>
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500), // Adjust the duration as needed
+      duration: const Duration(milliseconds: 500), // Adjust the duration as needed
     );
 
     _animation = Tween<double>(begin: 0, end: 1).animate(_controller);

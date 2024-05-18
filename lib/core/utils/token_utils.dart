@@ -1,8 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenUtils {
-  static final String key = 'token';
-  static final String encryptedAccessTokenKey = 'encryptedAccessToken';
+  static const String key = 'token';
+  static const String encryptedAccessTokenKey = 'encryptedAccessToken';
   static String currentEmail = '';
 
   static Future<String?> getToken() async {

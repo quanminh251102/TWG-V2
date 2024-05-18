@@ -2,17 +2,13 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:twg/constants.dart';
 import 'package:twg/core/dtos/auth/error_dto.dart';
-import 'package:twg/core/dtos/base_api_dto.dart';
 
 import '../core/api/rest_client.dart';
 
-import '../core/utils/token_utils.dart';
 import 'global_data.dart';
 import 'locator_service.dart';
 

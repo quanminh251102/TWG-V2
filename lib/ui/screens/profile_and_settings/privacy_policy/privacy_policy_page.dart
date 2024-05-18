@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:twg/global/router.dart';
 
 const privacy_policy_texts = [
@@ -43,27 +40,27 @@ class PrivacyPolicyPage extends StatefulWidget {
 
 class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
   List<String> title = [];
-  Column content = Column();
+  Column content = const Column();
 
   onePart(oneContent, index) => [
         Text(
           '${index + 1}. ${oneContent["title"]}',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
         ),
-        SizedBox(height: 24),
+        const SizedBox(height: 24),
         Text(
           oneContent["content"],
-          style: TextStyle(fontSize: 15),
+          style: const TextStyle(fontSize: 15),
           textAlign: TextAlign.justify,
         ),
-        SizedBox(height: 24)
+        const SizedBox(height: 24)
       ];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    this.content = Column(
+    content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         for (int i = 0; i < privacy_policy_texts.length; i++)

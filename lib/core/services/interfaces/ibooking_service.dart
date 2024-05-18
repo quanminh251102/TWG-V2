@@ -1,5 +1,4 @@
 import 'package:twg/core/dtos/booking/booking_dto.dart';
-import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 import 'package:twg/core/dtos/location/location_dto.dart';
 
 abstract class IBookingService {

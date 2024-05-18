@@ -1,10 +1,7 @@
 import 'package:twg/core/dtos/apply/apply_dto.dart';
 import 'package:twg/core/dtos/apply/create_apply_dto.dart';
 import 'package:twg/core/dtos/apply/update_apply_dto.dart';
-import 'package:twg/core/dtos/message/message_dto.dart';
-import 'package:twg/core/dtos/message/send_message_dto.dart';
 import 'package:twg/core/services/interfaces/iapply_service.dart';
-import 'package:twg/core/services/interfaces/imessage_service.dart';
 import 'package:twg/core/utils/token_utils.dart';
 import 'package:twg/global/locator.dart';
 import 'package:twg/ui/utils/loading_dialog_utils.dart';
@@ -54,7 +51,7 @@ class ApplyService implements IApplyService {
       print(value!.toJson());
       var result = await getRestClient().createApply(
         token.toString(),
-        value as CreateApplyDto,
+        value,
       );
       print(result.message);
       if (result.success) {

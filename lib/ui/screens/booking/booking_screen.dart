@@ -16,9 +16,7 @@ import 'package:twg/core/view_models/interfaces/ihome_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ilocation_viewmodel.dart';
 import 'package:twg/ui/animation/ani_bottom_sheet.dart';
 import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
-import 'package:twg/ui/screens/booking/widget/list_recommend_booking.dart';
 import 'package:twg/ui/screens/booking/widget/list_recommend_item.dart';
-import 'package:twg/ui/screens/booking/widget/recommend_text_field.dart';
 
 import 'widget/list_booking.dart';
 
@@ -273,7 +271,7 @@ class _BookingScreenState extends State<BookingScreen>
                                                     MainAxisAlignment.center,
                                                 children: List.generate(
                                                     tabs.length, (index) {
-                                                  return Container(
+                                                  return SizedBox(
                                                     width: 1.sw / 2,
                                                     child: Padding(
                                                       padding:

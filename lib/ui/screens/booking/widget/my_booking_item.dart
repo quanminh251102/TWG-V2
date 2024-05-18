@@ -295,7 +295,7 @@ class _MyBookingItemState extends State<MyBookingItem> {
 
 String formatString(String input) {
   if (input.length > 30) {
-    return input.substring(0, 27) + "...";
+    return "${input.substring(0, 27)}...";
   } else {
     return input;
   }

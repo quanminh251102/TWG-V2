@@ -4,7 +4,6 @@ import 'dart:math' show atan2, cos, log, sin, sqrt;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +20,6 @@ import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
-import 'package:twg/global/router.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({

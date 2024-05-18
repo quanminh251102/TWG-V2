@@ -16,7 +16,7 @@ class HomeViewModel extends ChangeNotifier implements IHomeViewModel {
   final IBookingService _iBookingService = locator<IBookingService>();
   final IGoongService _iGoongService = locator<IGoongService>();
 
-  bool _onSearchPlace = false;
+  final bool _onSearchPlace = false;
   List<Predictions> _listPredictions = [];
 
   @override
@@ -36,14 +36,12 @@ class HomeViewModel extends ChangeNotifier implements IHomeViewModel {
   }
 
   @override
-  Future<void> onSearch(String keyWord) async {
+  Future<List<Predictions>> onSearch(String keyWord) async {
     _listPredictions.clear();
-    _onSearchPlace = true;
-    notifyListeners();
     final predictions = await _iGoongService.searchPlace(keyWord);
     _listPredictions = predictions ?? [];
-    _onSearchPlace = false;
     notifyListeners();
+    return _listPredictions;
   }
 
   @override

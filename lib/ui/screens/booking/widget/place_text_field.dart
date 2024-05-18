@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:lottie/lottie.dart' as lottie;
-import 'package:twg/ui/common_widgets/action_button.dart';
 import '../../../../core/utils/color_utils.dart';
 
 class PlaceTextField extends StatefulWidget {
@@ -38,10 +37,10 @@ class _PlaceTextFieldState extends State<PlaceTextField>
   late AnimationController _controller;
   late Animation<double> _animation;
 
-  String _selectedDate = '';
-  String _dateCount = '';
+  final String _selectedDate = '';
+  final String _dateCount = '';
   String _range = '';
-  String _rangeCount = '';
+  final String _rangeCount = '';
   PickerDateRange? _selectedDateRange;
   PickerDateRange? _onChangeDateRange;
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {

@@ -2,7 +2,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart' as lottie;
 
 class AnimatedAvatar extends StatefulWidget {
@@ -19,8 +18,8 @@ class _AnimatedAvatarState extends State<AnimatedAvatar>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  bool _isLoadingForUpdateProfilePage = false;
-  bool _isLoadingImage = false;
+  final bool _isLoadingForUpdateProfilePage = false;
+  final bool _isLoadingImage = false;
 
   @override
   void initState() {

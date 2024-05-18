@@ -30,7 +30,7 @@ class _IconBtnState extends State<IconBtn> with SingleTickerProviderStateMixin {
     // Set up the animation controller
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
 
     // Set up the scale animation

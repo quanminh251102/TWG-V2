@@ -1,5 +1,3 @@
-import 'package:twg/core/dtos/auth/account_dto.dart';
-import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'create_apply_dto.g.dart';
 

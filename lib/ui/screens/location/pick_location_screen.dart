@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -12,7 +11,6 @@ import 'package:lottie/lottie.dart' as lottie;
 import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/goongs/place_detail_dto.dart';
 import 'package:twg/core/dtos/goongs/place_dto.dart';
-import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 
 import 'package:twg/core/dtos/location/location_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';

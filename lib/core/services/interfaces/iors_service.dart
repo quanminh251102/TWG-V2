@@ -1,4 +1,3 @@
-import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:twg/core/dtos/osrm/osrm_response_dto.dart';
 

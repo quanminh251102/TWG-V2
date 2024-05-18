@@ -1,8 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:twg/constants.dart';
-import 'package:twg/core/dtos/banner/banner_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 
 class ImageSlider extends StatelessWidget {

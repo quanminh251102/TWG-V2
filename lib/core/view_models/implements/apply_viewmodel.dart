@@ -32,7 +32,7 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
 
   final IOrsService _iOrsService = locator<IOrsService>();
   final IMapService _iMapService = locator<IMapService>();
-  bool _loadingFromMap = false;
+  final bool _loadingFromMap = false;
   double? _zoomLevel;
   LatLng? _center;
   LatLng? _currentLocation;

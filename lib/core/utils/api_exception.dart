@@ -3,6 +3,7 @@ class ApiException implements Exception {
   // http response body content
   final String content;
   ApiException(this.msg, this.content);
+  @override
   String toString() => 'ApiException: $msg';
 }
 

@@ -1,18 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
-import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/iprofile_viewmodel.dart';
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/common_widgets/action_button.dart';
-import 'package:twg/ui/common_widgets/custom_booking_floating_button.dart';
-import 'package:twg/ui/common_widgets/custom_bottom_navigation_bar.dart';
 import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -72,9 +67,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                 children: [
                   InkWell(
                     onTap: () async {
-                      final ImagePicker _picker = ImagePicker();
+                      final ImagePicker picker = ImagePicker();
                       final XFile? image =
-                          await _picker.pickImage(source: ImageSource.camera);
+                          await picker.pickImage(source: ImageSource.camera);
                       if (image != null) {
                         print("get successfully");
                         uploadImage(image);
@@ -83,9 +78,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                         });
                       }
                     },
-                    child: Column(
+                    child: const Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
+                      children: [
                         Icon(
                           Icons.camera_alt,
                           size: 30,
@@ -99,9 +94,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                   ),
                   InkWell(
                     onTap: () async {
-                      final ImagePicker _picker = ImagePicker();
+                      final ImagePicker picker = ImagePicker();
                       final XFile? image =
-                          await _picker.pickImage(source: ImageSource.gallery);
+                          await picker.pickImage(source: ImageSource.gallery);
                       if (image != null) {
                         uploadImage(image);
                         Future.delayed(Duration.zero, () {
@@ -110,14 +105,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                         // image.path
                       }
                     },
-                    child: Column(
+                    child: const Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.image,
                           size: 30,
                         ),
-                        const Text('Thư viện')
+                        Text('Thư viện')
                       ],
                     ),
                   ),
@@ -132,17 +127,17 @@ class _ProfileScreenState extends State<ProfileScreen>
     showModalBottomSheet(
         context: context,
         builder: (builder) {
-          return new Container(
+          return Container(
             height: 200.0,
             color: Colors.transparent, //could change this to Color(0xFF737373),
             //so you don't have to change MaterialApp canvasColor
-            child: new Container(
+            child: Container(
                 padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
                 decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: const Radius.circular(30.0),
-                        topRight: const Radius.circular(30.0))),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0))),
                 child: Column(
                   children: [
                     const Text(
@@ -189,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 219, 219, 219),
+                                color: const Color.fromARGB(255, 219, 219, 219),
                                 borderRadius: BorderRadius.circular(25)),
                             height: MediaQuery.of(context).size.height * 0.06,
                             width: MediaQuery.of(context).size.width * 0.4,
@@ -213,7 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   void cancel_loading() {
     setState(() {
-      this._isLoadingForUpdateProfilePage = false;
+      _isLoadingForUpdateProfilePage = false;
     });
   }
 

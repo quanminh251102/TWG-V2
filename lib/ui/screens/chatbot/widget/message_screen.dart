@@ -1,19 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/ichatbot_viewmodel.dart';
-import 'package:twg/global/global_data.dart';
 
 import '../../../../core/utils/text_style_utils.dart';
-import '../../../../global/locator.dart';
 
 class MessagesScreen extends StatefulWidget {
   const MessagesScreen({

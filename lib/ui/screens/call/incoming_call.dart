@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
-import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/icall_viewmodel.dart';
 import 'package:twg/global/router.dart';
 
@@ -53,8 +51,8 @@ class _InComingCallScreenState extends State<InComingCallScreen> {
                   ),
                 ),
               ),
-              placeholder: (context, url) => CircularProgressIndicator(),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             // const CircleAvatar(
             //   backgroundColor: ColorUtils.primaryColor,
@@ -80,8 +78,8 @@ class _InComingCallScreenState extends State<InComingCallScreen> {
                   // label: const Text("Accept Call"),
                   heroTag: const Key('FABAcceptCall'),
                   elevation: 0,
-                  child: const Icon(Icons.call_outlined),
                   backgroundColor: Colors.green,
+                  child: const Icon(Icons.call_outlined),
                 ),
                 FloatingActionButton(
                   onPressed: () => _denyCall(),

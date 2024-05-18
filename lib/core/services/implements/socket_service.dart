@@ -25,6 +25,6 @@ class SocketService implements ISocketService {
     } on Exception catch (e) {
       print(e);
     }
-    return null;
+    return;
   }
 }

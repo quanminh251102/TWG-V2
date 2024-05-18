@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/utils/color_utils.dart';
@@ -21,7 +20,7 @@ class _ApplyInBookingPageState extends State<ApplyInBookingPage>
     with TickerProviderStateMixin {
   late IApplyViewModel _iApplyViewModel;
   late IReviewViewModel _iReviewViewModel;
-  TextEditingController _name = TextEditingController();
+  final TextEditingController _name = TextEditingController();
   late FocusNode nameFocus;
   bool isLoading = false;
   @override

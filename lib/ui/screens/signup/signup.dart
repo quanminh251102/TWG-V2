@@ -76,7 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: Colors.grey,
-          content: const Text('Mật khẩu không khớp!'),
+          content: Text('Mật khẩu không khớp!'),
         ),
       );
   @override

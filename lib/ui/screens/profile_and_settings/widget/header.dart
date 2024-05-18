@@ -1,14 +1,14 @@
 part of '../account_screen.dart';
 
 class _Header extends StatefulWidget {
-  const _Header({super.key});
+  const _Header();
 
   @override
   State<_Header> createState() => __HeaderState();
 }
 
 class __HeaderState extends State<_Header> {
-  bool _isLoadingForUpdateProfilePage = false;
+  final bool _isLoadingForUpdateProfilePage = false;
   bool _isLoadingImage = false;
   late IProfileViewModel _iProfileViewModel;
   void uploadImage(XFile file) async {
@@ -54,9 +54,9 @@ class __HeaderState extends State<_Header> {
                 children: [
                   InkWell(
                     onTap: () async {
-                      final ImagePicker _picker = ImagePicker();
+                      final ImagePicker picker = ImagePicker();
                       final XFile? image =
-                          await _picker.pickImage(source: ImageSource.camera);
+                          await picker.pickImage(source: ImageSource.camera);
                       if (image != null) {
                         print("get successfully");
                         uploadImage(image);
@@ -81,9 +81,9 @@ class __HeaderState extends State<_Header> {
                   ),
                   InkWell(
                     onTap: () async {
-                      final ImagePicker _picker = ImagePicker();
+                      final ImagePicker picker = ImagePicker();
                       final XFile? image =
-                          await _picker.pickImage(source: ImageSource.gallery);
+                          await picker.pickImage(source: ImageSource.gallery);
                       if (image != null) {
                         uploadImage(image);
                         Future.delayed(Duration.zero, () {

@@ -155,7 +155,7 @@ class MessageViewModel with ChangeNotifier implements IMessageViewModel {
   }
 
   @override
-  set scrollController(ScrollController _scrollController) {
+  set scrollController(ScrollController scrollController) {
     // TODO: implement scrollController
   }
 }

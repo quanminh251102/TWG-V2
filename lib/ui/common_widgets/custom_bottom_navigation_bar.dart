@@ -7,11 +7,9 @@ import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
 import 'package:twg/ui/common_widgets/confirm_login_dialog.dart';
 import 'package:twg/ui/common_widgets/ripple_click_effect.dart';
-import 'package:twg/ui/screens/booking/widget/create_post_bottom_sheet.dart';
 
 import '../../core/utils/color_utils.dart';
 import '../../core/utils/enum.dart';
-import '../../core/utils/text_style_utils.dart';
 import '../../global/router.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {

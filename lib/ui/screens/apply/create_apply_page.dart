@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/apply/create_apply_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
@@ -61,9 +60,9 @@ class _CreateApplyPageState extends State<CreateApplyPage>
       } else {
         price = int.parse(dealPrice.text.trim());
       }
-      String note_string = " ";
-      if (note.text.trim().length > 0) {
-        note_string = note.text.trim();
+      String noteString = " ";
+      if (note.text.trim().isNotEmpty) {
+        noteString = note.text.trim();
       }
       String result = "pass";
 
@@ -150,7 +149,7 @@ class _CreateApplyPageState extends State<CreateApplyPage>
                     keyboardType: TextInputType.number,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     focusNode: dealPriceFocus,
-                    controller: this.dealPrice,
+                    controller: dealPrice,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Vui lòng nhập giá";
@@ -199,7 +198,7 @@ class _CreateApplyPageState extends State<CreateApplyPage>
                 TextFormField(
                   style: const TextStyle(fontWeight: FontWeight.bold),
                   focusNode: noteFocus,
-                  controller: this.note,
+                  controller: note,
                   validator: (value) {
                     // if (value!.isEmpty) {
                     //   return "Vui lòng nhập ghi chú";
