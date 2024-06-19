@@ -118,6 +118,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     _reset();
     _recommendBooking.clear();
     _filterBookingDto = FilterBookingDto();
+notifyListeners();
     final paginationProducts = await _iBookingService.getBookings(
       status: status,
       page: page,
@@ -332,6 +333,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     _currentBooking!.content = content;
     final isCreateSuccess =
         await _iBookingService.createBooking(_currentBooking!);
+
     if (isCreateSuccess) {
       Get.toNamed(MyRouter.home);
     } else {

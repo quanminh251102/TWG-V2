@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
@@ -50,11 +51,14 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
         appBar: AppBar(
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
-          centerTitle: true,
-          title: const Text(
+          centerTitle: false,
+          title: Text(
             'Trò chuyện',
+            textAlign: TextAlign.left,
             style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
+              fontSize: 22.sp,
+              letterSpacing: 1.2,
               color: Colors.black,
             ),
           ),

@@ -112,18 +112,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         }
                     }
                 });
-
-        await _iHomeViewModel.initHome().then((value) {
-          if (locator<GlobalData>().currentPosition != null) {
-            _animatedMapMove(
-              LatLng(
-                locator<GlobalData>().currentPosition!.latitude,
-                locator<GlobalData>().currentPosition!.longitude,
-              ),
-              19,
-            );
-          }
-        });
+        _animatedMapMove(
+          LatLng(
+            locator<GlobalData>().currentPosition!.latitude,
+            locator<GlobalData>().currentPosition!.longitude,
+          ),
+          19,
+        );
       },
     );
 
@@ -266,29 +261,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       },
                     ),
                   ),
-                  CurrentLocationLayer(
-                    style: LocationMarkerStyle(
-                      marker: const DefaultLocationMarker(
-                        color: ColorUtils.primaryColor,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                        ),
-                      ),
-                      markerSize: const Size.square(
-                        40,
-                      ),
-                      accuracyCircleColor: ColorUtils.primaryColor.withOpacity(
-                        0.1,
-                      ),
-                      headingSectorColor: ColorUtils.primaryColor.withOpacity(
-                        0.8,
-                      ),
-                      showAccuracyCircle: true,
-                      headingSectorRadius: 120,
-                    ),
-                    moveAnimationDuration: Duration.zero, // disable animation
-                  ),
+                  // CurrentLocationLayer(
+                  //   style: LocationMarkerStyle(
+                  //     marker: const DefaultLocationMarker(
+                  //       color: ColorUtils.primaryColor,
+                  //       child: Icon(
+                  //         Icons.person,
+                  //         color: Colors.white,
+                  //       ),
+                  //     ),
+                  //     markerSize: const Size.square(
+                  //       40,
+                  //     ),
+                  //     accuracyCircleColor: ColorUtils.primaryColor.withOpacity(
+                  //       0.1,
+                  //     ),
+                  //     headingSectorColor: ColorUtils.primaryColor.withOpacity(
+                  //       0.8,
+                  //     ),
+                  //     showAccuracyCircle: true,
+                  //     headingSectorRadius: 120,
+                  //   ),
+                  //   moveAnimationDuration: Duration.zero, // disable animation
+                  // ),
                   MarkerLayer(
                     markers: customMarkers,
                     alignment: Alignment.topCenter,

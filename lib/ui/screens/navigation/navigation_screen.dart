@@ -188,7 +188,6 @@ class _NavigationScreenState extends State<NavigationScreen>
                   ),
                   if (vm.currentDirection != null)
                     PolylineLayer(
-                      polylineCulling: false,
                       polylines: [
                         Polyline(
                           points: vm.currentDirection!.coordinates!,

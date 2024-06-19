@@ -92,8 +92,10 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
 
     // if (!completer.isCompleted) {
     // await completer.future;
-    Position currentPlace = await _iMapService.determinePosition();
-    await updateRoute(LatLng(currentPlace.latitude, currentPlace.longitude));
+    Position? currentPlace = await _iMapService.determinePosition();
+    if (currentPlace != null) {
+      await updateRoute(LatLng(currentPlace.latitude, currentPlace.longitude));
+    }
     // .then((_) => callback());
     // }
   }

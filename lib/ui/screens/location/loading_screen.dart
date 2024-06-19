@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -37,7 +36,7 @@ class _LoadingPageState extends State<LoadingPage> {
       endPointLat: _iLocationViewModel.endPointGeo!.latitude,
       endPointLong: _iLocationViewModel.endPointGeo!.longitude,
     );
-    Get.toNamed(MyRouter.booking, arguments: true);
+    Get.toNamed(MyRouter.forYouScreen, arguments: true);
   }
 
   @override

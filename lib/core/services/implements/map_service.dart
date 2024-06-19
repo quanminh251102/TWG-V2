@@ -3,7 +3,7 @@ import 'package:twg/core/services/interfaces/imap_service.dart';
 
 class MapService implements IMapService {
   @override
-  Future<Position> determinePosition() async {
+  Future<Position?> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -23,11 +23,9 @@ class MapService implements IMapService {
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
-    Position position = await Geolocator.getCurrentPosition(
+
+    return await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
-    print(position);
-
-    return await Geolocator.getCurrentPosition();
   }
 }
