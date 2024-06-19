@@ -9,6 +9,7 @@ import 'package:twg/ui/screens/apply/my_apply_page.dart';
 import 'package:twg/ui/screens/booking/add_booking.dart';
 import 'package:twg/ui/screens/booking/booking_screen.dart';
 import 'package:twg/ui/screens/booking/confirm_location_screen.dart';
+import 'package:twg/ui/screens/booking/for_you_screen.dart';
 import 'package:twg/ui/screens/booking/my_booking_page.dart';
 import 'package:twg/ui/screens/booking/pick_place_screen.dart';
 import 'package:twg/ui/screens/booking/widget/booking_detail_screen.dart';
@@ -68,6 +69,7 @@ class MyRouter {
   static const String pickLocation = '/pickLocation';
   static const String chooseFromMap = '/chooseFromMap';
   static const String loadingRecommend = '/loadingRecommend';
+  static const String forYouScreen = '/forYouScreen';
   static PageRouteBuilder _buildRouteNavigationWithoutEffect(
       RouteSettings settings, Widget widget) {
     return PageRouteBuilder(
@@ -259,6 +261,11 @@ class MyRouter {
         return _buildRouteNavigationWithoutEffect(
           settings,
           const OnBoardingScreen(),
+        );
+      case forYouScreen:
+        return _buildRouteNavigationWithoutEffect(
+          settings,
+          const ForYouScreen(),
         );
       default:
         return _buildRouteNavigationWithoutEffect(

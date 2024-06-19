@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import 'package:twg/core/dtos/booking/booking_dto.dart';
 
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
@@ -14,6 +16,7 @@ import 'package:twg/core/utils/money_utils.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ihome_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ilocation_viewmodel.dart';
+import 'package:twg/global/router.dart';
 import 'package:twg/ui/animation/ani_bottom_sheet.dart';
 import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
 import 'package:twg/ui/screens/booking/widget/list_recommend_item.dart';

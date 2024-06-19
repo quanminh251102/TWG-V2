@@ -30,7 +30,7 @@ class BookingService implements IBookingService {
     String? id,
   }) async {
     String? token = await TokenUtils.getToken();
-    LoadingDialogUtils.showLoading();
+    // LoadingDialogUtils.showLoading();
     try {
       var result = await getRestClient().getBookings(
         token: token,
@@ -49,7 +49,7 @@ class BookingService implements IBookingService {
         startTime: startTime,
         endTime: endTime,
       );
-      LoadingDialogUtils.hideLoading();
+      // LoadingDialogUtils.hideLoading();
       if (result.success) {
         _total = result.total ?? 0;
         return result.data;

@@ -1,10 +1,10 @@
-
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:twg/constants.dart';
 import 'package:twg/core/dtos/osrm/osrm_response_dto.dart';
 import 'package:twg/core/services/interfaces/iors_service.dart';
+import 'package:twg/ui/utils/loading_dialog_utils.dart';
 
 class OrsService implements IOrsService {
   getRouteUrl(String startPoint, String endPoint) {
@@ -14,7 +14,7 @@ class OrsService implements IOrsService {
   @override
   Future<DirectionDto?> getCoordinates(
       LatLng location, LatLng destination) async {
-    // LoadingDialogUtils.showLoading();
+    LoadingDialogUtils.showLoading();
     var response = await Dio().get(
       getRouteUrl(
         "${location.longitude},${location.latitude}",
@@ -26,7 +26,6 @@ class OrsService implements IOrsService {
 
       listOfPoints = response.data['features'][0]['geometry']['coordinates'];
 
-      // LoadingDialogUtils.hideLoading();
       listOfPoints
           .map((p) => LatLng(p[1].toDouble(), p[0].toDouble()))
           .toList();
@@ -61,6 +60,7 @@ class OrsService implements IOrsService {
           ),
         ),
       );
+      LoadingDialogUtils.hideLoading();
       return directionDto;
     }
     return null;

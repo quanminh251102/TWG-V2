@@ -133,7 +133,7 @@ class _AddLocationScreenState extends State<AddLocationScreen>
           ),
           Consumer<IBookingViewModel>(builder: (context, vm, child) {
             return Container(
-              child: vm.onSearchPlace == true
+              child: vm.onSearchPlace
                   ? Container(
                       height: 300.h,
                       color: Colors.white,

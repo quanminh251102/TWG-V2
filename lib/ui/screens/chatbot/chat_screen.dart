@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/view_models/interfaces/ichatbot_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ilocation_viewmodel.dart';
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/screens/chatbot/widget/message_screen.dart';
 
@@ -15,14 +16,18 @@ class ChatBotScreen extends StatefulWidget {
 
 class _ChatBotScreenState extends State<ChatBotScreen> {
   late IChatbotViewModel _iChatbotViewModel;
+  late ILocationViewModel _iLocationViewModel;
   final TextEditingController _controller = TextEditingController();
+
   @override
   void initState() {
     _iChatbotViewModel = context.read<IChatbotViewModel>();
+    _iLocationViewModel = context.read<ILocationViewModel>();
     Future.delayed(
       Duration.zero,
       () async {
         await _iChatbotViewModel.initConversation();
+        await _iLocationViewModel.getSavedLocation();
       },
     );
     super.initState();
@@ -85,7 +90,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
           ),
         ),
       ),
-      body: const MessagesScreen(),
+      body: const MessageScreen(),
     );
   }
 }

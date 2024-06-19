@@ -16,7 +16,7 @@ class PlaceTextField extends StatefulWidget {
   final FocusNode? destinationFocusNode;
   final TextEditingController locationTextEditingController;
   final TextEditingController destinationTextEditingController;
-  bool isFocus;
+ final  bool isFocus;
   PlaceTextField({
     Key? key,
     this.onLocationChanged,

@@ -267,13 +267,9 @@ class _ListBookingItemState extends State<ListBookingItem> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      SizedBox(
-                                        width: 40.w,
-                                        child: lottie.Lottie.asset(
-                                          "assets/lottie/person.json",
-                                          animate: true,
-                                          repeat: true,
-                                        ),
+                                      const Icon(
+                                        Icons.person,
+                                        color: ColorUtils.primaryColor,
                                       ),
                                       SizedBox(
                                         width: 10.w,
@@ -324,12 +320,9 @@ class _ListBookingItemState extends State<ListBookingItem> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      SizedBox(
-                                        width: 40.w,
-                                        child: lottie.Lottie.asset(
-                                          "assets/lottie/tele.json",
-                                          repeat: true,
-                                        ),
+                                      const Icon(
+                                        Icons.location_pin,
+                                        color: ColorUtils.primaryColor,
                                       ),
                                       SizedBox(
                                         width: 10.w,

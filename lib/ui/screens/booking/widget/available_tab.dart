@@ -44,8 +44,6 @@ class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
       Duration.zero,
       () async {
         _iBookingViewModel.setIsMyList(false);
-        await _iLocationViewModel.getSavedLocation();
-
         await _iBookingViewModel.init(
           EnumHelper.getValue(
             EnumMap.bookingStatus,
@@ -107,21 +105,24 @@ class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
                     padding: EdgeInsets.only(
                       top: 8.h,
                     ),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Xem thêm',
-                          style: TextStyle(
-                            color: ColorUtils.primaryColor,
-                            fontSize: 16.sp,
+                    child: InkWell(
+                      onTap: () => Get.toNamed(MyRouter.forYouScreen),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Xem thêm',
+                            style: TextStyle(
+                              color: ColorUtils.primaryColor,
+                              fontSize: 16.sp,
+                            ),
                           ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: ColorUtils.primaryColor,
-                          size: 15.sp,
-                        )
-                      ],
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: ColorUtils.primaryColor,
+                            size: 15.sp,
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],
@@ -135,20 +136,28 @@ class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
                 return SizedBox(
                     height: 260.h,
                     width: double.infinity,
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                        viewportFraction: 0.95,
-                        aspectRatio: 1.5,
-                        reverse: false,
-                        enableInfiniteScroll: false,
-                        initialPage: 0,
-                      ),
-                      items: vm.recommendBooking
-                          .map((e) => ListRecommendItem(
-                                booking: e,
-                              ))
-                          .toList(),
-                    ));
+                    child: Skeletonizer(
+                        enabled: vm.recommendBooking.isEmpty,
+                        child: CarouselSlider(
+                          options: CarouselOptions(
+                            viewportFraction: 0.95,
+                            aspectRatio: 1.5,
+                            reverse: false,
+                            enableInfiniteScroll: false,
+                            initialPage: 0,
+                          ),
+                          items: vm.recommendBooking.isEmpty
+                              ? BookingDto.bookingsFake
+                                  .map((e) => ListRecommendItem(
+                                        booking: e,
+                                      ))
+                                  .toList()
+                              : vm.recommendBooking
+                                  .map((e) => ListRecommendItem(
+                                        booking: e,
+                                      ))
+                                  .toList(),
+                        )));
               },
             ),
             SizedBox(
@@ -182,21 +191,25 @@ class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
             Consumer<IBookingViewModel>(
               builder: (context, vm, child) {
                 widget.animationController.forward();
-                return ListBooking(
-                  bookings: vm.bookings,
-                  mainScreenAnimation:
-                      Tween<double>(begin: 0.0, end: 1.0).animate(
-                    CurvedAnimation(
-                      parent: widget.animationController,
-                      curve: const Interval(
-                        (1 / 10) * 3,
-                        1.0,
-                        curve: Curves.fastOutSlowIn,
+                return Skeletonizer(
+                    enabled: vm.bookings.isEmpty,
+                    child: ListBooking(
+                      bookings: vm.bookings.isEmpty
+                          ? BookingDto.bookingsFake
+                          : vm.bookings,
+                      mainScreenAnimation:
+                          Tween<double>(begin: 0.0, end: 1.0).animate(
+                        CurvedAnimation(
+                          parent: widget.animationController,
+                          curve: const Interval(
+                            (1 / 10) * 3,
+                            1.0,
+                            curve: Curves.fastOutSlowIn,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  mainScreenAnimationController: widget.animationController,
-                );
+                      mainScreenAnimationController: widget.animationController,
+                    ));
               },
             )
           ],

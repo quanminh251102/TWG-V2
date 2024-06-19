@@ -14,13 +14,15 @@ class GoongService implements IGoongService {
   @override
   Future<List<Predictions>?> searchPlace(String keyWord) async {
     try {
-      var result = await Dio().get(
-        '$baseGoongsUrl/Place/AutoComplete?api_key=$goongKey&location=${locator<GlobalData>().currentPosition!.latitude},%20${locator<GlobalData>().currentPosition!.longitude}&input=$keyWord',
-      );
+      if (keyWord.isNotEmpty) {
+        var result = await Dio().get(
+          '$baseGoongsUrl/Place/AutoComplete?api_key=$goongKey&location=${locator<GlobalData>().currentPosition!.latitude},%20${locator<GlobalData>().currentPosition!.longitude}&input=$keyWord',
+        );
 
-      if (result.statusCode == 200) {
-        SearchResponse searchResponse = SearchResponse.fromJson(result.data);
-        return searchResponse.predictions;
+        if (result.statusCode == 200) {
+          SearchResponse searchResponse = SearchResponse.fromJson(result.data);
+          return searchResponse.predictions;
+        }
       }
     } on Exception catch (e) {
       print(e);

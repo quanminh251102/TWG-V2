@@ -189,7 +189,6 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                   ),
                   if (vm.currentDirection != null)
                     PolylineLayer(
-                      polylineCulling: false,
                       polylines: [
                         Polyline(
                           points: vm.currentDirection!.coordinates!,
@@ -251,7 +250,7 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                           'Thông tin chuyến đi',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16.sp,
+                            fontSize: 22.sp,
                           ),
                         ),
                         SizedBox(
@@ -487,9 +486,7 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
+                        const Spacer(),
                         InkWell(
                           onTap: () {
                             Get.toNamed(
@@ -499,7 +496,7 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                           child: Center(
                             child: Container(
                               width: 200.w,
-                              height: 60.h,
+                              height: 40.h,
                               decoration: BoxDecoration(
                                 color: ColorUtils.primaryColor,
                                 borderRadius: BorderRadius.circular(
@@ -518,7 +515,10 @@ class _ConfirmPlaceScreenState extends State<ConfirmPlaceScreen>
                               ),
                             ),
                           ),
-                        )
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
                       ],
                     ),
                   ),
