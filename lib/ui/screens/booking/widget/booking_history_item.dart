@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
@@ -27,7 +28,7 @@ class _BookingHistoryItemState extends State<BookingHistoryItem> {
   bool isNavigateCreateApply = false;
   late IApplyViewModel _iApplyViewModel;
   late IBookingViewModel _iBookingViewModel;
-
+  String bookingTime = '';
   bool isMyList = false;
   Color getStatusColor(int status) {
     switch (status) {
@@ -50,6 +51,12 @@ class _BookingHistoryItemState extends State<BookingHistoryItem> {
     BookingStatus bookingStatus =
         EnumHelper.getEnum(EnumMap.bookingStatus, status);
     return EnumHelper.getDescription(EnumMap.bookingStatus, bookingStatus);
+  }
+
+  String formatDateTime(String bookingTime) {
+    final _bookingTime = DateTime.parse(bookingTime);
+    final DateFormat formatter = DateFormat('HH:mm | dd/MM/yyyy');
+    return formatter.format(_bookingTime);
   }
 
   @override
@@ -105,7 +112,7 @@ class _BookingHistoryItemState extends State<BookingHistoryItem> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                widget.booking.time ?? "",
+                                formatDateTime(widget.booking.time ?? ""),
                                 style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.bold),

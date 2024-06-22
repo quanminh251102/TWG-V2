@@ -26,7 +26,7 @@ AccountDto _$AccountDtoFromJson(Map<String, dynamic> json) => AccountDto(
       isCalling: json['isCalling'] as bool?,
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,
-      id: json['id'] as String?,
+      id: json['_id'] as String?,
     );
 
 Map<String, dynamic> _$AccountDtoToJson(AccountDto instance) =>

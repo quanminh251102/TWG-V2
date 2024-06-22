@@ -3,6 +3,7 @@ import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/location/location_dto.dart';
 import 'package:twg/core/services/interfaces/ibooking_service.dart';
 import 'package:twg/core/utils/token_utils.dart';
+import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
 import 'package:twg/ui/utils/loading_dialog_utils.dart';
 
@@ -114,8 +115,9 @@ class BookingService implements IBookingService {
   }) async {
     String? token = await TokenUtils.getToken();
     try {
-      var result = await getRestClient().getMyBookings(
+      var result = await getRestClient().getBookings(
         token: token,
+        authorId: locator<GlobalData>().currentUser!.id,
         page: page,
         pageSize: pageSize,
       );

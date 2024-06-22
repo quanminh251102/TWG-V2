@@ -73,9 +73,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
             Expanded(
               child: Consumer<IChatRoomViewModel>(
                 builder: (context, vm, child) {
-                  return ListChatRoom(
-                    ChatRooms: vm.ChatRooms,
-                  );
+                  return vm.ChatRooms.isNotEmpty
+                      ? ListChatRoom(
+                          chatRooms: vm.ChatRooms,
+                        )
+                      : SizedBox.shrink();
                 },
               ),
             ),

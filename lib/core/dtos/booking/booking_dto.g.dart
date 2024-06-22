@@ -7,7 +7,7 @@ part of 'booking_dto.dart';
 // **************************************************************************
 
 BookingDto _$BookingDtoFromJson(Map<String, dynamic> json) => BookingDto(
-      id: json['id'] as String?,
+      id: json['_id'] as String?,
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,
       authorId: json['authorId'] == null

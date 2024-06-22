@@ -3,10 +3,10 @@ import 'package:twg/core/dtos/chat_room/chat_room_dto.dart';
 import 'package:twg/ui/screens/chat_room/widget/list_chat_room_item.dart';
 
 class ListChatRoom extends StatelessWidget {
-  final List<ChatRoomDto> ChatRooms;
+  final List<ChatRoomDto> chatRooms;
   const ListChatRoom({
     Key? key,
-    required this.ChatRooms,
+    required this.chatRooms,
   }) : super(key: key);
 
   @override
@@ -14,10 +14,10 @@ class ListChatRoom extends StatelessWidget {
     return ListView.builder(
       itemBuilder: (ctx, index) {
         return ListChatRoomItem(
-          ChatRoom: ChatRooms[index],
+          chatRoom: chatRooms[index],
         );
       },
-      itemCount: ChatRooms.length,
+      itemCount: chatRooms.length,
     );
   }
 }

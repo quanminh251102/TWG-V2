@@ -1,4 +1,4 @@
-const baseUrl = "https://together-we-go-api.vercel.app";
+const baseUrl = "http://192.168.1.153:8080";
 const baseGoongsUrl = "https://rsapi.goong.io";
 const String baseOrsUrl =
     'https://api.openrouteservice.org/v2/directions/driving-car';
