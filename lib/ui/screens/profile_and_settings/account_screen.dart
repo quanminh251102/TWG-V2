@@ -65,6 +65,7 @@ class _AccountScreenState extends State<AccountScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ActionButton(
+                          width: MediaQuery.of(context).size.width * 0.4,
                           onTap: () async {
                             await _iAuthViewModel.logout();
                           },
@@ -85,6 +86,7 @@ class _AccountScreenState extends State<AccountScreen>
                           ),
                         ),
                         ActionButton(
+                          width: MediaQuery.of(context).size.width * 0.4,
                           onTap: () {
                             Get.back();
                           },

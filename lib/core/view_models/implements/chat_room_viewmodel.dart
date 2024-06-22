@@ -46,11 +46,11 @@ class ChatRoomViewModel with ChangeNotifier implements IChatRoomViewModel {
   @override
   Future<void> init(String status) async {
     _reset();
-    final paginationProducts = await _iChatRoomService.getChatRooms(
+    final paginationUsers = await _iChatRoomService.getChatRooms(
       page: 1,
       pageSize: 10,
     );
-    _ChatRooms = paginationProducts ?? [];
+    _ChatRooms = paginationUsers ?? [];
     _totalCount = _iChatRoomService.total;
     notifyListeners();
   }

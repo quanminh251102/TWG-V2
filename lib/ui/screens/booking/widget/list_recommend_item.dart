@@ -108,221 +108,230 @@ class _ListRecommendItemState extends State<ListRecommendItem> {
             topRight: Radius.circular(8.r),
           ),
         ),
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(15.r),
-              child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: InkWell(
-                      onTap: () => navigateCreateApply(context),
-                      child: Container(
+        child: InkWell(
+          onTap: () => Get.toNamed(
+            MyRouter.bookingDetail,
+            arguments: widget.booking,
+          ),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(15.r),
+                child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: InkWell(
+                        onTap: () => navigateCreateApply(context),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: ColorUtils.primaryColor,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: ColorUtils.grey.withOpacity(
+                                  0.8,
+                                ),
+                              )),
+                          child: Padding(
+                            padding: EdgeInsets.all(8.r),
+                            child: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              color: Colors.white,
+                              size: 25.r,
+                            ),
+                          ),
+                        ))),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                        width: double.infinity,
                         decoration: BoxDecoration(
-                            color: ColorUtils.primaryColor,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: ColorUtils.grey.withOpacity(
-                                0.8,
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.grey.withOpacity(
+                                  0.5,
+                                ),
                               ),
+                            ),
+                            color: ColorUtils.primaryColor.withOpacity(
+                              0.1,
                             )),
-                        child: Padding(
-                          padding: EdgeInsets.all(8.r),
-                          child: Icon(
-                            Icons.arrow_forward_ios_outlined,
-                            color: Colors.white,
-                            size: 25.r,
+                        child: Image.asset('assets/images/intro-4.png')),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 5.h,
+                        horizontal: 10.w,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 5.h,
                           ),
-                        ),
-                      ))),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.grey.withOpacity(
-                                0.5,
-                              ),
-                            ),
+                          SizedBox(
+                            width: Get.width * 0.8,
+                            child: Text(widget.booking.endPointMainText ?? "",
+                                style: TextStyle(
+                                    fontSize: 17.sp,
+                                    fontWeight: FontWeight.bold),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1),
                           ),
-                          color: ColorUtils.primaryColor.withOpacity(
-                            0.1,
-                          )),
-                      child: Image.asset('assets/images/intro-4.png')),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 5.h,
-                      horizontal: 10.w,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        SizedBox(
-                          width: Get.width * 0.8,
-                          child: Text(widget.booking.endPointMainText ?? "",
-                              style: TextStyle(
-                                  fontSize: 17.sp, fontWeight: FontWeight.bold),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      "assets/icons/distance.svg",
-                                      color: ColorUtils.primaryColor,
-                                      height: 30,
-                                    ),
-                                    Text(
-                                      formatDistance(
-                                          widget.booking.distance ?? ""),
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      "assets/icons/clock.svg",
-                                      height: 30,
-                                      color: ColorUtils.primaryColor,
-                                    ),
-                                    Text(
-                                      widget.booking.duration == ''
-                                          ? "0 phút"
-                                          : widget.booking.duration.toString(),
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      "assets/icons/wallet.svg",
-                                      color: ColorUtils.primaryColor,
-                                      height: 30,
-                                    ),
-                                    Text(
-                                      VietnameseMoneyFormatter()
-                                          .formatToVietnameseCurrency(
-                                        widget.booking.price.toString(),
-                                      ),
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: 10.h,
-                            bottom: 10.h,
+                          SizedBox(
+                            height: 5.h,
                           ),
-                          child: InkWell(
-                            onTap: () {
-                              Get.toNamed(
-                                MyRouter.driverProfile,
-                                arguments: widget.booking.authorId,
-                              );
-                            },
-                            child: Row(children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  right: 10.w,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: ColorUtils.primaryColor,
-                                        width: 2.w,
-                                      )),
-                                  height: 30.r,
-                                  width: 30.r,
-                                  child: CircleAvatar(
-                                    radius: 25.r,
-                                    backgroundImage: NetworkImage(
-                                      widget.booking.authorId?.avatarUrl ?? "",
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    widget.booking.authorId?.firstName ?? "",
-                                    style: TextStyle(
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/distance.svg",
+                                        color: ColorUtils.primaryColor,
+                                        height: 30,
+                                      ),
+                                      Text(
+                                        formatDistance(
+                                            widget.booking.distance ?? ""),
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
                                   ),
                                   SizedBox(
-                                    width: 1.sw / 3,
-                                    child: Text(
-                                      DateFormat('HH:mm | dd/MM/yyyy').format(
-                                          DateTime.parse(
-                                              widget.booking.time ?? "")),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
+                                    width: 5.w,
+                                  ),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/clock.svg",
+                                        height: 30,
+                                        color: ColorUtils.primaryColor,
                                       ),
-                                    ),
-                                  )
-                                  // Text(
-                                  //   widget.booking.bookingType ?? "",
-                                  //   style: TextStyle(
-                                  //     fontSize: 14.sp,
-                                  //   ),
-                                  // ),
+                                      Text(
+                                        widget.booking.duration == ''
+                                            ? "0 phút"
+                                            : widget.booking.duration
+                                                .toString(),
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/wallet.svg",
+                                        color: ColorUtils.primaryColor,
+                                        height: 30,
+                                      ),
+                                      Text(
+                                        VietnameseMoneyFormatter()
+                                            .formatToVietnameseCurrency(
+                                          widget.booking.price.toString(),
+                                        ),
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ]),
+                            ],
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 10.h,
+                              bottom: 10.h,
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                Get.toNamed(
+                                  MyRouter.driverProfile,
+                                  arguments: widget.booking.authorId,
+                                );
+                              },
+                              child: Row(children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    right: 10.w,
+                                  ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: ColorUtils.primaryColor,
+                                          width: 2.w,
+                                        )),
+                                    height: 30.r,
+                                    width: 30.r,
+                                    child: CircleAvatar(
+                                      radius: 25.r,
+                                      backgroundImage: NetworkImage(
+                                        widget.booking.authorId?.avatarUrl ??
+                                            "",
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      widget.booking.authorId?.firstName ?? "",
+                                      style: TextStyle(
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 1.sw / 3,
+                                      child: Text(
+                                        DateFormat('HH:mm | dd/MM/yyyy').format(
+                                            DateTime.parse(
+                                                widget.booking.time ?? "")),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                        ),
+                                      ),
+                                    )
+                                    // Text(
+                                    //   widget.booking.bookingType ?? "",
+                                    //   style: TextStyle(
+                                    //     fontSize: 14.sp,
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+                              ]),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
-            ),
-          ],
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

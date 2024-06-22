@@ -382,7 +382,7 @@ class _AddBookingScreenState extends State<AddBookingScreen> {
                                   : InkWell(
                                       onTap: () async {
                                         await _iBookingViewModel.createBooking(
-                                          time: time.text,
+                                          time: _selectedDateTime.toIso8601String(),
                                           price: price.text,
                                           content: textEditingController.text,
                                         );

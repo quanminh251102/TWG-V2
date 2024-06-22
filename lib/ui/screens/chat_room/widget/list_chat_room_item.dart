@@ -17,10 +17,10 @@ import 'package:twg/ui/utils/handling_string_utils.dart';
 import 'package:lottie/lottie.dart' as lottie;
 
 class ListChatRoomItem extends StatefulWidget {
-  final ChatRoomDto ChatRoom;
+  final ChatRoomDto chatRoom;
   const ListChatRoomItem({
     Key? key,
-    required this.ChatRoom,
+    required this.chatRoom,
   }) : super(key: key);
 
   @override
@@ -81,25 +81,25 @@ class _ListChatRoomItemState extends State<ListChatRoomItem> {
   @override
   Widget build(BuildContext context) {
     final partner = (locator<GlobalData>().currentUser?.email.toString() ==
-            widget.ChatRoom.user1?.email.toString())
-        ? widget.ChatRoom.user2
-        : widget.ChatRoom.user1;
-    String customStartTime = (widget.ChatRoom.lastMessage != null)
-        ? DateTime.parse(widget.ChatRoom.lastMessage!.createdAt as String)
+            widget.chatRoom.user1?.email.toString())
+        ? widget.chatRoom.user2
+        : widget.chatRoom.user1;
+    String customStartTime = (widget.chatRoom.lastMessage != null)
+        ? DateTime.parse(widget.chatRoom.lastMessage!.createdAt as String)
             .toLocal()
             .toString()
             .substring(11, 16)
         : '';
 
-    String messageContent = (widget.ChatRoom.lastMessage != null)
-        ? widget.ChatRoom.lastMessage!.message.toString()
+    String messageContent = (widget.chatRoom.lastMessage != null)
+        ? widget.chatRoom.lastMessage!.message.toString()
         : 'Hai bạn đã được kết nối';
     messageContent = HandlingStringUtils.handleLength(messageContent);
 
     String unwatch = locator<GlobalData>().currentUser?.email.toString() ==
-            widget.ChatRoom.user1!.email.toString()
-        ? widget.ChatRoom.numUnwatched1.toString()
-        : widget.ChatRoom.numUnwatched2.toString();
+            widget.chatRoom.user1?.email.toString()
+        ? widget.chatRoom.numUnwatched1.toString()
+        : widget.chatRoom.numUnwatched2.toString();
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -108,7 +108,7 @@ class _ListChatRoomItemState extends State<ListChatRoomItem> {
       ),
       child: InkWell(
         onTap: () {
-          _iMessageViewModel.setCurrentChatRoom(widget.ChatRoom);
+          _iMessageViewModel.setCurrentChatRoom(widget.chatRoom);
           Get.offNamed(MyRouter.message);
         },
         child: Container(

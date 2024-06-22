@@ -92,7 +92,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       centerTitle: false,
       backgroundColor: Colors.white,
       elevation: 0.5,
-      leadingWidth: 200.w,
+      leadingWidth: 250.w,
       leading: Padding(
         padding: EdgeInsets.only(
           left: 25.w,

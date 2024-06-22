@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
+import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
+import 'package:twg/global/router.dart';
 import 'package:twg/ui/common_widgets/action_button.dart';
 import 'package:twg/ui/screens/profile_and_settings/widget/animated_avatar.dart';
 
@@ -24,7 +29,19 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
   double rating = 0;
   List<dynamic> completeBooking = [];
   bool isLoading_getMyBook = false;
-  void init() async {
+  late IChatRoomViewModel _iChatRoomViewModel;
+  late IMessageViewModel _iMessageViewModel;
+  void navigateChatRoom(BuildContext context) async {
+    var value = await _iChatRoomViewModel.createChatRoom(
+      CreateChatRoomDto(userId: widget.accountDto.id),
+    );
+    if (value != null) {
+      _iMessageViewModel.setCurrentChatRoom(value);
+      Get.offNamed(MyRouter.message);
+    }
+  }
+
+  void init() {
     setState(() {
       isLoading_getMyBook = true;
     });
@@ -48,6 +65,8 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
 
   @override
   void initState() {
+    _iChatRoomViewModel = context.read<IChatRoomViewModel>();
+    _iMessageViewModel = context.read<IMessageViewModel>();
     super.initState();
   }
 
@@ -271,9 +290,9 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ActionButton(
+                InkWell(
                   onTap: () {
-                    // navigateChatRoom(context);
+                    navigateChatRoom(context);
                   },
                   child: CircleAvatar(
                     backgroundColor: Colors.grey.withOpacity(0.1),
@@ -288,7 +307,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                 const SizedBox(
                   width: 20,
                 ),
-                ActionButton(
+                InkWell(
                   onTap: () {},
                   child: CircleAvatar(
                     backgroundColor: Colors.grey.withOpacity(0.1),
