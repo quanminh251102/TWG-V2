@@ -310,9 +310,12 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                         height: 5.h,
                       ),
                       Text(
-                        VietnameseMoneyFormatter().formatToVietnameseCurrency(
-                          widget.booking.price.toString(),
-                        ),
+                        widget.booking.price != null
+                            ? VietnameseMoneyFormatter()
+                                .formatToVietnameseCurrency(
+                                widget.booking.price!.round().toString(),
+                              )
+                            : '0 đ',
                         style: TextStyle(
                             fontSize: 14.sp, color: ColorUtils.primaryColor),
                       ),
@@ -431,12 +434,13 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: widget.booking.status == 'available'
-                                ? ColorUtils.primaryColor
-                                : widget.booking.status == 'complete'
-                                    ? Colors.green
-                                    : Colors.red),
+                          borderRadius: BorderRadius.circular(10),
+                          color: widget.booking.status == 2
+                              ? ColorUtils.primaryColor
+                              : widget.booking.status == 1
+                                  ? Colors.green
+                                  : Colors.red,
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Text(

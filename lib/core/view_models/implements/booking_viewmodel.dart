@@ -118,7 +118,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     _reset();
     _recommendBooking.clear();
     _filterBookingDto = FilterBookingDto();
-notifyListeners();
+    notifyListeners();
     final paginationProducts = await _iBookingService.getBookings(
       status: status,
       page: page,
@@ -326,11 +326,15 @@ notifyListeners();
   @override
   Future<void> createBooking(
       {String? time, String? price, String? content}) async {
-    _currentBooking!.time = time;
-    _currentBooking!.price = double.parse(
+    double amount = double.parse(
       price!.replaceAll(RegExp(r'[^0-9]'), '').trim(),
     );
+    double convertedAmount = (amount ~/ 1).toDouble();
+
+    _currentBooking!.time = time;
+    _currentBooking!.price = convertedAmount;
     _currentBooking!.content = content;
+
     final isCreateSuccess =
         await _iBookingService.createBooking(_currentBooking!);
 

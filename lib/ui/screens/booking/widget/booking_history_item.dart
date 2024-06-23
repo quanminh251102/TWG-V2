@@ -146,10 +146,12 @@ class _BookingHistoryItemState extends State<BookingHistoryItem> {
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.bold)),
                             Text(
-                              VietnameseMoneyFormatter()
-                                  .formatToVietnameseCurrency(
-                                widget.booking.price.toString(),
-                              ),
+                              widget.booking.price != null
+                                  ? VietnameseMoneyFormatter()
+                                      .formatToVietnameseCurrency(
+                                      widget.booking.price!.round().toString(),
+                                    )
+                                  : '0 đ',
                               style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.bold,
