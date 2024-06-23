@@ -239,11 +239,18 @@ class _ListRecommendItemState extends State<ListRecommendItem> {
                                         color: ColorUtils.primaryColor,
                                         height: 30,
                                       ),
+                                      SizedBox(
+                                        width: 5.w,
+                                      ),
                                       Text(
-                                        VietnameseMoneyFormatter()
-                                            .formatToVietnameseCurrency(
-                                          widget.booking.price.toString(),
-                                        ),
+                                        widget.booking.price != null
+                                            ? VietnameseMoneyFormatter()
+                                                .formatToVietnameseCurrency(
+                                                widget.booking.price!
+                                                    .round()
+                                                    .toString(),
+                                              )
+                                            : '0 đ',
                                         style: TextStyle(
                                             fontSize: 14.sp,
                                             fontWeight: FontWeight.bold),
