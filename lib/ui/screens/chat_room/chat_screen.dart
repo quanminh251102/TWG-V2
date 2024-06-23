@@ -92,7 +92,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       centerTitle: false,
       backgroundColor: Colors.white,
       elevation: 0.5,
-      leadingWidth: 250.w,
+      leadingWidth: 280.w,
       leading: Padding(
         padding: EdgeInsets.only(
           left: 25.w,
@@ -151,12 +151,18 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  partner.firstName.toString(),
-                  style: TextStyle(
+                SizedBox(
+                  width: 160.w,
+                  child: Text(
+                    partner.firstName.toString(),
+                    maxLines: 1,
+                    style: TextStyle(
                       color: Colors.black,
                       fontSize: 16.sp,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ),
                 const Text(
                   'Online',

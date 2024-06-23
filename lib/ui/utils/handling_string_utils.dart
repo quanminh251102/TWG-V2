@@ -70,7 +70,7 @@ class HandlingStringUtils {
       => res = '6tr200k/tháng'
     */
     String res = '';
-    int value = int.parse(price);
+    double value = double.parse(price);
     if (value >= 1000000) {
       res = res = '$res${(value ~/ 1000000).toString()}tr';
     }

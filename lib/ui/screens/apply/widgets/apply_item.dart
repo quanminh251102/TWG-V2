@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:twg/constants.dart';
 import 'package:twg/core/dtos/apply/apply_dto.dart';
@@ -114,10 +115,7 @@ class ApplyItem extends StatelessWidget {
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.bold)),
                           Text(
-                            VietnameseMoneyFormatter()
-                                .formatToVietnameseCurrency(
-                              apply.booking!.price.toString(),
-                            ),
+                            apply.booking!.price.toString(),
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.bold,
@@ -150,7 +148,10 @@ class ApplyItem extends StatelessWidget {
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.bold)),
                           Text(
-                            apply.booking?.time ?? "",
+                            DateFormat('HH:mm | dd/MM/yyyy')
+                                .format(DateTime.parse(
+                              apply.booking?.time ?? "",
+                            )),
                             style: TextStyle(
                                 fontSize: 14.sp, fontWeight: FontWeight.bold),
                           ),
@@ -325,9 +326,12 @@ class ApplyItem extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 14.sp, fontWeight: FontWeight.bold)),
                       Text(
-                        VietnameseMoneyFormatter().formatToVietnameseCurrency(
-                          apply.booking!.price.toString(),
-                        ),
+                        apply.booking!.price != null
+                            ? VietnameseMoneyFormatter()
+                                .formatToVietnameseCurrency(
+                                apply.booking!.price!.round().toString(),
+                              )
+                            : '0 đ',
                         style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
@@ -359,7 +363,9 @@ class ApplyItem extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 14.sp, fontWeight: FontWeight.bold)),
                       Text(
-                        apply.booking?.time ?? "",
+                        DateFormat('HH:mm | dd/MM/yyyy').format(DateTime.parse(
+                          apply.booking?.time ?? "",
+                        )),
                         style: TextStyle(
                             fontSize: 14.sp, fontWeight: FontWeight.bold),
                       ),
