@@ -9,18 +9,26 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
+import 'package:twg/core/services/interfaces/isocket_service.dart';
 
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/utils/money_utils.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/icall_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ihome_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/ilocation_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/inotification_viewmodal.dart';
+import 'package:twg/global/global_data.dart';
+import 'package:twg/global/locator.dart';
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/animation/ani_bottom_sheet.dart';
 import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
 import 'package:twg/ui/screens/booking/widget/list_recommend_item.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
+import '../../../core/view_models/interfaces/iapply_viewmodel.dart';
 import 'widget/list_booking.dart';
 
 part './widget/available_tab.dart';
@@ -40,6 +48,11 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen>
     with TickerProviderStateMixin {
+  late IChatRoomViewModel _iChatRoomViewModel;
+  late ICallViewModel _iCallViewModel;
+  final ISocketService _iSocketService = locator<ISocketService>();
+  late IApplyViewModel _iApplyViewModel;
+  late INotificationViewModel _iNotificationViewModel;
   late IHomeViewModel _iHomeViewModel;
   late IBookingViewModel _iBookingViewModel;
   late TabController _tabController;
@@ -93,7 +106,22 @@ class _BookingScreenState extends State<BookingScreen>
         ),
       ),
     );
+    if (!locator<GlobalData>().isInitSocket) {
+      _iChatRoomViewModel = context.read<IChatRoomViewModel>();
+      _iChatRoomViewModel.initSocketEventForChatRoom();
 
+      _iApplyViewModel = context.read<IApplyViewModel>();
+      _iApplyViewModel.initSocketEventForApply();
+
+      _iNotificationViewModel = context.read<INotificationViewModel>();
+      _iNotificationViewModel.initSocketEventForNotification();
+
+      _iCallViewModel = context.read<ICallViewModel>();
+      _iCallViewModel.initSocketEventForCall();
+      _iCallViewModel.setSocket(_iSocketService.socket as IO.Socket);
+
+      locator<GlobalData>().isInitSocket = true;
+    }
     Future.delayed(
       Duration.zero,
       () async {

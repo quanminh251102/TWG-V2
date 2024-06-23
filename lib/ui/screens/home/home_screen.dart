@@ -51,33 +51,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final customMarkers = <Marker>[];
   late final bookingMarkers = <Marker>[];
 
-  late IChatRoomViewModel _iChatRoomViewModel;
-  late ICallViewModel _iCallViewModel;
-  final ISocketService _iSocketService = locator<ISocketService>();
-  late IApplyViewModel _iApplyViewModel;
-  late INotificationViewModel _iNotificationViewModel;
   late IBookingViewModel _iBookingViewModel;
   final FieldSettings settings = FieldSettings();
 
   @override
   void initState() {
-    if (!locator<GlobalData>().isInitSocket) {
-      _iChatRoomViewModel = context.read<IChatRoomViewModel>();
-      _iChatRoomViewModel.initSocketEventForChatRoom();
-
-      _iApplyViewModel = context.read<IApplyViewModel>();
-      _iApplyViewModel.initSocketEventForApply();
-
-      _iNotificationViewModel = context.read<INotificationViewModel>();
-      _iNotificationViewModel.initSocketEventForNotification();
-
-      _iCallViewModel = context.read<ICallViewModel>();
-      _iCallViewModel.initSocketEventForCall();
-      _iCallViewModel.setSocket(_iSocketService.socket as IO.Socket);
-
-      locator<GlobalData>().isInitSocket = true;
-    }
-
     mapController = MapController();
     _iHomeViewModel = context.read<IHomeViewModel>();
     _iBookingViewModel = context.read<IBookingViewModel>();
