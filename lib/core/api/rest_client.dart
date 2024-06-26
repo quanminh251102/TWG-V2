@@ -5,6 +5,7 @@ import 'package:twg/core/dtos/apply/create_apply_dto.dart';
 import 'package:twg/core/dtos/apply/update_apply_dto.dart';
 import 'package:twg/core/dtos/auth/access_token_dto.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
+import 'package:twg/core/dtos/auth/google_token_dto.dart';
 import 'package:twg/core/dtos/auth/login_dto.dart';
 import 'package:twg/core/dtos/base_api_dto.dart';
 import 'package:twg/core/dtos/booking/booking_dto.dart';
@@ -30,6 +31,12 @@ abstract class RestClient {
   Future<BaseApiDto<AccessTokenDto>> getToken(
     @Body() LoginDto model,
   );
+
+  @POST("/api/auth/login")
+  Future<BaseApiDto<GoogleTokenDto>> getTokenGoogle(
+    @Body() LoginDto model,
+  );
+
   @POST("/api/auth/register")
   Future<BaseApiDto<AccountDto>> register(
     @Body() RegisterDto model,

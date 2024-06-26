@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 abstract class IAuthViewModel implements ChangeNotifier {
+  Future<void> loginGoogle();
   Future<void> login(String phone, String password);
   Future<void> logout();
-  Future<void> signInGoogle();
   Future<void> signUp(String email, String name, String password);
 
   // List<ProvinceDto> get provinces;
