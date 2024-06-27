@@ -5,11 +5,8 @@ part 'login_dto.g.dart';
 class LoginDto {
   final String email;
   final String password;
-
-  LoginDto({
-    required this.email,
-    required this.password,
-  });
+  String? avatar;
+  LoginDto({required this.email, required this.password, this.avatar});
 
   factory LoginDto.fromJson(Map<String, dynamic> json) =>
       _$LoginDtoFromJson(json);

@@ -176,7 +176,7 @@ class _ComingApplyDialogState extends State<ComingApplyDialog> {
                       Text(
                         VietnameseMoneyFormatter()
                             .formatToVietnameseCurrency(
-                                widget.apply.booking!.price.toString())
+                                widget.apply.booking!.price!.round().toString())
                             .toString(),
                         style: TextStyle(
                           color: ColorUtils.primaryColor,

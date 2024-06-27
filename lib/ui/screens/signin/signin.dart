@@ -290,9 +290,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             children: [
                               InkWell(
                                 borderRadius: BorderRadius.circular(30),
-                                onTap: () {
-                                  // BlocProvider.of<SigninCubit>(context)
-                                  //     .SignInWithGoogle();
+                                onTap: () async {
+                                  await _iAuthViewModel.loginGoogle();
                                 },
                                 child: SvgPicture.asset(
                                   'assets/icons/google_box.svg',
