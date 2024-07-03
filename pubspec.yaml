@@ -100,6 +100,8 @@ dependencies:
   skeletonizer: ^1.2.0
   chips_choice: ^3.0.1
   dependency_validator: ^4.1.0
+  firebase_messaging: ^14.8.0
+  firebase_core: ^2.28.0
 
 dev_dependencies:
   flutter_test:

@@ -21,6 +21,7 @@ import 'package:twg/core/view_models/interfaces/iapply_viewmodel.dart';
 import 'package:twg/global/locator.dart';
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/common_widgets/coming_apply_dialog.dart';
+import 'package:twg/ui/utils/notification_utils.dart';
 
 class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
   List<ApplyDto> _applys = [];
@@ -284,12 +285,20 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
   @override
   void initSocketEventForApply() {
     _iSocketService.socket!.on("reload_apply", (jsonData) async {
+      NotifiationUtils().showNotification(
+        title: "Thông báo",
+        body: "Yêu cầu tham gia được cập nhật",
+      );
       init('');
       print('reload_apply');
     });
 
     _iSocketService.socket!.on("receive_apply", (jsonData) async {
       print('receive_apply');
+      NotifiationUtils().showNotification(
+        title: "Thông báo",
+        body: "Có người muốn tham gia vào chuyến đi của bạn",
+      );
       final jsonValue = json.encode(jsonData);
       final data = json.decode(jsonValue) as Map<String, dynamic>;
       var value = ApplyDto.fromJson(data);

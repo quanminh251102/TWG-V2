@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +11,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
+import 'package:twg/core/services/implements/notification_service.dart';
 import 'package:twg/core/utils/theme_utils.dart';
+import 'package:twg/firebase_options.dart';
 import 'package:twg/ui/utils/navigation_utils.dart';
 import 'package:twg/ui/utils/notification_utils.dart';
 import 'global/locator.dart';
@@ -26,6 +29,12 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await NotificationService;
   configLoading();
   await setupLocator();
   NotifiationUtils().initNotification();

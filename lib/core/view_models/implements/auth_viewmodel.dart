@@ -40,6 +40,7 @@ class AuthViewModel with ChangeNotifier implements IAuthViewModel {
 
     if (account != null) {
       _iSocketService.connectServer(locator<GlobalData>().token);
+
       await EasyLoading.showSuccess('Đăng nhập thành công!');
       Get.offNamed(
         MyRouter.booking,
@@ -69,6 +70,12 @@ class AuthViewModel with ChangeNotifier implements IAuthViewModel {
       Get.offNamed(MyRouter.signIn);
     }
     notifyListeners();
+  }
+
+  @override
+  Future<void> signInGoogle() {
+    // TODO: implement signInGoogle
+    throw UnimplementedError();
   }
   // @override
   // Future<void> init() async {
