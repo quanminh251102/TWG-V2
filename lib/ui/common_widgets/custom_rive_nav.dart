@@ -58,6 +58,12 @@ class _BottomNavBarV2State extends State<BottomNavBarV2>
   }
 
   @override
+  void dispose() {
+    animationController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return SizedBox(

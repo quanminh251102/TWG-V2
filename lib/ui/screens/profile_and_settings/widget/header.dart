@@ -11,6 +11,12 @@ class __HeaderState extends State<_Header> {
   final bool _isLoadingForUpdateProfilePage = false;
   bool _isLoadingImage = false;
   late IProfileViewModel _iProfileViewModel;
+  @override
+  void initState() {
+    _iProfileViewModel = context.read<IProfileViewModel>();
+    super.initState();
+  }
+
   void uploadImage(XFile file) async {
     setState(() {
       _isLoadingImage = true;
@@ -23,13 +29,9 @@ class __HeaderState extends State<_Header> {
 
       value.avatarUrl = result;
       //  this._birthday.toString(),
-      String text = await _iProfileViewModel.updateProfile(value);
+      await _iProfileViewModel.updateProfile(value);
 
-      Get.showSnackbar(
-        GetSnackBar(
-          title: text,
-        ),
-      );
+      await EasyLoading.showSuccess('Cập nhật avatar thành công');
     }
 
     setState(() {

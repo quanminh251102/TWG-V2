@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +15,7 @@ import 'package:twg/ui/common_widgets/action_button.dart';
 import 'package:twg/ui/common_widgets/custom_rive_nav.dart';
 import 'package:twg/ui/screens/profile_and_settings/widget/profile_menu_widget.dart';
 import 'package:lottie/lottie.dart' as lottie;
+import 'package:twg/ui/utils/loading_dialog_utils.dart';
 part './widget/header.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -127,7 +129,6 @@ class _AccountScreenState extends State<AccountScreen>
 
   @override
   Widget build(BuildContext context) {
-    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
       bottomNavigationBar: const BottomNavBarV2(
         currentIndex: 4,
