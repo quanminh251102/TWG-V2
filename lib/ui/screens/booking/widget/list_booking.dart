@@ -65,6 +65,7 @@ class _ListBookingState extends State<ListBooking>
                                   curve: Curves.fastOutSlowIn)));
                   animationController?.forward();
                   return ListBookingItem(
+                    isChatbot: false,
                     booking: widget.bookings[index],
                     animation: animation,
                     animationController: animationController!,

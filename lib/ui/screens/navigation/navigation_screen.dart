@@ -36,7 +36,6 @@ class _NavigationScreenState extends State<NavigationScreen>
     with TickerProviderStateMixin {
   final Location _location = Location();
   late Stream<LocationData> _locationStream;
-  late final StreamController<LocationMarkerPosition> _positionStreamController;
   late final MapController mapController;
   final pinMarkers = <Marker>[];
   final placeMarkers = <Marker>[];
@@ -52,15 +51,12 @@ class _NavigationScreenState extends State<NavigationScreen>
   bool isInit = false;
   bool isLocationFocus = true;
   bool isGetPlace = false;
-
+  LocationData? getLocation;
   @override
   void initState() {
     mapController = MapController();
     _locationStream = _location.onLocationChanged;
     _iApplyViewModel = context.read<IApplyViewModel>();
-    _positionStreamController = StreamController(
-      onListen: () async {},
-    );
 
     Future.delayed(
       Duration.zero,
@@ -68,20 +64,27 @@ class _NavigationScreenState extends State<NavigationScreen>
         await _iApplyViewModel.initNavigation(
           widget.bookingDto,
         );
+        await _subscribeToLocationChanges();
       },
     );
-    _subscribeToLocationChanges();
+
     super.initState();
   }
 
-  void _subscribeToLocationChanges() {
+  Future<void> _subscribeToLocationChanges() async {
     _location.onLocationChanged.listen((LocationData currentLocation) async {
-      await _iApplyViewModel.updateRoute(
-        LatLng(
-          currentLocation.latitude!,
-          currentLocation.longitude!,
-        ),
-      );
+      if (getLocation == null ||
+          (getLocation?.latitude != currentLocation.latitude &&
+              getLocation?.longitude != currentLocation.longitude)) {
+        getLocation = currentLocation;
+        print('vào');
+        await _iApplyViewModel.updateRoute(
+          LatLng(
+            currentLocation.latitude!,
+            currentLocation.longitude!,
+          ),
+        );
+      }
     });
   }
 
@@ -148,9 +151,9 @@ class _NavigationScreenState extends State<NavigationScreen>
               FlutterMap(
                 mapController: mapController,
                 options: MapOptions(
-                  onPositionChanged: (position, hasGesture) async {
-                    await vm.delayedFunctionCaller();
-                  },
+                  // onPositionChanged: (position, hasGesture) async {
+                  //   await vm.delayedFunctionCaller();
+                  // },
                   initialCameraFit: CameraFit.bounds(
                     padding: EdgeInsets.only(
                       left: 100.w,

@@ -49,6 +49,7 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
   final FocusNode destinationFocusNode = FocusNode();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController destinationController = TextEditingController();
+  late AnimationController controller;
   Predictions? currentLocation;
   Predictions? currentDestination;
 
@@ -67,6 +68,8 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
 
   @override
   void initState() {
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
     mapController = MapController();
     draggableSheetContext = context;
 
@@ -118,6 +121,7 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
   void dispose() {
     locationFocusNode.dispose();
     destinationFocusNode.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -170,9 +174,6 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
     final lngTween = Tween<double>(
         begin: camera.center.longitude, end: destLocation.longitude);
     final zoomTween = Tween<double>(begin: camera.zoom, end: destZoom);
-
-    final controller = AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this);
 
     final Animation<double> animation =
         CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);

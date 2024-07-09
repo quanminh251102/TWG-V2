@@ -249,10 +249,10 @@ class _BookingScreenState extends State<BookingScreen>
                               ),
                               Padding(
                                 padding: EdgeInsets.only(
-                                    left: 16,
-                                    right: 16,
-                                    top: 16 - 8.0 * topBarOpacity,
-                                    bottom: 12 - 10.0 * topBarOpacity),
+                                    left: 16.w,
+                                    right: 16.w,
+                                    top: 16.h - 8.h * topBarOpacity,
+                                    bottom: 12.h - 10.h * topBarOpacity),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
@@ -276,9 +276,6 @@ class _BookingScreenState extends State<BookingScreen>
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.only(
-                                  top: 0.h,
-                                ),
                                 decoration: const BoxDecoration(
                                   color: Colors.transparent,
                                 ),

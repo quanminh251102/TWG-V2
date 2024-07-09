@@ -87,15 +87,13 @@ class _MyApplyPageState extends State<MyApplyPage>
       appBar: AppBar(
         title: const Text(
           'Yêu cầu',
-          style: TextStyle(
-            color: Colors.black,
-          ),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
-            Get.offNamed(MyRouter.profile);
+            Get.back();
           },
           child: const Icon(
             Icons.arrow_back_ios,

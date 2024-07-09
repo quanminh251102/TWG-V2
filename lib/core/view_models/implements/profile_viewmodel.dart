@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
+import 'package:twg/core/services/interfaces/iauth_service.dart';
 import 'package:twg/core/services/interfaces/icloudinary_service.dart';
 import 'package:twg/core/services/interfaces/iprofile_service.dart';
 import 'package:twg/core/view_models/interfaces/iprofile_viewmodel.dart';
@@ -18,7 +19,7 @@ class ProfileViewModel with ChangeNotifier implements IProfileViewModel {
 
   final IProfileService _iMessageService = locator<IProfileService>();
   final ICloudinaryService _iCloudinaryService = locator<ICloudinaryService>();
-
+  final IAuthService _iAuthService = locator<IAuthService>();
   @override
   Future<void> getProfile() async {
     var result = await _iMessageService.getProfile();
@@ -42,6 +43,12 @@ class ProfileViewModel with ChangeNotifier implements IProfileViewModel {
   @override
   Future<String> uploadFile(XFile file) async {
     var result = await _iCloudinaryService.uploadFile(file);
+    return result;
+  }
+
+  @override
+  Future<AccountDto?> getUserById(String userId) async {
+    var result = await _iAuthService.getUserById(userId);
     return result;
   }
 }

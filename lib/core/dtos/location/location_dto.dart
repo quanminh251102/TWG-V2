@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 
 part 'location_dto.g.dart';
 

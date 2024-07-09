@@ -1,4 +1,4 @@
-const baseUrl = "http://192.168.88.159:8080";
+const baseUrl = "http://192.168.0.143:8080";
 const baseGoongsUrl = "https://rsapi.goong.io";
 const String baseOrsUrl =
     'https://api.openrouteservice.org/v2/directions/driving-car';

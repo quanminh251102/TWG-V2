@@ -44,6 +44,7 @@ class ApplyItem extends StatelessWidget {
           children: [
             if (!vm.isMyApplys)
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

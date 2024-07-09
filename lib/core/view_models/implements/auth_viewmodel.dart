@@ -77,6 +77,7 @@ class AuthViewModel with ChangeNotifier implements IAuthViewModel {
     // TODO: implement signInGoogle
     throw UnimplementedError();
   }
+
   // @override
   // Future<void> init() async {
   //   var logined = await _iAuthService.checkLogin();

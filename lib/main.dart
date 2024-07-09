@@ -30,20 +30,16 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
   ]);
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await NotificationService;
   configLoading();
   await setupLocator();
-  NotifiationUtils().initNotification();
+  await NotifiationUtils().initNotification();
   runApp(
     const MyApp(),
   );
 }
-
-Future<void> mainDelegate() async {}
 
 void configLoading() {
   EasyLoading.instance

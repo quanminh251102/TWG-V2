@@ -21,27 +21,34 @@ class AccountDto {
   bool? isCalling;
   String? createdAt;
   String? updatedAt;
+  int? reviewNum;
+  int? applyNum;
+  int? bookingNum;
   String? id;
 
-  AccountDto(
-      {this.address,
-      this.priorityPoint,
-      this.firstName,
-      this.lastName,
-      this.email,
-      this.password,
-      this.avatarUrl,
-      this.phoneNumber,
-      this.online,
-      this.gender,
-      this.locationId,
-      this.locationMainText,
-      this.locationAddress,
-      this.role,
-      this.isCalling,
-      this.createdAt,
-      this.updatedAt,
-      this.id});
+  AccountDto({
+    this.address,
+    this.priorityPoint,
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.password,
+    this.avatarUrl,
+    this.phoneNumber,
+    this.online,
+    this.gender,
+    this.locationId,
+    this.locationMainText,
+    this.locationAddress,
+    this.role,
+    this.isCalling,
+    this.createdAt,
+    this.updatedAt,
+    this.reviewNum,
+    this.applyNum,
+    this.bookingNum,
+    this.id,
+  });
   factory AccountDto.fromJson(Map<String, dynamic> json) =>
       _$AccountDtoFromJson(json);
   Map<String, dynamic> toJson() => _$AccountDtoToJson(this);

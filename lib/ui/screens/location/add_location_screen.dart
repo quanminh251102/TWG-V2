@@ -86,7 +86,7 @@ class _AddLocationScreenState extends State<AddLocationScreen>
         ),
         leading: InkWell(
           onTap: () {
-            Get.offNamed(MyRouter.pickPlaceMap);
+            Get.back();
           },
           child: const Icon(
             Icons.arrow_back_ios,

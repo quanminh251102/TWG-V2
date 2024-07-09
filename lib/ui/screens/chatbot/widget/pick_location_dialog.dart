@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+
 import 'package:twg/core/dtos/goongs/place_dto.dart';
+import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 import 'package:twg/core/dtos/location/location_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/utils/enum.dart';
@@ -17,7 +20,11 @@ import 'package:twg/ui/screens/booking/widget/booking_search_item.dart';
 import '../../../animation/ani_bottom_sheet.dart';
 
 class ChatPickLocationDialog extends StatefulWidget {
-  const ChatPickLocationDialog({super.key});
+  final bool isStartPlace;
+  const ChatPickLocationDialog({
+    Key? key,
+    required this.isStartPlace,
+  }) : super(key: key);
 
   @override
   State<ChatPickLocationDialog> createState() => _ChatPickLocationDialogState();
@@ -32,8 +39,8 @@ class _ChatPickLocationDialogState extends State<ChatPickLocationDialog> {
   bool isConfirm = false;
 
   void checkValue() {
-    if (locationTextEditingController.text != '' &&
-        destinationTextEditingController.text != '') {
+    if (destinationTextEditingController.text.isNotEmpty ||
+        locationTextEditingController.text.isNotEmpty) {
       setState(() {
         isConfirm = true;
       });
@@ -117,22 +124,31 @@ class _ChatPickLocationDialogState extends State<ChatPickLocationDialog> {
                         child: isConfirm
                             ? InkWell(
                                 onTap: () async {
-                                  PlaceDto? startPlace =
-                                      await _iChatbotViewModel.getPlaceById(
-                                    _iChatbotViewModel.startPlace!.placeId!,
-                                  );
-                                  PlaceDto? endPlace =
-                                      await _iChatbotViewModel.getPlaceById(
-                                    _iChatbotViewModel.endPlace!.placeId!,
-                                  );
-                                  _iChatbotViewModel.setLocationPoint(
-                                    LatLng(startPlace!.geometry!.location!.lat!,
-                                        startPlace.geometry!.location!.lng!),
-                                    LatLng(endPlace!.geometry!.location!.lat!,
-                                        endPlace.geometry!.location!.lng!),
-                                  );
-                                  await _iChatbotViewModel
-                                      .sendMessageWithPayload();
+                                  PlaceDto? location;
+                                  final place = widget.isStartPlace
+                                      ? _iChatbotViewModel.startPlace
+                                      : _iChatbotViewModel.endPlace;
+                                  if (place!.placeGeoCode == null) {
+                                    location = await _iChatbotViewModel
+                                        .getPlaceById(place.placeId!);
+                                    _iChatbotViewModel.setLocationPoint(
+                                      LatLng(location!.geometry!.location!.lat!,
+                                          location.geometry!.location!.lng!),
+                                      widget.isStartPlace,
+                                    );
+                                  } else {
+                                    List<String> splitCoordinates =
+                                        place.placeGeoCode!.split(',');
+                                    double latitude =
+                                        double.parse(splitCoordinates[0]);
+                                    double longitude =
+                                        double.parse(splitCoordinates[1]);
+                                    _iChatbotViewModel.setLocationPoint(
+                                      LatLng(latitude, longitude),
+                                      widget.isStartPlace,
+                                    );
+                                  }
+                                  Get.back();
                                 },
                                 child: Text(
                                   'Xác nhận',
@@ -153,108 +169,112 @@ class _ChatPickLocationDialogState extends State<ChatPickLocationDialog> {
               SizedBox(
                 height: 15.h,
               ),
-              SizedBox(
-                width: 400.w,
-                child: CupertinoTextField(
-                  focusNode: locationFocusNode,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.sp,
-                  ),
-                  onSubmitted: (value) {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    setState(() {});
-                  },
-                  onChanged: (value) async {
-                    if (value.length >= 3) {
-                      await _iChatbotViewModel.onPickPlace(value);
-                    }
-                  },
-                  controller: locationTextEditingController,
-                  prefix: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10.w,
+              if (widget.isStartPlace)
+                SizedBox(
+                  width: 400.w,
+                  child: CupertinoTextField(
+                    focusNode: locationFocusNode,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16.sp,
                     ),
-                    child: const Icon(
-                      Icons.person_pin,
-                      color: ColorUtils.black,
+                    onSubmitted: (value) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      setState(() {});
+                    },
+                    onChanged: (value) async {
+                      if (value.length >= 3) {
+                        await _iChatbotViewModel.onPickPlace(value);
+                      }
+                    },
+                    controller: locationTextEditingController,
+                    prefix: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                      ),
+                      child: const Icon(
+                        Icons.person_pin,
+                        color: ColorUtils.black,
+                      ),
                     ),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.1),
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.grey.withOpacity(
-                          0.1,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.1),
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.grey.withOpacity(
+                            0.1,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    vertical: 15.h,
-                    horizontal: 0.w,
-                  ),
-                  placeholder: 'Điểm đi',
-                  placeholderStyle: locationTextEditingController.text == ''
-                      ? TextStyle(
-                          fontSize: 16.sp,
-                          color: Colors.grey,
-                        )
-                      : TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16.sp,
-                        ),
-                ),
-              ),
-              SizedBox(
-                width: 400.w,
-                child: CupertinoTextField(
-                  focusNode: destinationFocusNode,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16.sp,
-                  ),
-                  onSubmitted: (value) {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    setState(() {});
-                  },
-                  onChanged: (value) async {
-                    if (value.length >= 3) {
-                      await _iChatbotViewModel.onPickPlace(value);
-                    }
-                  },
-                  controller: destinationTextEditingController,
-                  prefix: Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 10.w,
+                      vertical: 15.h,
+                      horizontal: 0.w,
                     ),
-                    child: const Icon(Icons.location_pin, color: Colors.orange),
+                    placeholder: 'Điểm đi',
+                    placeholderStyle: locationTextEditingController.text == ''
+                        ? TextStyle(
+                            fontSize: 16.sp,
+                            color: Colors.grey,
+                          )
+                        : TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16.sp,
+                          ),
                   ),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(
-                      0.1,
-                    ),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    vertical: 15.h,
-                    horizontal: 0.w,
-                  ),
-                  placeholder: 'Điểm đến',
-                  placeholderStyle: destinationTextEditingController.text == ''
-                      ? TextStyle(
-                          fontSize: 16.sp,
-                          color: Colors.grey,
-                        )
-                      : TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16.sp,
-                        ),
                 ),
-              ),
+              if (!widget.isStartPlace)
+                SizedBox(
+                  width: 400.w,
+                  child: CupertinoTextField(
+                    focusNode: destinationFocusNode,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16.sp,
+                    ),
+                    onSubmitted: (value) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      setState(() {});
+                    },
+                    onChanged: (value) async {
+                      if (value.length >= 3) {
+                        await _iChatbotViewModel.onPickPlace(value);
+                      }
+                    },
+                    controller: destinationTextEditingController,
+                    prefix: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                      ),
+                      child:
+                          const Icon(Icons.location_pin, color: Colors.orange),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(
+                        0.1,
+                      ),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 15.h,
+                      horizontal: 0.w,
+                    ),
+                    placeholder: 'Điểm đến',
+                    placeholderStyle:
+                        destinationTextEditingController.text == ''
+                            ? TextStyle(
+                                fontSize: 16.sp,
+                                color: Colors.grey,
+                              )
+                            : TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16.sp,
+                              ),
+                  ),
+                ),
               Consumer<ILocationViewModel>(
                 builder: (context, vm, child) {
                   bool hasType1 = vm.savedLocation
@@ -274,13 +294,14 @@ class _ChatPickLocationDialogState extends State<ChatPickLocationDialog> {
                                   : (savedLocation.type == 'company' ? 1 : 2),
                               location: savedLocation,
                               onTap: () {
-                                if (locationTextEditingController
-                                    .text.isEmpty) {
+                                if (widget.isStartPlace) {
                                   locationTextEditingController.text =
                                       savedLocation.placeDescription!;
+                                  _iChatbotViewModel.startPlace = savedLocation;
                                 } else {
                                   destinationTextEditingController.text =
                                       savedLocation.placeDescription!;
+                                  _iChatbotViewModel.endPlace = savedLocation;
                                 }
                                 checkValue();
                               },
@@ -330,11 +351,13 @@ class _ChatPickLocationDialogState extends State<ChatPickLocationDialog> {
                                     if (locationFocusNode.hasFocus) {
                                       locationTextEditingController.text =
                                           e.description!;
-                                      _iChatbotViewModel.startPlace = e;
+                                      _iChatbotViewModel.startPlace =
+                                          e.toLocationDto();
                                     } else {
                                       destinationTextEditingController.text =
                                           e.description!;
-                                      _iChatbotViewModel.endPlace = e;
+                                      _iChatbotViewModel.endPlace =
+                                          e.toLocationDto();
                                     }
                                     FocusManager.instance.primaryFocus
                                         ?.unfocus();

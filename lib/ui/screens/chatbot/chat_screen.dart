@@ -49,9 +49,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
             children: [
               InkWell(
                 onTap: () {
-                  Get.offNamed(
-                    MyRouter.home,
-                  );
+                  Get.back();
                 },
                 child: const Icon(
                   Icons.arrow_back_ios,

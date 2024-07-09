@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:notification_permissions/notification_permissions.dart';
 import 'package:twg/core/dtos/goongs/place_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
 import 'package:twg/core/services/interfaces/ibooking_service.dart';
@@ -30,9 +31,20 @@ class HomeViewModel extends ChangeNotifier implements IHomeViewModel {
 
   @override
   Future<void> initHome() async {
+    await checkNotificationPermissions();
     _currentPosition = await _iMapService.determinePosition();
     locator<GlobalData>().currentPosition = _currentPosition;
     notifyListeners();
+  }
+
+  Future<void> checkNotificationPermissions() async {
+    PermissionStatus notificationPermission =
+        await NotificationPermissions.getNotificationPermissionStatus();
+    if (notificationPermission == PermissionStatus.denied ||
+        notificationPermission == PermissionStatus.unknown) {
+      notificationPermission =
+          await NotificationPermissions.requestNotificationPermissions();
+    }
   }
 
   @override

@@ -46,6 +46,7 @@ abstract class IBookingViewModel implements ChangeNotifier {
   Future<void> deleteFilter();
   Future<void> updateFilter(FilterBookingDto filterBookingDto);
   Future<void> saveBooking(String bookingId);
+  Future<BookingDto?> saveBookingChatbot(String bookingId);
   Future<void> getMoreBookings({
     int? sortCreatedAt,
     int? sortUpdatedAt,

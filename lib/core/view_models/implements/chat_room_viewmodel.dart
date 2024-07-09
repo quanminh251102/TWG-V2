@@ -10,7 +10,7 @@ class ChatRoomViewModel with ChangeNotifier implements IChatRoomViewModel {
   List<ChatRoomDto> _ChatRooms = [];
   int _totalCount = 0;
   bool _isLoading = false;
-  int page = 1;
+  int page = 2;
   String? _keyword;
 
   final IChatRoomService _iChatRoomService = locator<IChatRoomService>();
@@ -48,7 +48,7 @@ class ChatRoomViewModel with ChangeNotifier implements IChatRoomViewModel {
     _reset();
     final paginationUsers = await _iChatRoomService.getChatRooms(
       page: 1,
-      pageSize: 10,
+      pageSize: 100,
     );
     _ChatRooms = paginationUsers ?? [];
     _totalCount = _iChatRoomService.total;
@@ -64,7 +64,7 @@ class ChatRoomViewModel with ChangeNotifier implements IChatRoomViewModel {
     notifyListeners();
 
     final paginationChatRooms = await _iChatRoomService.getChatRooms(
-      page: page,
+      page:page,
       pageSize: page * 10,
     );
 

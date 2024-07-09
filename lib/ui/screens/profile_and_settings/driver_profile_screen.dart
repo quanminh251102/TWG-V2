@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/auth/account_dto.dart';
 import 'package:twg/core/dtos/chat_room/create_chat_room_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/ichat_room_viewmodel.dart';
 import 'package:twg/core/view_models/interfaces/imessage_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/iprofile_viewmodel.dart';
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/common_widgets/action_button.dart';
 import 'package:twg/ui/screens/profile_and_settings/widget/animated_avatar.dart';
@@ -41,32 +43,11 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
     }
   }
 
-  void init() {
-    setState(() {
-      isLoading_getMyBook = true;
-    });
-    try {
-      // bookings = await BookingService.getBookingWithId(widget.accountDto.id.toString());
-      // completeBooking =
-      //     await BookingService.getMyCompleteBooking(author!.id.toString());
-      // reviews = await ReviewService.getReviewWithUserId(appUser.id);
-      // double sumRating = 0;
-      // for (var review in reviews) {
-      //   sumRating += review["review_star"];
-      // }
-      // rating = sumRating / reviews.length;
-    } catch (e) {
-      print(e);
-    }
-    setState(() {
-      isLoading_getMyBook = false;
-    });
-  }
-
   @override
   void initState() {
     _iChatRoomViewModel = context.read<IChatRoomViewModel>();
     _iMessageViewModel = context.read<IMessageViewModel>();
+
     super.initState();
   }
 
@@ -74,6 +55,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         leading: InkWell(
@@ -147,7 +129,9 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                             height: 10.h,
                           ),
                           Text(
-                            rating.toString(),
+                            widget.accountDto.reviewNum != null
+                                ? widget.accountDto.reviewNum.toString()
+                                : '0',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -179,7 +163,9 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                             height: 10,
                           ),
                           Text(
-                            bookings.length.toString(),
+                            widget.accountDto.bookingNum != null
+                                ? widget.accountDto.bookingNum.toString()
+                                : '0',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -207,7 +193,9 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            completeBooking.length.toString(),
+                            widget.accountDto.applyNum != null
+                                ? widget.accountDto.applyNum.toString()
+                                : '0',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -245,20 +233,54 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            'Địa chỉ:',
+                            'Thành viên từ:',
                             style: TextStyle(
                               fontSize: 14,
                             ),
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            '${widget.accountDto.locationMainText}, ${widget.accountDto.locationAddress}',
+                            DateFormat('HH:mm | dd/MM/yyyy')
+                                .format(DateTime.parse(
+                              widget.accountDto.createdAt ?? "",
+                            )),
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
+                      ),
+                      Divider(
+                        color: Colors.grey.withOpacity(
+                          0.2,
+                        ),
+                        thickness: 1,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Giới tính:',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            widget.accountDto.gender == 'female' ? 'Nữ' : 'Nam',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Divider(
+                        color: Colors.grey.withOpacity(
+                          0.2,
+                        ),
+                        thickness: 1,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -294,13 +316,33 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                   onTap: () {
                     navigateChatRoom(context);
                   },
-                  child: CircleAvatar(
-                    backgroundColor: Colors.grey.withOpacity(0.1),
-                    radius: 30,
-                    child: const Icon(
-                      Icons.message,
-                      color: ColorUtils.primaryColor,
-                      size: 35,
+                  child: Container(
+                    width: Get.size.width * 0.35,
+                    height: 50.h,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(
+                        30.r,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(
+                        8.r,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.message,
+                            color: ColorUtils.primaryColor,
+                            size: 25.r,
+                          ),
+                          Text('Nhắn tin',
+                              style: TextStyle(
+                                fontSize: 15.sp,
+                              )),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -308,14 +350,39 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                   width: 20,
                 ),
                 InkWell(
-                  onTap: () {},
-                  child: CircleAvatar(
-                    backgroundColor: Colors.grey.withOpacity(0.1),
-                    radius: 30,
-                    child: const Icon(
-                      Icons.call,
+                  onTap: () {
+                    navigateChatRoom(context);
+                  },
+                  child: Container(
+                    width: Get.size.width * 0.35,
+                    height: 50.h,
+                    decoration: BoxDecoration(
                       color: ColorUtils.primaryColor,
-                      size: 35,
+                      borderRadius: BorderRadius.circular(
+                        30.r,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(
+                        8.r,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.phone,
+                            color: Colors.white,
+                            size: 25.r,
+                          ),
+                          Text(
+                            'Gọi điện',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15.sp,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

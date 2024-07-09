@@ -8,6 +8,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
 import 'package:twg/core/dtos/apply/apply_dto.dart';
 import 'package:twg/core/dtos/apply/create_apply_dto.dart';
 import 'package:twg/core/dtos/apply/update_apply_dto.dart';
@@ -41,6 +42,12 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
   DirectionDto? _currentDirection;
   LatLngBounds? _boundConfirmScreen;
   BookingDto? _currentBooking;
+  LocationData? _location;
+
+  @override
+  set location(LocationData? location) {
+    _location = location;
+  }
 
   @override
   double? get zoomLevel => _zoomLevel;
@@ -109,6 +116,7 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
         currentLocation!,
         currentDestination!,
       );
+      print('vào 2');
       _boundConfirmScreen =
           LatLngBounds.fromPoints(_currentDirection!.coordinates!
               .map(
@@ -119,7 +127,7 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
               )
               .toList());
     }
-    // caculateIndex();
+    caculateIndex();
     notifyListeners();
   }
 
@@ -285,9 +293,11 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
   @override
   void initSocketEventForApply() {
     _iSocketService.socket!.on("reload_apply", (jsonData) async {
+      final jsonValue = json.encode(jsonData);
+      final data = json.decode(jsonValue) as Map<String, dynamic>;
       NotifiationUtils().showNotification(
         title: "Thông báo",
-        body: "Yêu cầu tham gia được cập nhật",
+        body: data["notification_body"],
       );
       init('');
       print('reload_apply');

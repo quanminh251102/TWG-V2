@@ -63,6 +63,7 @@ class _ListRecommendBookingState extends State<ListRecommendBooking>
                   animationController?.forward();
                   return ListRecommendItem(
                     booking: widget.bookings[index],
+                    isChatBot: false,
                   );
                 },
                 itemCount: widget.bookings.length,

@@ -103,9 +103,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
           children: [
             InkWell(
               onTap: () {
-                Get.offNamed(
-                  MyRouter.home,
-                );
+                Get.back();
               },
               child: const Icon(
                 Icons.arrow_back_ios,

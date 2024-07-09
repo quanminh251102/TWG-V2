@@ -30,22 +30,6 @@ class _BookingHistoryItemState extends State<BookingHistoryItem> {
   late IBookingViewModel _iBookingViewModel;
   String bookingTime = '';
   bool isMyList = false;
-  Color getStatusColor(int status) {
-    switch (status) {
-      case 5:
-        return ColorUtils.primaryColor;
-      case 4:
-        return Colors.green;
-      case 3:
-        return Colors.grey;
-      case 2:
-        return Colors.red;
-      case 1:
-        return Colors.orange;
-      default:
-        return ColorUtils.primaryColor;
-    }
-  }
 
   String getStatus(int status) {
     BookingStatus bookingStatus =
@@ -87,81 +71,84 @@ class _BookingHistoryItemState extends State<BookingHistoryItem> {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+            padding: EdgeInsets.symmetric(
+              horizontal: 10.w,
+              vertical: 10.h,
+            ),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    const CircleAvatar(
-                      backgroundColor: ColorUtils.primaryColor,
-                      child: Icon(
-                        Icons.motorcycle_outlined,
-                        color: Colors.white,
+                SizedBox(
+                  width: 1.sw,
+                  child: Row(
+                    children: [
+                      const CircleAvatar(
+                        backgroundColor: ColorUtils.primaryColor,
+                        child: Icon(
+                          Icons.motorcycle_outlined,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 320.w,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            formatDateTime(widget.booking.time ?? ""),
+                            style: TextStyle(
+                                fontSize: 14.sp, fontWeight: FontWeight.bold),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Text('Cước phí: ',
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold)),
                               Text(
-                                formatDateTime(widget.booking.time ?? ""),
+                                widget.booking.price != null
+                                    ? VietnameseMoneyFormatter()
+                                        .formatToVietnameseCurrency(
+                                        widget.booking.price!
+                                            .round()
+                                            .toString(),
+                                      )
+                                    : '0 đ',
                                 style: TextStyle(
                                     fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: getStatusColor(widget.booking.status!),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Text(
-                                    getStatus(widget.booking.status!)
-                                        .toUpperCase(),
-                                    style: TextStyle(
-                                        fontSize: 10.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                ),
+                                    fontWeight: FontWeight.bold,
+                                    color: ColorUtils.primaryColor),
                               ),
                             ],
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: widget.booking.status == 2
+                              ? ColorUtils.primaryColor
+                              : widget.booking.status == 1
+                                  ? Colors.green
+                                  : Colors.red,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text(
+                            getStatus(widget.booking.status!).toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Cước phí: ',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold)),
-                            Text(
-                              widget.booking.price != null
-                                  ? VietnameseMoneyFormatter()
-                                      .formatToVietnameseCurrency(
-                                      widget.booking.price!.round().toString(),
-                                    )
-                                  : '0 đ',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorUtils.primaryColor),
-                            ),
-                          ],
-                        )
-                      ],
-                    )
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(

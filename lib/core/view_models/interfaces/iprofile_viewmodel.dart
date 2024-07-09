@@ -7,4 +7,5 @@ abstract class IProfileViewModel implements ChangeNotifier {
   Future<void> getProfile();
   Future<String> updateProfile(AccountDto accountDto);
   Future<String> uploadFile(XFile file);
+  Future<AccountDto?> getUserById(String userId);
 }

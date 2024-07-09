@@ -196,26 +196,31 @@ class _PickLocationScreenState extends State<PickLocationScreen>
     }
   }
 
-  Future<void> setValuePlaceField() async {
-    debouncer.run(() async {
-      List<PlaceDetailDto>? placeDetailDto =
-          await _iBookingViewModel.getPlaceByGeocode(
-        LatLng(
-          locator<GlobalData>().currentPosition!.latitude,
-          locator<GlobalData>().currentPosition!.longitude,
-        ),
+  LatLng getLatLng() {
+    if (widget.locationDto != null) {
+      List<String> splitCoordinates =
+          widget.locationDto!.placeGeoCode!.split(',');
+      double latitude = double.parse(splitCoordinates[0]);
+      double longitude = double.parse(splitCoordinates[1]);
+      return LatLng(latitude, longitude);
+    } else {
+      return LatLng(
+        locator<GlobalData>().currentPosition!.latitude,
+        locator<GlobalData>().currentPosition!.longitude,
       );
-      setState(() {
-        startPointGeo = LatLng(
-          locator<GlobalData>().currentPosition!.latitude,
-          locator<GlobalData>().currentPosition!.longitude,
-        );
-        locationController.text =
-            placeDetailDto![0].formattedAddress!.toString();
-        locationController.selection = TextSelection.fromPosition(
-          const TextPosition(offset: 0),
-        );
-      });
+    }
+  }
+
+  Future<void> updateLocation() async {
+    LatLng coordinates = getLatLng();
+    List<PlaceDetailDto>? placeDetailDto =
+        await _iBookingViewModel.getPlaceByGeocode(coordinates);
+
+    setState(() {
+      startPointGeo = coordinates;
+      locationController.text = placeDetailDto![0].formattedAddress!.toString();
+      locationController.selection =
+          TextSelection.fromPosition(const TextPosition(offset: 0));
     });
   }
 
@@ -235,14 +240,6 @@ class _PickLocationScreenState extends State<PickLocationScreen>
   }
 
   Future<void> conditionCheck() async {
-    controller.animateTo(
-      minExtent,
-      duration: const Duration(milliseconds: 100),
-      curve: Curves.easeOutBack,
-    );
-    setState(() {
-      isContinue = true;
-    });
     _iLocationViewModel.updateRecommendLocation(startPointGeo, endPointGeo);
     await _iBookingViewModel.getRecommendBooking(
       type: "from_input",
@@ -287,7 +284,7 @@ class _PickLocationScreenState extends State<PickLocationScreen>
     Future.delayed(
       Duration.zero,
       () async {
-        await setValuePlaceField();
+        await updateLocation();
       },
     );
     super.initState();
@@ -565,31 +562,67 @@ class _PickLocationScreenState extends State<PickLocationScreen>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 10.w,
-                                  ),
-                                  child: SizedBox(
-                                    width: 20.w,
-                                    child: InkWell(
-                                      onTap: () => Get.back(),
-                                      child: const Icon(
-                                        Icons.arrow_back,
-                                        color: Colors.black,
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 10.w,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: InkWell(
+                                        onTap: () => Get.back(),
+                                        child: const Icon(
+                                          Icons.arrow_back,
+                                          color: Colors.black,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  title ?? '',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.sp,
+                                Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      title ?? '',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.sp,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 30.w,
-                                ),
+                                isContinue
+                                    ? Expanded(
+                                        child: InkWell(
+                                          onTap: () async =>
+                                              await conditionCheck(),
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              right: 10.w,
+                                            ),
+                                            child: const Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Text(
+                                                'Xác nhận',
+                                                style: TextStyle(
+                                                  color:
+                                                      ColorUtils.primaryColor,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : const Expanded(
+                                        child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(
+                                            'Xác nhận',
+                                            style: TextStyle(
+                                              color: ColorUtils.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                               ],
                             ),
                             SizedBox(
@@ -648,16 +681,27 @@ class _PickLocationScreenState extends State<PickLocationScreen>
                                                     : 2),
                                             location: savedLocation,
                                             onTap: () {
+                                              List<String> splitCoordinates =
+                                                  savedLocation.placeGeoCode!
+                                                      .split(',');
+                                              double latitude = double.parse(
+                                                  splitCoordinates[0]);
+                                              double longitude = double.parse(
+                                                  splitCoordinates[1]);
                                               if (locationFocusNode.hasFocus ||
                                                   locationController
                                                       .text.isEmpty) {
                                                 locationController.text =
                                                     savedLocation
                                                         .placeDescription!;
+                                                startPointGeo =
+                                                    LatLng(latitude, longitude);
                                               } else {
                                                 destinationController.text =
                                                     savedLocation
                                                         .placeDescription!;
+                                                endPointGeo =
+                                                    LatLng(latitude, longitude);
                                               }
                                               setState(() {
                                                 isContinue = true;
@@ -679,9 +723,13 @@ class _PickLocationScreenState extends State<PickLocationScreen>
                                           type: 2,
                                           location: null,
                                           onTap: () {
-                                            Get.toNamed(MyRouter.addLocation,
-                                                arguments: EnumHelper.getEnum(
-                                                    EnumMap.savePlaceType, 2));
+                                            Get.toNamed(
+                                              MyRouter.addLocation,
+                                              arguments: EnumHelper.getEnum(
+                                                EnumMap.savePlaceType,
+                                                2,
+                                              ),
+                                            );
                                           },
                                         ),
                                     ],
@@ -720,10 +768,9 @@ class _PickLocationScreenState extends State<PickLocationScreen>
                                           children: vm.listPredictions.map((e) {
                                             return InkWell(
                                               onTap: () async {
-                                                FocusManager
-                                                    .instance.primaryFocus
-                                                    ?.unfocus();
                                                 LatLng? point;
+                                                bool isFocusLocation =
+                                                    locationFocusNode.hasFocus;
                                                 PlaceDto? searchLocation =
                                                     await _iBookingViewModel
                                                         .getPlaceById(
@@ -734,8 +781,8 @@ class _PickLocationScreenState extends State<PickLocationScreen>
                                                   searchLocation
                                                       .geometry!.location!.lng!,
                                                 );
-                                                if (locationFocusNode
-                                                    .hasFocus) {
+
+                                                if (isFocusLocation) {
                                                   locationController.text =
                                                       e.description!;
                                                   startPointGeo = point;
@@ -748,7 +795,19 @@ class _PickLocationScreenState extends State<PickLocationScreen>
                                                         .text.isNotEmpty &&
                                                     destinationController
                                                         .text.isNotEmpty) {
-                                                  conditionCheck();
+                                                  vm.listPredictions.clear();
+                                                  setState(() {
+                                                    isContinue = true;
+                                                  });
+                                                  FocusManager
+                                                      .instance.primaryFocus
+                                                      ?.unfocus();
+                                                  controller.animateTo(
+                                                    minExtent,
+                                                    duration: const Duration(
+                                                        milliseconds: 100),
+                                                    curve: Curves.easeOutBack,
+                                                  );
                                                 } else {
                                                   _animatedMapMove(
                                                     point,

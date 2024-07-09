@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:twg/core/dtos/goongs/matched_sub_strings_dto.dart';
 import 'package:twg/core/dtos/goongs/search_response_dto.dart';
 import 'package:twg/core/dtos/goongs/structured_formatting_dto.dart';
+import 'package:twg/core/dtos/location/location_dto.dart';
 part 'predictions_dto.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -29,6 +30,16 @@ class Predictions {
     this.terms,
     this.types,
   });
+
+  LocationDto toLocationDto() {
+    return LocationDto(
+      type: types != null && types!.isNotEmpty ? types![0] : null,
+      placeName: structuredFormatting?.mainText,
+      placeDescription: description,
+      placeId: placeId,
+    );
+  }
+
   Predictions.fromJson(Map<String, dynamic> json) {
     description = json['description'];
     if (json['matched_substrings'] != null) {

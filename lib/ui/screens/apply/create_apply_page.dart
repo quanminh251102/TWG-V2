@@ -100,7 +100,7 @@ class _CreateApplyPageState extends State<CreateApplyPage>
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
-            Get.offNamed(MyRouter.profile);
+            Get.back();
           },
           child: const Icon(
             Icons.arrow_back_ios,

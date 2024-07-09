@@ -133,102 +133,128 @@ class _AccountScreenState extends State<AccountScreen>
       bottomNavigationBar: const BottomNavBarV2(
         currentIndex: 4,
       ),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text(
-          'Cá nhân',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20.sp,
-            color: Colors.black,
-          ),
-        ),
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(
-            10.r,
-          ),
-          child: Consumer<IProfileViewModel>(
-            builder: (context, vm, child) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const _Header(),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 20.w,
-                      top: 15.h,
-                    ),
-                    child: Text(
-                      'Tùy chọn',
-                      style: TextStyle(
-                          fontSize: 20.sp, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  ProfileMenuWidget(
-                    title: "Cập nhật thông tin cá nhân",
-                    icon: LineAwesomeIcons.person_entering_booth,
-                    onPress: () {
-                      Get.offNamed(MyRouter.updateProfile);
-                    },
-                  ),
-                  ProfileMenuWidget(
-                    title: "Chuyến đi",
-                    icon: LineAwesomeIcons.user_check,
-                    onPress: () {
-                      Get.offNamed(MyRouter.myBooking);
-                    },
-                  ),
-                  ProfileMenuWidget(
-                      title: "Yêu cầu",
-                      icon: LineAwesomeIcons.react,
-                      onPress: () {
-                        Get.offNamed(MyRouter.myApply);
-                      }),
-                  ProfileMenuWidget(
-                    title: "Đánh giá",
-                    icon: LineAwesomeIcons.star,
-                    onPress: () {
-                      Get.offNamed(MyRouter.myReview);
-                    },
-                  ),
-                  SizedBox(height: 10.h),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20.w,
-                    ),
-                    child: Divider(
-                      color: Colors.grey.withOpacity(
-                        0.1,
+      body: Column(
+        children: [
+          Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top,
+                  left: 16.w,
+                  right: 16.w,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.w,
+                        ),
+                        child: Text(
+                          'Cá nhân',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 22.sp,
+                            letterSpacing: 1.2,
+                            color: Colors.black,
+                          ),
+                        ),
                       ),
-                      thickness: 2,
                     ),
-                  ),
-                  ProfileMenuWidget(
-                    title: "Chính sách quyền riêng tư",
-                    icon: LineAwesomeIcons.lock,
-                    onPress: () {
-                      Get.offNamed(MyRouter.privacyPolicy);
-                    },
-                  ),
-                  SizedBox(height: 10.h),
-                  ProfileMenuWidget(
-                    title: "Đăng xuất",
-                    icon: LineAwesomeIcons.alternate_sign_out,
-                    textColor: Colors.red,
-                    endIcon: false,
-                    onPress: () {
-                      _modalBottomSheetLogout(context);
-                    },
-                  ),
-                ],
-              );
-            },
+                  ],
+                ),
+              ),
+            ],
           ),
-        ),
+          SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 10.w),
+              child: Consumer<IProfileViewModel>(
+                builder: (context, vm, child) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const _Header(),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 20.w,
+                          top: 20.h,
+                          bottom: 20.h,
+                        ),
+                        child: Text(
+                          'Tùy chọn',
+                          style: TextStyle(
+                            fontSize: 22.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      ProfileMenuWidget(
+                        title: "Cập nhật thông tin cá nhân",
+                        icon: LineAwesomeIcons.person_entering_booth,
+                        onPress: () {
+                          Get.toNamed(MyRouter.updateProfile);
+                        },
+                      ),
+                      ProfileMenuWidget(
+                        title: "Chuyến đi",
+                        icon: LineAwesomeIcons.user_check,
+                        onPress: () {
+                          Get.toNamed(MyRouter.myBooking);
+                        },
+                      ),
+                      ProfileMenuWidget(
+                          title: "Yêu cầu",
+                          icon: LineAwesomeIcons.react,
+                          onPress: () {
+                            Get.toNamed(MyRouter.myApply);
+                          }),
+                      ProfileMenuWidget(
+                        title: "Đánh giá",
+                        icon: LineAwesomeIcons.star,
+                        onPress: () {
+                          Get.toNamed(MyRouter.myReview);
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20.w,
+                        ),
+                        child: Divider(
+                          color: Colors.grey.withOpacity(
+                            0.1,
+                          ),
+                          thickness: 2,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      ProfileMenuWidget(
+                        title: "Chính sách quyền riêng tư",
+                        icon: LineAwesomeIcons.lock,
+                        onPress: () {
+                          Get.toNamed(MyRouter.privacyPolicy);
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      ProfileMenuWidget(
+                        title: "Đăng xuất",
+                        icon: LineAwesomeIcons.alternate_sign_out,
+                        textColor: Colors.red,
+                        endIcon: false,
+                        onPress: () {
+                          _modalBottomSheetLogout(context);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

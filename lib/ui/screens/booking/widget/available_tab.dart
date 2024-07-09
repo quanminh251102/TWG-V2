@@ -149,11 +149,13 @@ class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
                           items: vm.recommendBooking.isEmpty
                               ? BookingDto.bookingsFake
                                   .map((e) => ListRecommendItem(
+                                        isChatBot: false,
                                         booking: e,
                                       ))
                                   .toList()
                               : vm.recommendBooking
                                   .map((e) => ListRecommendItem(
+                                        isChatBot: false,
                                         booking: e,
                                       ))
                                   .toList(),
@@ -190,26 +192,44 @@ class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
             ),
             Consumer<IBookingViewModel>(
               builder: (context, vm, child) {
-                widget.animationController.forward();
-                return Skeletonizer(
-                    enabled: vm.bookings.isEmpty,
-                    child: ListBooking(
-                      bookings: vm.bookings.isEmpty
-                          ? BookingDto.bookingsFake
-                          : vm.bookings,
-                      mainScreenAnimation:
-                          Tween<double>(begin: 0.0, end: 1.0).animate(
-                        CurvedAnimation(
-                          parent: widget.animationController,
-                          curve: const Interval(
-                            (1 / 10) * 3,
-                            1.0,
-                            curve: Curves.fastOutSlowIn,
+                if (vm.bookings.isNotEmpty) {
+                  widget.animationController.forward();
+                }
+                return vm.bookings.isEmpty
+                    ? Skeletonizer(
+                        enabled: true,
+                        child: ListBooking(
+                          bookings: BookingDto.bookingsFake,
+                          mainScreenAnimation:
+                              Tween<double>(begin: 0.0, end: 1.0).animate(
+                            CurvedAnimation(
+                              parent: widget.animationController,
+                              curve: const Interval(
+                                (1 / 10) * 3,
+                                1.0,
+                                curve: Curves.fastOutSlowIn,
+                              ),
+                            ),
+                          ),
+                          mainScreenAnimationController:
+                              widget.animationController,
+                        ))
+                    : ListBooking(
+                        bookings: vm.bookings,
+                        mainScreenAnimation:
+                            Tween<double>(begin: 0.0, end: 1.0).animate(
+                          CurvedAnimation(
+                            parent: widget.animationController,
+                            curve: const Interval(
+                              (1 / 10) * 3,
+                              1.0,
+                              curve: Curves.fastOutSlowIn,
+                            ),
                           ),
                         ),
-                      ),
-                      mainScreenAnimationController: widget.animationController,
-                    ));
+                        mainScreenAnimationController:
+                            widget.animationController,
+                      );
               },
             )
           ],

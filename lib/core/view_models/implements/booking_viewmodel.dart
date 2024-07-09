@@ -119,14 +119,15 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
     _recommendBooking.clear();
     _filterBookingDto = FilterBookingDto();
     notifyListeners();
-    final paginationProducts = await _iBookingService.getBookings(
+    final paginationBookings = await _iBookingService.getBookings(
       status: status,
       page: page,
       pageSize: 10,
     );
     page += 1;
-    _bookings = paginationProducts ?? [];
+    _bookings = paginationBookings ?? [];
     _totalCount = _iBookingService.total;
+    notifyListeners();
 
     final paginationRecommendBooking =
         await _iBookingService.getRecommendBooking(
@@ -145,15 +146,27 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   }
 
   @override
+  Future<BookingDto?> saveBookingChatbot(String bookingId) async {
+    if (await _iBookingService.saveBooking(bookingId)) {
+      final paginationBookings =
+          await _iBookingService.getBookings(id: bookingId);
+      if (paginationBookings != null && paginationBookings.isNotEmpty) {
+        return paginationBookings[0];
+      }
+    }
+    return null;
+  }
+
+  @override
   Future<void> getBooking(String bookingId) async {
-    final paginationProducts =
+    final paginationBookings =
         await _iBookingService.getBookings(id: bookingId);
-    if (paginationProducts != null && paginationProducts.isNotEmpty) {
+    if (paginationBookings != null && paginationBookings.isNotEmpty) {
       var tempBookingIndex = _bookings
-          .indexWhere((element) => element.id == paginationProducts[0].id);
+          .indexWhere((element) => element.id == paginationBookings[0].id);
 
       if (tempBookingIndex != -1) {
-        _bookings[tempBookingIndex] = paginationProducts[0];
+        _bookings[tempBookingIndex] = paginationBookings[0];
       }
     }
     notifyListeners();
@@ -162,7 +175,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   @override
   Future<void> onSearchBooking() async {
     _reset();
-    final paginationProducts = await _iBookingService.getBookings(
+    final paginationBookings = await _iBookingService.getBookings(
       status: _filterBookingDto?.status,
       authorId: _filterBookingDto?.authorId,
       keyword: _filterBookingDto?.keyword,
@@ -176,7 +189,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
       page: 1,
       pageSize: 10,
     );
-    _bookings = paginationProducts ?? [];
+    _bookings = paginationBookings ?? [];
     _totalCount = _iBookingService.total;
     notifyListeners();
   }
@@ -184,7 +197,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   @override
   Future<void> onSearchSaveBooking() async {
     _reset();
-    final paginationProducts = await _iBookingService.getBookings(
+    final paginationBookings = await _iBookingService.getBookings(
       isFavorite: true,
       status: _filterBookingDto?.status,
       authorId: _filterBookingDto?.authorId,
@@ -199,7 +212,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
       page: 1,
       pageSize: 10,
     );
-    _bookings = paginationProducts ?? [];
+    _bookings = paginationBookings ?? [];
     _totalCount = _iBookingService.total;
     notifyListeners();
   }
@@ -217,12 +230,12 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   @override
   Future<void> initHome(String status) async {
     _reset();
-    final paginationProducts = await _iBookingService.getBookings(
+    final paginationBookings = await _iBookingService.getBookings(
       // status: status,
       page: 1,
       pageSize: 200,
     );
-    _bookings = paginationProducts ?? [];
+    _bookings = paginationBookings ?? [];
     _totalCount = _iBookingService.total;
     notifyListeners();
   }
@@ -339,7 +352,10 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
         await _iBookingService.createBooking(_currentBooking!);
 
     if (isCreateSuccess) {
-      Get.toNamed(MyRouter.home);
+      Get.toNamed(
+        MyRouter.booking,
+        arguments: false,
+      );
     } else {
       EasyLoading.showError('Đăng bài thất bại');
     }
@@ -444,11 +460,11 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   @override
   Future<void> initMyBookings() async {
     _resetMyBookings();
-    final paginationProducts = await _iBookingService.getMyBookings(
+    final paginationBookings = await _iBookingService.getMyBookings(
       page: 1,
       pageSize: 100,
     );
-    _bookings = paginationProducts ?? [];
+    _bookings = paginationBookings ?? [];
     _totalCount = _iBookingService.total;
     notifyListeners();
   }
@@ -511,11 +527,11 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   @override
   Future<void> getSaveLocation() async {
     _resetMyBookings();
-    final paginationProducts = await _iBookingService.getMyBookings(
+    final paginationBookings = await _iBookingService.getMyBookings(
       page: 1,
       pageSize: 10,
     );
-    _bookings = paginationProducts ?? [];
+    _bookings = paginationBookings ?? [];
     _totalCount = _iBookingService.total;
     notifyListeners();
   }

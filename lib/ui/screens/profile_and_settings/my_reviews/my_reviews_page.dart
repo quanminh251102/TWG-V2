@@ -82,15 +82,13 @@ class _MyReViewsPageState extends State<MyReViewsPage> {
       appBar: AppBar(
         title: const Text(
           'Đánh giá',
-          style: TextStyle(
-            color: Colors.black,
-          ),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
-            Get.offNamed(MyRouter.profile);
+            Get.back();
           },
           child: const Icon(
             Icons.arrow_back_ios,

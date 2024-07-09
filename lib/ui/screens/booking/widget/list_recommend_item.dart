@@ -18,11 +18,13 @@ import 'package:twg/global/router.dart';
 
 class ListRecommendItem extends StatefulWidget {
   final BookingDto booking;
+  final bool isChatBot;
   // final AnimationController? animationController;
   // final Animation<double>? animation;
   const ListRecommendItem({
     Key? key,
     required this.booking,
+    required this.isChatBot,
     // this.animationController,
     // this.animation,
   }) : super(key: key);
@@ -94,6 +96,8 @@ class _ListRecommendItemState extends State<ListRecommendItem> {
     return Padding(
       padding: EdgeInsets.only(right: 10.w),
       child: Container(
+        height: widget.isChatBot ? 260.h : double.infinity,
+        width: widget.isChatBot ? 300.w : double.infinity,
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(

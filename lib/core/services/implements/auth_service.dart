@@ -152,4 +152,26 @@ class AuthService implements IAuthService {
     await TokenUtils.removeToken();
     Get.offNamed(MyRouter.signIn);
   }
+
+  @override
+  Future<AccountDto?> getUserById(String userId) async {
+    var token = await TokenUtils.getToken();
+    if (token != null) {
+      LoadingDialogUtils.showLoading();
+      try {
+        var result = await getRestClient().getUserById(
+          id: userId,
+          token: token,
+        );
+        if (result.success) {
+          return result.data;
+        }
+      } catch (e) {
+        print(e);
+      } finally {
+        LoadingDialogUtils.hideLoading();
+      }
+    }
+    return null;
+  }
 }

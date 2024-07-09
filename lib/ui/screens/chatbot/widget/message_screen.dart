@@ -1,12 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
 import 'package:twg/core/view_models/interfaces/ichatbot_viewmodel.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:twg/ui/screens/booking/widget/list_booking_item.dart';
+import 'package:twg/ui/screens/booking/widget/list_recommend_item.dart';
 import 'package:twg/ui/screens/chatbot/widget/pick_location_dialog.dart';
 
 import '../../../../core/utils/text_style_utils.dart';
@@ -41,8 +45,14 @@ class _MessageScreenState extends State<MessageScreen> {
 
   Future<void> _handleMessageTap(BuildContext _, types.Message message) async {
     if (message is types.TextMessage) {
-      if (message.text == "Nhấp vào đây để chọn vị trí 📍") {
-        Get.bottomSheet(const ChatPickLocationDialog());
+      if (message.text == "Nhấp vào đây để chọn điểm xuất phát📍") {
+        Get.bottomSheet(const ChatPickLocationDialog(
+          isStartPlace: true,
+        ));
+      } else if (message.text == "Nhấp vào đây để chọn điểm đến📍") {
+        Get.bottomSheet(const ChatPickLocationDialog(
+          isStartPlace: false,
+        ));
       }
     }
   }
@@ -53,6 +63,15 @@ class _MessageScreenState extends State<MessageScreen> {
       return Stack(
         children: [
           Chat(
+            customMessageBuilder: (message, {required messageWidth}) {
+              BookingDto recommendBooking = BookingDto.fromJson(
+                message.metadata!,
+              );
+              return ListBookingItem(
+                booking: recommendBooking,
+                isChatbot: true,
+              );
+            },
             onMessageTap: _handleMessageTap,
             messages: vm.responseMessages.reversed.toList(),
             onSendPressed: (text) async {

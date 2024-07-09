@@ -202,7 +202,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage>
         centerTitle: true,
         leading: InkWell(
           onTap: () {
-            Get.offNamed(MyRouter.profile);
+            Get.back();
           },
           child: const Icon(
             Icons.arrow_back_ios,

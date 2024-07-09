@@ -5,4 +5,5 @@ abstract class IAuthService {
   Future<bool> register(String name, String email, String password);
   Future<bool> checkLogin();
   Future<void> logOut();
+  Future<AccountDto?> getUserById(String userId);
 }

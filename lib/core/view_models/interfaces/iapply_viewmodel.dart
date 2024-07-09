@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
 import 'package:twg/core/dtos/apply/apply_dto.dart';
 import 'package:twg/core/dtos/apply/create_apply_dto.dart';
 import 'package:twg/core/dtos/apply/update_apply_dto.dart';
@@ -20,6 +21,7 @@ abstract class IApplyViewModel implements ChangeNotifier {
   LatLng? get currentDestination;
   DirectionDto? get currentDirection;
   LatLngBounds? get boundConfirmScreen;
+  set location(LocationData? location);
   void setBookingDto(BookingDto value);
   Future<void> init(String status);
   Future<void> getMoreApplys(String status);

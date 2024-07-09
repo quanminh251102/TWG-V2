@@ -50,7 +50,7 @@ class __HeaderState extends State<_Header> {
               style: TextStyle(fontSize: 14),
             ),
             content: Container(
-              margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+              margin: EdgeInsets.fromLTRB(10.w, 0, 10.w, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

@@ -84,7 +84,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
         centerTitle: true,
         leading: InkWell(
           onTap: () {
-            Get.offNamed(MyRouter.profile);
+            Get.back();
           },
           child: const Icon(
             Icons.arrow_back_ios,

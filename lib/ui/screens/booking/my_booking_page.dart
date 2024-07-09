@@ -142,7 +142,7 @@ class _MyBookPageState extends State<MyBookPage>
           centerTitle: true,
           leading: InkWell(
             onTap: () {
-              Get.offNamed(MyRouter.profile);
+              Get.back();
             },
             child: const Icon(
               Icons.arrow_back_ios,

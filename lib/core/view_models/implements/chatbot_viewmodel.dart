@@ -2,8 +2,10 @@ import 'dart:math';
 import 'package:dialog_flowtter_plus/dialog_flowtter_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart' as latlong;
+import 'package:twg/core/dtos/booking/booking_dto.dart';
 import 'package:twg/core/dtos/goongs/place_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
+import 'package:twg/core/dtos/location/location_dto.dart';
 import 'package:twg/core/services/interfaces/igoong_service.dart';
 import 'package:twg/core/view_models/interfaces/ichatbot_viewmodel.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -30,26 +32,68 @@ class ChatbotViewModel with ChangeNotifier implements IChatbotViewModel {
   @override
   latlong.LatLng? get endPoint => _endPoint;
 
-  Predictions? _startPlace;
-  Predictions? _endPlace;
+  LocationDto? _startPlace;
+  LocationDto? _endPlace;
 
   @override
-  Predictions? get startPlace => _startPlace;
+  LocationDto? get startPlace => _startPlace;
   @override
-  Predictions? get endPlace => _endPlace;
+  LocationDto? get endPlace => _endPlace;
+
   @override
-  set startPlace(Predictions? value) {
+  set startPlace(LocationDto? value) {
     _startPlace = value;
   }
 
-  set endPlace(Predictions? value) {
+  @override
+  set endPlace(LocationDto? value) {
     _endPlace = value;
   }
 
   @override
-  void setLocationPoint(latlong.LatLng startPoint, latlong.LatLng endPoint) {
-    _startPoint = startPoint;
-    _endPoint = endPoint;
+  Future<void> setLocationPoint(
+      latlong.LatLng location, bool isStartPlace) async {
+    if (isStartPlace) {
+      _startPoint = location;
+      addMessage(
+          Message(
+              text: DialogText(
+                  text: ['Điểm xuất phát: ${_startPlace?.placeDescription}'])),
+          true);
+      DetectIntentResponse response = await _dialogFlowtter.detectIntent(
+        queryInput: QueryInput(
+          text: TextInput(
+              text: 'Điểm xuất phát: ${_startPlace?.placeDescription}'),
+        ),
+      );
+      if (response.message == null) return;
+      for (var element in response.queryResult!.fulfillmentMessages!) {
+        addMessage(element);
+      }
+    } else {
+      _endPoint = location;
+      addMessage(
+          Message(
+              text: DialogText(
+                  text: ['Điểm đến: ${_endPlace?.placeDescription}'])),
+          true);
+
+      DetectIntentResponse response = await _dialogFlowtter.detectIntent(
+        queryInput: QueryInput(
+          text: TextInput(text: 'Điểm đến: ${_endPlace?.placeDescription}'),
+        ),
+      );
+      if (response.message == null) return;
+      for (var element in response.queryResult!.fulfillmentMessages!) {
+        addMessage(element);
+      }
+      String text = '''
+Tìm chuyến đi phù hợp với:
+  + Điểm đi: ${_startPlace!.placeDescription}
+  + Điểm đến: ${_endPlace!.placeDescription}''';
+      addMessage(Message(text: DialogText(text: [text])));
+      await sendMessageWithPayload();
+    }
   }
 
   @override
@@ -115,12 +159,6 @@ class ChatbotViewModel with ChangeNotifier implements IChatbotViewModel {
 
   @override
   Future<void> sendMessageWithPayload() async {
-    String text = '''
-Tìm chuyến đi phù hợp với:
-  + Điểm đi: ${_startPlace!.description}
-  + Điểm đến: ${_endPlace!.description}
-''';
-    addMessage(Message(text: DialogText(text: [text])), true);
     DetectIntentResponse response = await _dialogFlowtter.detectIntent(
       queryParams: QueryParameters(
         payload: {
@@ -131,15 +169,25 @@ Tìm chuyến đi phù hợp với:
           'type': "from_input",
         },
       ),
-      queryInput: QueryInput(
+      queryInput: const QueryInput(
         text: TextInput(
-          text: '',
+          text: 'Bắt đầu gợi ý',
         ),
       ),
     );
-    if (response.message == null) return;
-    for (var element in response.queryResult!.fulfillmentMessages!) {
-      addMessage(element);
+    if (response.queryResult == null) return;
+    if (response.queryResult!.fulfillmentMessages![0].payload != null) {
+      _responseMessages.add(
+        types.CustomMessage(
+          author: const types.User(
+            id: 'Bot',
+          ),
+          createdAt: DateTime.parse(DateTime.now().toIso8601String())
+              .millisecondsSinceEpoch,
+          id: generateRandomId(),
+          metadata: response.queryResult!.fulfillmentMessages![0].payload,
+        ),
+      );
     }
     notifyListeners();
   }

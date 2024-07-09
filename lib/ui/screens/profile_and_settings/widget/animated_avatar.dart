@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart' as lottie;
+import 'package:twg/core/utils/color_utils.dart';
 
 class AnimatedAvatar extends StatefulWidget {
   final String avatarUrl;
@@ -41,6 +42,10 @@ class _AnimatedAvatarState extends State<AnimatedAvatar>
           width: 100.w,
           height: 100.h,
           decoration: BoxDecoration(
+            border: Border.all(
+              color: ColorUtils.primaryColor,
+              width: 2.w,
+            ),
             borderRadius: const BorderRadius.all(
                 Radius.circular(60.0) //                 <--- border radius here
                 ),

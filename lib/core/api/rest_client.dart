@@ -150,6 +150,12 @@ abstract class RestClient {
     @Body() AccountDto model,
   );
 
+  @GET("/api/user/{id}")
+  Future<BaseApiDto<AccountDto>> getUserById({
+    @Path("id") String? id,
+    @Header('api_key') String? token,
+  });
+
   // apply
   @GET('/api/apply')
   Future<BaseApiDto<List<ApplyDto>>> getApplys({

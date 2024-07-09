@@ -17,7 +17,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late IChatRoomViewModel _iChatRoomViewModel;
-  late final ScrollController scrollController;
 
   @override
   void initState() {
@@ -27,18 +26,10 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
     );
     _iChatRoomViewModel = context.read<IChatRoomViewModel>();
 
-    scrollController = ScrollController();
     Future.delayed(Duration.zero, () async {
       await _iChatRoomViewModel.init('');
     });
-    scrollController.addListener(() async {
-      if (scrollController.position.atEdge) {
-        bool isTop = scrollController.position.pixels == 0;
-        if (!isTop) {
-          await _iChatRoomViewModel.getMoreChatRooms('');
-        }
-      }
-    });
+
     super.initState();
   }
 
@@ -48,28 +39,45 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
         bottomNavigationBar: const BottomNavBarV2(
           currentIndex: 3,
         ),
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
-          centerTitle: false,
-          title: Text(
-            'Trò chuyện',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 22.sp,
-              letterSpacing: 1.2,
-              color: Colors.black,
-            ),
-          ),
-          elevation: 0,
-          actions: const [
-            NotificationWidget(),
-          ],
-        ),
-        extendBody: true,
         body: Column(
           children: [
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top,
+                    left: 16.w,
+                    right: 16.w,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                          ),
+                          child: Text(
+                            'Trò chuyện',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 22.sp,
+                              letterSpacing: 1.2,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                          width: 50.w,
+                          height: 50.h,
+                          child: const NotificationWidget())
+                    ],
+                  ),
+                ),
+              ],
+            ),
             Expanded(
               child: Consumer<IChatRoomViewModel>(
                 builder: (context, vm, child) {
@@ -77,7 +85,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen>
                       ? ListChatRoom(
                           chatRooms: vm.ChatRooms,
                         )
-                      : SizedBox.shrink();
+                      : const SizedBox.shrink();
                 },
               ),
             ),
