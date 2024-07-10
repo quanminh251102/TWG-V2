@@ -35,7 +35,7 @@ class NavigationScreen extends StatefulWidget {
 class _NavigationScreenState extends State<NavigationScreen>
     with TickerProviderStateMixin {
   final Location _location = Location();
-  late Stream<LocationData> _locationStream;
+  late StreamSubscription<LocationData> _locationStream;
   late final MapController mapController;
   final pinMarkers = <Marker>[];
   final placeMarkers = <Marker>[];
@@ -51,11 +51,22 @@ class _NavigationScreenState extends State<NavigationScreen>
   bool isInit = false;
   bool isLocationFocus = true;
   bool isGetPlace = false;
+  bool isUpdatingRoute = false;
   LocationData? getLocation;
+
+  Stream<LocationMarkerPosition?>? getLocationStream() {
+    return _location.onLocationChanged.map((LocationData locationData) {
+      return LocationMarkerPosition(
+        accuracy: locationData.accuracy!,
+        latitude: locationData.latitude!,
+        longitude: locationData.longitude!,
+      );
+    });
+  }
+
   @override
   void initState() {
     mapController = MapController();
-    _locationStream = _location.onLocationChanged;
     _iApplyViewModel = context.read<IApplyViewModel>();
 
     Future.delayed(
@@ -64,28 +75,31 @@ class _NavigationScreenState extends State<NavigationScreen>
         await _iApplyViewModel.initNavigation(
           widget.bookingDto,
         );
-        await _subscribeToLocationChanges();
+        _locationStream = _location.onLocationChanged
+            .listen((LocationData currentLocation) async {
+          if (getLocation == null ||
+              (getLocation?.latitude != currentLocation.latitude &&
+                  getLocation?.longitude != currentLocation.longitude)) {
+            getLocation = currentLocation;
+
+            if (!isUpdatingRoute) {
+              isUpdatingRoute = true;
+
+              await _iApplyViewModel.updateRoute(
+                LatLng(
+                  currentLocation.latitude!,
+                  currentLocation.longitude!,
+                ),
+              );
+
+              isUpdatingRoute = false;
+            }
+          }
+        });
       },
     );
 
     super.initState();
-  }
-
-  Future<void> _subscribeToLocationChanges() async {
-    _location.onLocationChanged.listen((LocationData currentLocation) async {
-      if (getLocation == null ||
-          (getLocation?.latitude != currentLocation.latitude &&
-              getLocation?.longitude != currentLocation.longitude)) {
-        getLocation = currentLocation;
-        print('vào');
-        await _iApplyViewModel.updateRoute(
-          LatLng(
-            currentLocation.latitude!,
-            currentLocation.longitude!,
-          ),
-        );
-      }
-    });
   }
 
   Marker buildPin(LatLng point, String description) => Marker(
@@ -119,6 +133,11 @@ class _NavigationScreenState extends State<NavigationScreen>
         width: 600.w,
         height: 60.h,
       );
+  @override
+  void dispose() {
+    _locationStream.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,9 +170,6 @@ class _NavigationScreenState extends State<NavigationScreen>
               FlutterMap(
                 mapController: mapController,
                 options: MapOptions(
-                  // onPositionChanged: (position, hasGesture) async {
-                  //   await vm.delayedFunctionCaller();
-                  // },
                   initialCameraFit: CameraFit.bounds(
                     padding: EdgeInsets.only(
                       left: 100.w,
@@ -220,12 +236,7 @@ class _NavigationScreenState extends State<NavigationScreen>
                     markers: placeMarkers,
                   ),
                   CurrentLocationLayer(
-                    positionStream: _locationStream
-                        .map((locationData) => LocationMarkerPosition(
-                              latitude: locationData.latitude!,
-                              longitude: locationData.longitude!,
-                              accuracy: locationData.accuracy!,
-                            )),
+                    positionStream: getLocationStream(),
                     style: LocationMarkerStyle(
                       marker: const DefaultLocationMarker(
                         color: ColorUtils.primaryColor,
@@ -250,273 +261,336 @@ class _NavigationScreenState extends State<NavigationScreen>
                   ),
                 ],
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  margin: EdgeInsets.symmetric(
-                    vertical: 10.h,
-                    horizontal: 20.w,
-                  ),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.r),
-                    color: Colors.white,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 10.h,
-                      horizontal: 15.w,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Thông tin chuyến đi',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.sp,
+              DraggableScrollableSheet(
+                initialChildSize: 0.4,
+                minChildSize: 0.1,
+                maxChildSize: 0.48,
+                builder: (context, scrollController) {
+                  return SingleChildScrollView(
+                    controller: scrollController,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.r),
+                          color: Colors.white,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 10.h,
+                            horizontal: 15.w,
                           ),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        SizedBox(
-                          height: 80.h,
-                          child: Row(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              CachedNetworkImage(
-                                imageUrl: widget.bookingDto.authorId!.avatarUrl
-                                    .toString(),
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                  width: 60.w,
-                                  height: 60.h,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(
-                                            60.0) //                 <--- border radius here
-                                        ),
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                              const Center(
+                                child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      width: 50,
+                                      child: Divider(
+                                        thickness: 5,
+                                      ),
+                                    )),
+                              ),
+                              Text(
+                                'Thông tin chuyến đi',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18.sp,
                                 ),
-                                placeholder: (context, url) => SizedBox(
-                                  width: 50.w,
-                                  height: 50.w,
-                                  child: lottie.Lottie.asset(
-                                    "assets/lottie/loading_image.json",
-                                    repeat: true,
-                                  ),
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
                               ),
                               SizedBox(
-                                width: 10.w,
+                                height: 10.h,
+                              ),
+                              SizedBox(
+                                height: 80.h,
+                                child: Row(
+                                  children: [
+                                    CachedNetworkImage(
+                                      imageUrl: widget
+                                          .bookingDto.authorId!.avatarUrl
+                                          .toString(),
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
+                                        width: 60.w,
+                                        height: 60.h,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(
+                                                  60.0) //                 <--- border radius here
+                                              ),
+                                          image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      placeholder: (context, url) => SizedBox(
+                                        width: 50.w,
+                                        height: 50.w,
+                                        child: lottie.Lottie.asset(
+                                          "assets/lottie/loading_image.json",
+                                          repeat: true,
+                                        ),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                    ),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width: 200.w,
+                                          child: Text(
+                                            locator<GlobalData>()
+                                                    .currentUser!
+                                                    .firstName ??
+                                                "",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16.sp,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5.h,
+                                        ),
+                                        Text(
+                                          widget.bookingDto.bookingType ?? "",
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/distance.svg",
+                                        height: 30,
+                                      ),
+                                      SizedBox(
+                                        width: 5.w,
+                                      ),
+                                      if (vm.currentDirection != null)
+                                        Text(
+                                          vm.currentDirection!.distance!,
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/clock.svg",
+                                        height: 30,
+                                      ),
+                                      SizedBox(
+                                        width: 5.w,
+                                      ),
+                                      if (vm.currentDirection != null)
+                                        Text(
+                                          vm.currentDirection!.duration!,
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/wallet.svg",
+                                        height: 30,
+                                      ),
+                                      SizedBox(
+                                        width: 5.w,
+                                      ),
+                                      if (vm.currentDirection != null)
+                                        Text(
+                                          vm.currentDirection!.price!,
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20.h,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SizedBox(
-                                    width: 200.w,
-                                    child: Text(
-                                      locator<GlobalData>()
-                                              .currentUser!
-                                              .firstName ??
-                                          "",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.sp,
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.person,
                                       ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Điểm đi',
+                                            style: TextStyle(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5.h,
+                                          ),
+                                          SizedBox(
+                                            width: 350.w,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  widget.bookingDto
+                                                          .startPointMainText ??
+                                                      "",
+                                                  style: TextStyle(
+                                                      fontSize: 16.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                ),
+                                                Text(
+                                                  widget.bookingDto
+                                                          .startPointAddress ??
+                                                      "",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                  ),
+                                                  maxLines: 2,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 15.h, horizontal: 0.w),
+                                    child: Divider(
+                                      color: Colors.grey.withOpacity(
+                                        0.5,
+                                      ),
+                                      height: 5.h,
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 5.h,
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.location_pin,
+                                        color: ColorUtils.primaryColor,
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: 200.w,
+                                            child: Text(
+                                              'Điểm đến',
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5.h,
+                                          ),
+                                          SizedBox(
+                                            width: 350.w,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  widget.bookingDto
+                                                          .endPointMainText ??
+                                                      "",
+                                                  style: TextStyle(
+                                                      fontSize: 16.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                ),
+                                                Text(
+                                                  widget.bookingDto
+                                                          .endPointAddress ??
+                                                      "",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                  ),
+                                                  maxLines: 2,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    widget.bookingDto.bookingType ?? "",
-                                  )
                                 ],
+                              ),
+                              SizedBox(
+                                height: 10.h,
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/distance.svg",
-                                  height: 30,
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                if (vm.currentDirection != null)
-                                  Text(
-                                    vm.currentDirection!.distance!,
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/clock.svg",
-                                  height: 30,
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                if (vm.currentDirection != null)
-                                  Text(
-                                    vm.currentDirection!.duration!,
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/wallet.svg",
-                                  height: 30,
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                if (vm.currentDirection != null)
-                                  Text(
-                                    vm.currentDirection!.price!,
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.person,
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Điểm đi',
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    SizedBox(
-                                      width: 300.w,
-                                      child: Text(
-                                        '${widget.bookingDto.startPointMainText}, ${widget.bookingDto.startPointAddress}',
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15.h, horizontal: 0.w),
-                              child: Divider(
-                                color: Colors.grey.withOpacity(
-                                  0.5,
-                                ),
-                                height: 5.h,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.location_pin,
-                                  color: ColorUtils.primaryColor,
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: 200.w,
-                                      child: Text(
-                                        'Điểm đến',
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    SizedBox(
-                                      width: 300.w,
-                                      child: Text(
-                                        '${widget.bookingDto.endPointMainText}, ${widget.bookingDto.endPointAddress}',
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
               )
             ],
           );

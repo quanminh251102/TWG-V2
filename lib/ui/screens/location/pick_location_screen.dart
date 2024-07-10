@@ -706,6 +706,12 @@ class _PickLocationScreenState extends State<PickLocationScreen>
                                               setState(() {
                                                 isContinue = true;
                                               });
+                                              SystemChannels.textInput
+                                                  .invokeMethod(
+                                                      'TextInput.hide');
+                                              DraggableScrollableActuator.reset(
+                                                draggableSheetContext,
+                                              );
                                             },
                                           ),
                                       if (!hasType1)

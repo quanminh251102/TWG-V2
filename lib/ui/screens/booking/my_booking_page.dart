@@ -10,7 +10,6 @@ import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
 import 'package:twg/global/router.dart';
 import 'package:twg/ui/screens/booking/widget/booking_history_item.dart';
 
-
 class MyBookPage extends StatefulWidget {
   const MyBookPage({super.key});
 
@@ -207,16 +206,13 @@ class _MyBookPageState extends State<MyBookPage>
                         ),
                         if (bookings_selected.isEmpty)
                           Center(
-                              child: Column(
-                            children: [
-                              Image.asset('assets/images/error.png'),
-                              const Text(
-                                'Danh sách trống!',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          )),
+                            child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.h),
+                                child: Lottie.asset(
+                                  'assets/lottie/empty.json',
+                                  height: 100.h,
+                                )),
+                          ),
                         if (bookings_selected.isNotEmpty)
                           for (var booking in bookings_selected) ...[
                             if (booking.bookingType == 'Tìm tài xế')
@@ -240,16 +236,13 @@ class _MyBookPageState extends State<MyBookPage>
                         ),
                         if (bookings_selected.isEmpty)
                           Center(
-                              child: Column(
-                            children: [
-                              Image.asset('assets/images/error.png'),
-                              const Text(
-                                'Danh sách trống!',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          )),
+                            child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.h),
+                                child: Lottie.asset(
+                                  'assets/lottie/empty.json',
+                                  height: 100.h,
+                                )),
+                          ),
                         if (bookings_selected.isNotEmpty)
                           for (var booking in bookings_selected) ...[
                             if (booking.bookingType == 'Tìm hành khách')

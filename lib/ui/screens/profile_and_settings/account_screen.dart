@@ -232,7 +232,7 @@ class _AccountScreenState extends State<AccountScreen>
                       ),
                       SizedBox(height: 10.h),
                       ProfileMenuWidget(
-                        title: "Chính sách quyền riêng tư",
+                        title: "Chính sách & quyền riêng tư",
                         icon: LineAwesomeIcons.lock,
                         onPress: () {
                           Get.toNamed(MyRouter.privacyPolicy);

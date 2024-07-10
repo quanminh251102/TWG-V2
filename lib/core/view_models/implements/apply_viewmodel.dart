@@ -90,6 +90,37 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
     _zoomLevel = zoomLevel;
   }
 
+  double haversineDistance(LatLng point1, LatLng point2) {
+    const double R = 6371000;
+    double lat1 = point1.latitude * pi / 180;
+    double lat2 = point2.latitude * pi / 180;
+    double dLat = (point2.latitude - point1.latitude) * pi / 180;
+    double dLon = (point2.longitude - point1.longitude) * pi / 180;
+
+    double a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(lat1) * cos(lat2) * sin(dLon / 2) * sin(dLon / 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    return R * c;
+  }
+
+  bool isPointOnSegment(
+      LatLng point, LatLng start, LatLng end, double tolerance) {
+    double d1 = haversineDistance(point, start);
+    double d2 = haversineDistance(point, end);
+    double d3 = haversineDistance(start, end);
+    return (d1 + d2 - d3).abs() <= tolerance;
+  }
+
+  bool isLocationOnPath(
+      LatLng point, List<LatLng> polyline, bool geodesic, double tolerance) {
+    for (int i = 0; i < polyline.length - 1; i++) {
+      if (isPointOnSegment(point, polyline[i], polyline[i + 1], tolerance)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   Future<void> delayedFunctionCaller() async {
     // Completer<void> completer = Completer<void>();
@@ -113,10 +144,7 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
     currentLocation = currentPlace;
     if (currentLocation != null && currentDestination != null) {
       _currentDirection = await _iOrsService.getCoordinates(
-        currentLocation!,
-        currentDestination!,
-      );
-      print('vào 2');
+          currentLocation!, currentDestination!, false);
       _boundConfirmScreen =
           LatLngBounds.fromPoints(_currentDirection!.coordinates!
               .map(
@@ -233,9 +261,7 @@ class ApplyViewModel with ChangeNotifier implements IApplyViewModel {
     );
     if (currentLocation != null && currentDestination != null) {
       _currentDirection = await _iOrsService.getCoordinates(
-        currentLocation!,
-        currentDestination!,
-      );
+          currentLocation!, currentDestination!, true);
 
       _boundConfirmScreen =
           LatLngBounds.fromPoints(_currentDirection!.coordinates!

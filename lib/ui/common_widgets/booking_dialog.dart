@@ -201,7 +201,7 @@ class _BookingDialogState extends State<BookingDialog> {
                       Text(
                         VietnameseMoneyFormatter()
                             .formatToVietnameseCurrency(
-                                widget.bookingDto.price.toString())
+                                widget.bookingDto.price!.round().toString())
                             .toString(),
                         style: TextStyle(
                           color: ColorUtils.primaryColor,
@@ -446,7 +446,8 @@ class _AnimatedDividerState extends State<AnimatedDivider>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500), // Adjust the duration as needed
+      duration:
+          const Duration(milliseconds: 500), // Adjust the duration as needed
     );
 
     _animation = Tween<double>(begin: 0, end: 1).animate(_controller);

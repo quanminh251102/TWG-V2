@@ -10,8 +10,11 @@ import 'package:provider/provider.dart';
 import 'package:twg/core/dtos/goongs/place_detail_dto.dart';
 import 'package:twg/core/dtos/goongs/place_dto.dart';
 import 'package:twg/core/dtos/goongs/predictions_dto.dart';
+import 'package:twg/core/dtos/location/location_dto.dart';
 import 'package:twg/core/utils/color_utils.dart';
+import 'package:twg/core/utils/enum.dart';
 import 'package:twg/core/view_models/interfaces/ibooking_viewmodel.dart';
+import 'package:twg/core/view_models/interfaces/ilocation_viewmodel.dart';
 import 'package:twg/global/global_data.dart';
 import 'package:twg/global/locator.dart';
 import 'package:lottie/lottie.dart' as lottie;
@@ -44,6 +47,7 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
   bool isPickFromMap = false;
 
   late IBookingViewModel _iBookingViewModel;
+  late ILocationViewModel _iLocationViewModel;
 
   final FocusNode locationFocusNode = FocusNode();
   final FocusNode destinationFocusNode = FocusNode();
@@ -113,6 +117,13 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
       ));
       isInit = true;
     });
+    _iLocationViewModel = context.read<ILocationViewModel>();
+    Future.delayed(
+      Duration.zero,
+      () async {
+        await _iLocationViewModel.getSavedLocation();
+      },
+    );
 
     super.initState();
   }
@@ -489,37 +500,194 @@ class _PickPlaceScreenState extends State<PickPlaceScreen>
                                                   SizedBox(
                                                     height: 15.h,
                                                   ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 10.w),
-                                                    child:
-                                                        SingleChildScrollView(
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      child: Row(
-                                                        children: [
-                                                          SavePlaceItem(
-                                                            type: 0,
-                                                            isExist: false,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 20.w,
-                                                          ),
-                                                          SavePlaceItem(
-                                                            type: 1,
-                                                            isExist: false,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 20.w,
-                                                          ),
-                                                          SavePlaceItem(
-                                                            type: 2,
-                                                            isExist: false,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
+                                                  Consumer<ILocationViewModel>(
+                                                    builder:
+                                                        (context, vm, child) {
+                                                      bool hasType1 = vm
+                                                          .savedLocation
+                                                          .any((element) =>
+                                                              element.type ==
+                                                              'company');
+
+                                                      return SingleChildScrollView(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        child: Row(
+                                                          children: [
+                                                            for (var savedLocation
+                                                                in vm
+                                                                    .savedLocation)
+                                                              if (savedLocation
+                                                                          .type ==
+                                                                      'home' ||
+                                                                  savedLocation
+                                                                          .type ==
+                                                                      'company' ||
+                                                                  savedLocation
+                                                                          .type ==
+                                                                      'other')
+                                                                _SavePlaceItem(
+                                                                  type: savedLocation
+                                                                              .type ==
+                                                                          'home'
+                                                                      ? 0
+                                                                      : (savedLocation.type ==
+                                                                              'company'
+                                                                          ? 1
+                                                                          : 2),
+                                                                  location:
+                                                                      savedLocation,
+                                                                  onTap:
+                                                                      () async {
+                                                                    if (locationFocusNode
+                                                                            .hasFocus ||
+                                                                        (locationController
+                                                                            .text
+                                                                            .isEmpty)) {
+                                                                      locationFocusNode
+                                                                          .unfocus();
+                                                                      locationController
+                                                                              .text =
+                                                                          savedLocation
+                                                                              .placeDescription!;
+                                                                      currentLocation
+                                                                              ?.placeId =
+                                                                          savedLocation
+                                                                              .placeId!;
+                                                                    } else if (destinationFocusNode
+                                                                            .hasFocus ||
+                                                                        (destinationController
+                                                                            .text
+                                                                            .isEmpty)) {
+                                                                      destinationFocusNode
+                                                                          .unfocus();
+                                                                      destinationController
+                                                                              .text =
+                                                                          savedLocation
+                                                                              .placeDescription!;
+                                                                      currentDestination =
+                                                                          Predictions(
+                                                                              placeId: savedLocation.placeId);
+                                                                      currentDestination!
+                                                                              .placeId =
+                                                                          savedLocation
+                                                                              .placeId!;
+                                                                    }
+                                                                    if (locationController.text !=
+                                                                            '' &&
+                                                                        destinationController.text !=
+                                                                            '') {
+                                                                      PlaceDto?
+                                                                          searchLocation =
+                                                                          await _iBookingViewModel
+                                                                              .getPlaceById(currentLocation!.placeId!);
+                                                                      _iBookingViewModel
+                                                                              .currentLocation =
+                                                                          LatLng(
+                                                                        searchLocation!
+                                                                            .geometry!
+                                                                            .location!
+                                                                            .lat!,
+                                                                        searchLocation
+                                                                            .geometry!
+                                                                            .location!
+                                                                            .lng!,
+                                                                      );
+                                                                      PlaceDto?
+                                                                          searchDestination =
+                                                                          await _iBookingViewModel
+                                                                              .getPlaceById(currentDestination!.placeId!);
+                                                                      _iBookingViewModel
+                                                                              .currentDestination =
+                                                                          LatLng(
+                                                                        searchDestination!
+                                                                            .geometry!
+                                                                            .location!
+                                                                            .lat!,
+                                                                        searchDestination
+                                                                            .geometry!
+                                                                            .location!
+                                                                            .lng!,
+                                                                      );
+
+                                                                      _iBookingViewModel
+                                                                          .updateBookingLocation(
+                                                                        startPointId:
+                                                                            currentLocation!.placeId,
+                                                                        startPointMainText: locationController
+                                                                            .text
+                                                                            .split(',')[0],
+                                                                        startPointAddress: locationController
+                                                                            .text
+                                                                            .split(
+                                                                                ',')
+                                                                            .sublist(
+                                                                                1)
+                                                                            .map((part) =>
+                                                                                part.trim())
+                                                                            .join(', '),
+                                                                        endPointId:
+                                                                            currentDestination!.placeId,
+                                                                        endPointMainText: destinationController
+                                                                            .text
+                                                                            .split(',')[0],
+                                                                        endPointAddress: destinationController
+                                                                            .text
+                                                                            .split(
+                                                                                ',')
+                                                                            .sublist(
+                                                                                1)
+                                                                            .map((part) =>
+                                                                                part.trim())
+                                                                            .join(', '),
+                                                                      );
+                                                                      Get.toNamed(
+                                                                        MyRouter
+                                                                            .confirmPlaceMap,
+                                                                      );
+                                                                    }
+                                                                    setState(
+                                                                        () {});
+                                                                  },
+                                                                ),
+                                                            if (!hasType1)
+                                                              _SavePlaceItem(
+                                                                type: 1,
+                                                                location: null,
+                                                                onTap: () {
+                                                                  Get.toNamed(
+                                                                      MyRouter
+                                                                          .addLocation,
+                                                                      arguments: EnumHelper.getEnum(
+                                                                          EnumMap
+                                                                              .savePlaceType,
+                                                                          1));
+                                                                },
+                                                              ),
+                                                            if (vm.savedLocation
+                                                                    .length <=
+                                                                3)
+                                                              _SavePlaceItem(
+                                                                type: 2,
+                                                                location: null,
+                                                                onTap: () {
+                                                                  Get.toNamed(
+                                                                    MyRouter
+                                                                        .addLocation,
+                                                                    arguments:
+                                                                        EnumHelper
+                                                                            .getEnum(
+                                                                      EnumMap
+                                                                          .savePlaceType,
+                                                                      2,
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
                                                   )
                                                 ]),
                                               ),
@@ -764,5 +932,89 @@ class Debouncer {
       _timer!.cancel();
     }
     _timer = Timer(Duration(milliseconds: milliseconds), action);
+  }
+}
+
+class _SavePlaceItem extends StatelessWidget {
+  LocationDto? location;
+  int? type;
+  final Function() onTap;
+  _SavePlaceItem({Key? key, this.location, this.type, required this.onTap})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => onTap(),
+      child: Container(
+        decoration: BoxDecoration(
+            // color: Colors.grey.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(
+          10.r,
+        )),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 5.w,
+            vertical: 8.h,
+          ),
+          child: Row(
+            children: [
+              location != null
+                  ? Icon(
+                      location!.type == 'home'
+                          ? Icons.house_outlined
+                          : location!.type == 'company'
+                              ? Icons.school_outlined
+                              : Icons.location_pin,
+                      color: Colors.black,
+                      size: 25.r,
+                    )
+                  : Icon(
+                      Icons.add_location,
+                      color: ColorUtils.primaryColor,
+                      size: 25.r,
+                    ),
+              SizedBox(
+                width: 5.w,
+              ),
+              location == null
+                  ? Text(
+                      'Thêm ${EnumHelper.getDescription(
+                        EnumMap.savePlaceType,
+                        EnumHelper.getEnum(
+                          EnumMap.savePlaceType,
+                          type!,
+                        ),
+                      )}',
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 80.w,
+                          child: Text(
+                            location!.placeName.toString(),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 90.w,
+                          child: Text(
+                            location!.placeDescription ?? '',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ],
+                    )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

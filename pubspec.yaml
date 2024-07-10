@@ -103,6 +103,7 @@ dependencies:
   firebase_messaging: ^14.8.0
   firebase_core: ^2.28.0
   notification_permissions: ^0.6.1
+  webview_flutter: ^4.8.0
 
 dev_dependencies:
   flutter_test:

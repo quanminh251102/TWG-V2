@@ -257,9 +257,7 @@ class BookingViewModel with ChangeNotifier implements IBookingViewModel {
   Future<void> initConfirmLocation() async {
     if (currentLocation != null && currentDestination != null) {
       _currentDirection = await _iOrsService.getCoordinates(
-        currentLocation!,
-        currentDestination!,
-      );
+          currentLocation!, currentDestination!, true);
       _currentBooking!.distance = currentDirection!.distance;
       _currentBooking!.duration = currentDirection!.duration;
 

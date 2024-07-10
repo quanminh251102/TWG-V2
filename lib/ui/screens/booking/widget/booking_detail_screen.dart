@@ -227,50 +227,30 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                                   decoration: const BoxDecoration(
                                     color: Colors.white,
                                   ),
-                                  child: Consumer<IReviewViewModel>(
-                                    builder: (context, vm, child) {
-                                      List<int> numbers = [];
-                                      List<ReviewDto> myReview = vm.reviews
-                                          .where((element) =>
-                                              element.receiver!.id ==
-                                              widget.booking.authorId!.id)
-                                          .toList();
-                                      double average = 0;
-                                      if (myReview.isNotEmpty) {
-                                        numbers.addAll(
-                                          myReview.map(
-                                            (e) => e.star!,
-                                          ),
-                                        );
-                                        int sum =
-                                            numbers.reduce((a, b) => a + b);
-                                        average = sum / numbers.length;
-                                      }
-                                      return Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 3.h,
-                                          horizontal: 5.w,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 3.h,
+                                      horizontal: 5.w,
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          widget.booking.authorId!.reviewNum
+                                              .toString(),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14.sp),
                                         ),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              average.toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14.sp),
-                                            ),
-                                            Icon(
-                                              Icons.star,
-                                              color: ColorUtils.primaryColor,
-                                              size: 14.r,
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    },
+                                        Icon(
+                                          Icons.star,
+                                          color: ColorUtils.primaryColor,
+                                          size: 14.r,
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               )

@@ -13,8 +13,8 @@ class OrsService implements IOrsService {
 
   @override
   Future<DirectionDto?> getCoordinates(
-      LatLng location, LatLng destination) async {
-    LoadingDialogUtils.showLoading();
+      LatLng location, LatLng destination, bool isShowLoading) async {
+    if (isShowLoading) LoadingDialogUtils.showLoading();
     var response = await Dio().get(
       getRouteUrl(
         "${location.longitude},${location.latitude}",
@@ -60,7 +60,7 @@ class OrsService implements IOrsService {
           ),
         ),
       );
-      LoadingDialogUtils.hideLoading();
+      if (isShowLoading) LoadingDialogUtils.hideLoading();
       return directionDto;
     }
     return null;
