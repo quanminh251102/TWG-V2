@@ -79,7 +79,7 @@ class ___AvailableBookingTabState extends State<_AvailableBookingTab> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: 100.h,
+                height: 150.h,
               ),
               Padding(
                 padding: EdgeInsets.only(

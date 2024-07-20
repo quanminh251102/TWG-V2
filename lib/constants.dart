@@ -1,4 +1,4 @@
-const baseUrl = "http://192.168.0.143:8080";
+const baseUrl = "https://ride-mate-api.vercel.app";
 const baseGoongsUrl = "https://rsapi.goong.io";
 const String baseOrsUrl =
     'https://api.openrouteservice.org/v2/directions/driving-car';
@@ -8,7 +8,7 @@ const goongKey = "W58VBTcAl1Wg8qcZy6Y4JUvaeDHmf7MEbFZ6WCbR";
 const avatarUrl =
     'https://res.cloudinary.com/dxoblxypq/image/upload/v1679984586/9843c460ff72ee89d791bffe667e451c_rzalqh.jpg';
 // local  
-// http://192.168.88.159:8080
+// http://192.168.1.76:8080
 // deploy
 // https://togerther-we-go-api.onrender.com
 
